@@ -19,7 +19,7 @@ public class SignScreenManager {
     private String name;
     private Location location;
 
-    private ISignPage signScreen;
+    private ISignScreen signScreen;
 
     private int line = -0;
     private int scroll = 0;
@@ -34,14 +34,21 @@ public class SignScreenManager {
     private boolean isTickerRunning = false;
     private boolean stop = false;
 
+    public static final long DEFAULT_TICK_SPEED = 10L;
+    private long tickSpeed;
+
     private List<List<String>> partition = null;
 
-    public SignScreenManager(JavaPlugin plugin, Location location, String name, ISignPage signScreen) {
+    public SignScreenManager(JavaPlugin plugin, Location location, String name, Long tickSpeed, ISignScreen signScreen) {
         this.plugin = plugin;
         this.name = name;
         this.location = location;
 
         this.signScreen = signScreen;
+
+        if (tickSpeed == null) {
+            this.tickSpeed = DEFAULT_TICK_SPEED;
+        } else this.tickSpeed = tickSpeed;
 
         Sign sign = SignUtils.isSign(location.getBlock());
         if (sign != null) {
@@ -219,11 +226,11 @@ public class SignScreenManager {
         this.location = location;
     }
 
-    public ISignPage getSignScreen() {
+    public ISignScreen getSignScreen() {
         return signScreen;
     }
 
-    public void setSignScreen(ISignPage signScreen) {
+    public void setSignScreen(ISignScreen signScreen) {
         this.signScreen = signScreen;
     }
 
@@ -305,5 +312,17 @@ public class SignScreenManager {
 
     public void setPartition(List<List<String>> partition) {
         this.partition = partition;
+    }
+
+    public Sign getSign() {
+        return SignUtils.isSign(location.getBlock());
+    }
+
+    public long getTickSpeed() {
+        return tickSpeed;
+    }
+
+    public void setTickSpeed(long tickSpeed) {
+        this.tickSpeed = tickSpeed;
     }
 }
