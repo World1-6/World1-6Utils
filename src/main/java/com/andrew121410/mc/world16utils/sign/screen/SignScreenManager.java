@@ -19,7 +19,7 @@ public class SignScreenManager {
     private String name;
     private Location location;
 
-    private SignScreen signScreen;
+    private ISignPage signScreen;
 
     private int line = -0;
     private int scroll = 0;
@@ -36,7 +36,7 @@ public class SignScreenManager {
 
     private List<List<String>> partition = null;
 
-    public SignScreenManager(JavaPlugin plugin, String name, SignScreen signScreen, Location location) {
+    public SignScreenManager(JavaPlugin plugin, Location location, String name, ISignPage signScreen) {
         this.plugin = plugin;
         this.name = name;
         this.location = location;
@@ -46,7 +46,7 @@ public class SignScreenManager {
         Sign sign = SignUtils.isSign(location.getBlock());
         if (sign != null) {
             tick();
-            this.signScreen.load();
+            this.signScreen.onButton(this, null, 0, 0);
         }
     }
 
@@ -57,7 +57,7 @@ public class SignScreenManager {
         }
 
         Sign sign = SignUtils.isSign(location.getBlock());
-        if (sign != null) this.signScreen.doFind(player, line, scroll);
+        if (sign != null) this.signScreen.onButton(this, player, line, scroll);
     }
 
     public void onScroll(Player player, boolean up) {
@@ -195,7 +195,6 @@ public class SignScreenManager {
         this.hasScrollChanged = true;
     }
 
-    //GETTERS AND SETTERS
     public JavaPlugin getPlugin() {
         return plugin;
     }
@@ -218,6 +217,14 @@ public class SignScreenManager {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public ISignPage getSignScreen() {
+        return signScreen;
+    }
+
+    public void setSignScreen(ISignPage signScreen) {
+        this.signScreen = signScreen;
     }
 
     public int getLine() {
@@ -268,6 +275,14 @@ public class SignScreenManager {
         this.hasTextChanged = hasTextChanged;
     }
 
+    public boolean isHasScrollChanged() {
+        return hasScrollChanged;
+    }
+
+    public void setHasScrollChanged(boolean hasScrollChanged) {
+        this.hasScrollChanged = hasScrollChanged;
+    }
+
     public boolean isTickerRunning() {
         return isTickerRunning;
     }
@@ -290,9 +305,5 @@ public class SignScreenManager {
 
     public void setPartition(List<List<String>> partition) {
         this.partition = partition;
-    }
-
-    public Sign getSign() {
-        return SignUtils.isSign(location.getBlock());
     }
 }
