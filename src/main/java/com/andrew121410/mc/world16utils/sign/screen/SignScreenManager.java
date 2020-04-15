@@ -177,7 +177,7 @@ public class SignScreenManager {
                             hasScrollChanged = false;
                         }
                     }
-                }.runTaskTimer(this.plugin, 10L, 10L);
+                }.runTaskTimer(this.plugin, this.tickSpeed, this.tickSpeed);
             }
         }
     }
