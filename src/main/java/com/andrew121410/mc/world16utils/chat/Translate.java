@@ -4,7 +4,12 @@ import org.bukkit.ChatColor;
 
 public class Translate {
 
-    public static String chat(String s) {
+    public static String translate(String s) {
+        String realMessage = LanguageLocale.LANGUAGE_MAP.get(s);
+        return color(realMessage);
+    }
+
+    public static String color(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }
