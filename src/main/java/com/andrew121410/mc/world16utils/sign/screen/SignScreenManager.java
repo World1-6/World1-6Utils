@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.sign.screen;
 
-import com.andrew121410.mc.world16utils.chat.Translate;
+import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.SignUtils;
 import com.google.common.collect.Lists;
@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SignScreenManager {
 
@@ -28,9 +27,9 @@ public class SignScreenManager {
     private int scroll = 0;
     private int min = 0;
     private int max = 3;
-    private int maxText = 15;
+    private final int maxText = 15;
 
-    private List<String> pattern = Arrays.asList("A", "A", "A", "A");
+    private List<String> pattern;
     private int patternBuffer = 0;
 
     private SignCache signCache1;
@@ -53,6 +52,8 @@ public class SignScreenManager {
         this.name = name;
         this.location = location;
 
+        setPattern(new String[]{"A", "A", "A", "A"});
+
         this.signScreen = signScreen;
 
         if (tickSpeed == null) {
@@ -73,29 +74,24 @@ public class SignScreenManager {
         }
 
         if (!left) {
-            String a = this.pattern.get(side);
+            String from = this.pattern.get(side);
             int to = side + 1;
-            AtomicInteger z = new AtomicInteger();
-            a.chars().forEach((b) -> {
-                z.getAndIncrement();
+            from.chars().forEach((b) -> {
                 int count = 0;
-                String c = String.valueOf(b);
-                if (c.equalsIgnoreCase("A"))
+                String charString = String.valueOf(b);
+                if (charString.equalsIgnoreCase("A"))
                     count++;
                 if (count == to) {
                     patternBuffer = to - 1;
                 }
             });
         } else {
-            String a = this.pattern.get(side);
+            String from = this.pattern.get(side);
             int to = side - 1;
-
-            AtomicInteger z = new AtomicInteger();
-            a.chars().forEach((b) -> {
-                z.getAndIncrement();
+            from.chars().forEach((b) -> {
                 int count = 0;
-                String c = String.valueOf(b);
-                if (c.equalsIgnoreCase("A"))
+                String charString = String.valueOf(b);
+                if (charString.equalsIgnoreCase("A"))
                     count++;
                 if (count == to) {
                     patternBuffer = to - 1;
@@ -177,7 +173,7 @@ public class SignScreenManager {
     public void tick(Player player) {
         if (!this.isTickerRunning) {
             tick();
-            player.sendMessage(Translate.chat("&2Sign turned on."));
+            player.sendMessage(LanguageLocale.color("&2Sign turned on."));
         }
     }
 
@@ -185,64 +181,71 @@ public class SignScreenManager {
         if (!this.isTickerRunning) {
             this.isTickerRunning = true;
             Sign sign = SignUtils.isSign(location.getBlock());
-            if (sign != null) {
-                new BukkitRunnable() {
-                    int at = 0;
-                    private boolean hold = false;
-                    String text = sign.getLine(line);
-                    private final SignCache signCache = new SignCache(sign);
-                    int oldSide = line;
-                    private final StringBuffer stringBuffer = new StringBuffer();
 
-                    @Override
-                    public void run() {
-                        if (stop && at == 0) {
-                            isTickerRunning = false;
-                            stop = false;
-                            this.cancel();
-                            return;
-                        }
+            if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
 
-                        //Holding
-                        if (hold) return;
+            new BukkitRunnable() {
+                int pointer = 0;
+                private boolean hold = false;
+                private final SignCache signCacheBuffer = new SignCache(sign);
+                int oldLine = line;
+                private StringBuffer stringBuffer = new StringBuffer();
 
-                        if (at == 0 && !hasTextChanged && !hasScrollChanged && !hasSidewaysChanged && !hasLineChanged) {
-                            side = oldSide;
-                            signCache.fromSign(sign);
-                            text = sign.getLine(line - 1);
-                            stringBuffer.append(text);
-                            stringBuffer.setCharAt(patternBuffer, '>');
-                            sign.setLine(side, stringBuffer.toString());
-                            if (!sign.update()) stop = true;
-                            at++;
-                        } else if (at > 0 && !hasTextChanged && !hasScrollChanged && !hasSidewaysChanged && !hasLineChanged) {
-                            stringBuffer.setCharAt(side, ' ');
-                            sign.setLine(side, stringBuffer.toString());
-                            if (!sign.update()) stop = true;
-                            at = 0;
-                        } else if (hasLineChanged) {
-                            side = 0;
-                            at = 0;
-                            hasLineChanged = false;
-                        } else if (hasTextChanged) {
-                            signCache1.update(sign);
-                            partition = null;
-                            oldSide = line;
-                            at = 0;
-                            hasTextChanged = false;
-                        } else if (hasScrollChanged) {
-                            signCache1.update(sign);
-                            oldSide = line;
-                            at = 0;
-                            hasScrollChanged = false;
-                        } else if (hasSidewaysChanged) {
-                            oldSide = patternBuffer;
-                            at = 0;
-                            hasSidewaysChanged = false;
-                        }
+                @Override
+                public void run() {
+                    if (stop && pointer == 0) {
+                        isTickerRunning = false;
+                        stop = false;
+                        this.cancel();
+                        return;
                     }
-                }.runTaskTimer(this.plugin, this.tickSpeed, this.tickSpeed);
-            }
+
+                    //Holding
+                    if (hold) return;
+
+                    if (pointer == 0 && !hasTextChanged && !hasScrollChanged && !hasSidewaysChanged && !hasLineChanged) {
+                        //Save line number and sign lines before we make changes.
+                        line = this.oldLine;
+                        this.signCacheBuffer.fromSign(sign);
+
+                        //Clear string buffer.
+                        this.stringBuffer = new StringBuffer();
+
+                        //Gets the text from the sign.
+                        String text = sign.getLine(line);
+                        stringBuffer.append(text);
+
+                        stringBuffer.setCharAt(patternBuffer, '>');
+                        sign.setLine(side, stringBuffer.toString());
+                        if (!sign.update()) stop = true;
+                        pointer++;
+                    } else if (pointer > 0 && !hasTextChanged && !hasScrollChanged && !hasSidewaysChanged && !hasLineChanged) {
+                        stringBuffer.setCharAt(side, ' ');
+                        sign.setLine(side, stringBuffer.toString());
+                        if (!sign.update()) stop = true;
+                        pointer = 0;
+                    } else if (hasLineChanged) {
+                        side = 0;
+                        pointer = 0;
+                        hasLineChanged = false;
+                    } else if (hasTextChanged) {
+                        signCache1.update(sign);
+                        partition = null;
+                        oldLine = line;
+                        pointer = 0;
+                        hasTextChanged = false;
+                    } else if (hasScrollChanged) {
+                        signCache1.update(sign);
+                        oldLine = line;
+                        pointer = 0;
+                        hasScrollChanged = false;
+                    } else if (hasSidewaysChanged) {
+                        oldLine = patternBuffer;
+                        pointer = 0;
+                        hasSidewaysChanged = false;
+                    }
+                }
+            }.runTaskTimer(this.plugin, this.tickSpeed, this.tickSpeed);
         }
     }
 
@@ -402,10 +405,6 @@ public class SignScreenManager {
         return maxText;
     }
 
-    public void setMaxText(int maxText) {
-        this.maxText = maxText;
-    }
-
     public boolean isHasSidewaysChanged() {
         return hasSidewaysChanged;
     }
@@ -419,20 +418,12 @@ public class SignScreenManager {
     }
 
     public void setPattern(String[] pattern) {
-        boolean hasHashtags;
-//        For each 0 1 2 3 lines
-        for (String p : pattern) {
-            String[] args = p.split(":");
-
-            for (int i = 0; i < args.length; i++) {
-                String a = args[i];
-                hasHashtags = a.contains("#");
-                if (hasHashtags)
-                    args[i] = a.replaceAll("#", " ");
-                args[i] = args[i].replaceAll(":", "");
-            }
-            line++;
+        for (int i = 0; i < pattern.length; i++) {
+            String text = pattern[i];
+            text = text.replaceAll("#", " ");
+            pattern[i] = text;
         }
+
         this.pattern = Arrays.asList(pattern);
     }
 }
