@@ -2,14 +2,18 @@ package com.andrew121410.mc.world16utils.sign;
 
 import org.bukkit.block.Sign;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SignCache {
 
-    private String line0;
-    private String line1;
-    private String line2;
-    private String line3;
+    private String line0 = null;
+    private String line1 = null;
+    private String line2 = null;
+    private String line3 = null;
+
+    public SignCache() {
+    }
 
     public SignCache(Sign sign) {
         this.line0 = sign.getLine(0);
@@ -23,6 +27,33 @@ public class SignCache {
         this.line1 = sign.getLine(1);
         this.line2 = sign.getLine(2);
         this.line3 = sign.getLine(3);
+    }
+
+    public void update(Sign sign) {
+        sign.setLine(0, this.line0);
+        sign.setLine(1, this.line1);
+        sign.setLine(2, this.line2);
+        sign.setLine(3, this.line3);
+        sign.update();
+    }
+
+    public void setLine(int lineNumber, String lineString) {
+        switch (lineNumber) {
+            case 0:
+                this.line0 = lineString;
+                break;
+            case 1:
+                this.line1 = lineString;
+                break;
+            case 2:
+                this.line2 = lineString;
+                break;
+            case 3:
+                this.line3 = lineString;
+                break;
+            default:
+                throw new NoSuchElementException("Not found.");
+        }
     }
 
     public String getLine0() {
@@ -55,14 +86,6 @@ public class SignCache {
 
     public void setLine3(String line3) {
         this.line3 = line3;
-    }
-
-    public void update(Sign sign) {
-        sign.setLine(0, this.line0);
-        sign.setLine(1, this.line1);
-        sign.setLine(2, this.line2);
-        sign.setLine(3, this.line3);
-        sign.update();
     }
 
     @Override
