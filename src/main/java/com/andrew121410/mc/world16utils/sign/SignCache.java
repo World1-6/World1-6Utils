@@ -29,12 +29,12 @@ public class SignCache {
         this.line3 = sign.getLine(3);
     }
 
-    public void update(Sign sign) {
+    public boolean update(Sign sign) {
         sign.setLine(0, this.line0);
         sign.setLine(1, this.line1);
         sign.setLine(2, this.line2);
         sign.setLine(3, this.line3);
-        sign.update();
+        return sign.update();
     }
 
     public void setLine(int lineNumber, String lineString) {
