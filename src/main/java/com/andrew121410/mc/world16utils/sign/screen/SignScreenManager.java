@@ -91,30 +91,26 @@ public class SignScreenManager {
         } else if (!up && this.line != 3) {
             this.line++;
             this.needsLineChanged = true;
-        } else if (this.page == this.maxPages - 1) {
+        } else {
             changePage(player, up);
         }
     }
 
     private void changePage(Player player, boolean up) {
-        if (!this.isTickerRunning) {
-            tick(player);
-            return;
-        }
         if (this.partition == null) return;
 
         if (up) {
-            player.sendMessage("&6changePage -> UP WAS RAN.");
+            player.sendMessage("ChangePage -> UP WAS RAN.");
             int newPage = this.page - 1;
-            if (newPage >= this.maxPages) {
+            if (newPage >= 0 && newPage <= maxPages) {
                 player.sendMessage(LanguageLocale.color("&bMax pages reached! [UP - 1]"));
                 return;
             }
             this.page = newPage;
         } else {
-            player.sendMessage("&6changePage -> DOWN WAS RAN.");
+            player.sendMessage("ChangePage -> DOWN WAS RAN.");
             int newPage = this.page + 1;
-            if (newPage >= this.maxPages) {
+            if (newPage < this.maxPages) {
                 player.sendMessage(LanguageLocale.color("&bMax pages reached! [DOWN + 1]"));
                 return;
             }
@@ -148,7 +144,7 @@ public class SignScreenManager {
                 int pointer = 0;
                 int oldLine = line;
                 private final SignCache signCacheBuffer = new SignCache(sign); //Used to save the sign before we make changes to it.
-                private StringBuffer stringBuffer = new StringBuffer(); //Used to add the pointer.
+                private StringBuilder stringBuilder = new StringBuilder(); //Used to add the pointer.
 
                 @Override
                 public void run() {
@@ -163,11 +159,11 @@ public class SignScreenManager {
                     if (hold) return;
 
                     if (pointer == 0 && !needsLineChanged && !needsTextChanged) {
-                        this.stringBuffer = new StringBuffer(); //Clear the StringBuffer.
-                        this.stringBuffer.append("*").append(sign.getLine(oldLine)); //Add the line.
+                        this.stringBuilder = new StringBuilder(); //Clear the StringBuffer.
+                        this.stringBuilder.append("*").append(sign.getLine(oldLine)); //Add the line.
 
-                        this.stringBuffer.setCharAt(0, '>'); //Add pointer.
-                        sign.setLine(this.oldLine, this.stringBuffer.toString()); //Set the line on the sign.
+                        this.stringBuilder.setCharAt(0, '>'); //Add pointer.
+                        sign.setLine(this.oldLine, this.stringBuilder.toString()); //Set the line on the sign.
                         if (!sign.update()) stop = true; //Update the sign.
                         pointer++;
                     } else if (pointer == 1 && !needsLineChanged && !needsTextChanged) {
