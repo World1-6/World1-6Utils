@@ -37,6 +37,21 @@ public class SignCache {
         return sign.update();
     }
 
+    public String getLine(int lineNumber) {
+        switch (lineNumber) {
+            case 0:
+                return this.line0;
+            case 1:
+                return this.line1;
+            case 2:
+                return this.line2;
+            case 3:
+                return this.line3;
+            default:
+                return null;
+        }
+    }
+
     public void setLine(int lineNumber, String lineString) {
         switch (lineNumber) {
             case 0:

@@ -3,14 +3,14 @@ package com.andrew121410.mc.world16utils.sign.screen;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.SignUtils;
-import com.google.common.collect.Lists;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignOS;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 public class SignScreenManager {
 
@@ -20,22 +20,20 @@ public class SignScreenManager {
     private Location location;
 
     private ISignScreen signScreen;
+    private SignOS signOS;
+
+    private SignLayout currentLayout;
+    private SignPage currentPage;
+
+    private int pointerLine = 0;
+    private SignCache signCache;
 
     private boolean needsLineChanged;
     private boolean needsTextChanged;
 
-    private int page = 0;
-    private int maxPages = 0;
-
-    private int line = 0;
-    private final int maxText = 15;
-
-    private int min = 0;
-    private int max = 3;
-
-    private SignCache signCache;
-
-    private List<List<String>> partition = null;
+    private final static int SIGN_MAX_TEXT = 15;
+    private final static int SIGN_MIN = 0;
+    private final static int SIGN_MAX = 3;
 
     private boolean isTickerRunning = false;
     private boolean stop = false;
@@ -54,159 +52,146 @@ public class SignScreenManager {
             this.tickSpeed = DEFAULT_TICK_SPEED;
         } else this.tickSpeed = tickSpeed;
 
+        this.signOS = this.signScreen.getSignOS();
         Sign sign = SignUtils.isSign(location.getBlock());
-        if (sign != null) {
-            this.signScreen.onButton(this, null, 0, 0);
-        }
+        if (sign != null) this.signScreen.onDoneConstructed(this);
+        goToLayoutAndPage("Main", 0);
     }
 
     public void onClick(Player player) {
-        if (!this.isTickerRunning) {
+        if (!isTickerRunning) {
             tick(player);
-            return;
         }
 
-        Sign sign = SignUtils.isSign(location.getBlock());
-        if (sign != null) this.signScreen.onButton(this, player, this.line, this.page);
+        this.signScreen.onButton(this, player, this.currentLayout, this.currentPage, this.pointerLine);
     }
 
     public void onScroll(Player player, boolean up) {
-        if (!this.isTickerRunning) {
+        if (!isTickerRunning) {
             tick(player);
-            return;
         }
-        if (this.partition == null) return;
-
-        Sign sign = SignUtils.isSign(location.getBlock());
-        if (sign == null) return;
-
-        if (this.line <= 0 && up && this.page == 0) {
-            player.sendMessage(LanguageLocale.color("&c[this.line <= 0 && up && this.page == 0] WAS RAN")); //DEBUG
-            return; //Don't do anything because we are at 0;
-        }
-
-        if (up && this.line != 0) {
-            this.line--;
-            this.needsLineChanged = true;
-        } else if (!up && this.line != 3) {
-            this.line++;
-            this.needsLineChanged = true;
-        } else {
-            changePage(player, up);
-        }
-    }
-
-    private void changePage(Player player, boolean up) {
-        if (this.partition == null) return;
 
         if (up) {
-            player.sendMessage("ChangePage -> UP WAS RAN.");
-            int newPage = this.page - 1;
-            if (newPage >= 0 && newPage <= maxPages) {
-                player.sendMessage(LanguageLocale.color("&bMax pages reached! [UP - 1]"));
-                return;
+            if (this.pointerLine != this.currentPage.getMin()) {
+                this.pointerLine--;
+                this.needsLineChanged = true;
+            } else {
+                SignPage newPage = this.currentLayout.getReversePage(this.currentPage.getPageNumber());
+                if (newPage == null) {
+                    player.sendMessage(LanguageLocale.color("&4No new page was found going [UP]"));
+                    return;
+                }
+                this.currentPage = newPage;
+                this.pointerLine = newPage.getStartLine();
+                this.signCache = newPage.toSignCache();
+                this.needsTextChanged = true;
             }
-            this.page = newPage;
         } else {
-            player.sendMessage("ChangePage -> DOWN WAS RAN.");
-            int newPage = this.page + 1;
-            if (newPage < this.maxPages) {
-                player.sendMessage(LanguageLocale.color("&bMax pages reached! [DOWN + 1]"));
-                return;
+            if (this.pointerLine != this.currentPage.getMax()) {
+                this.pointerLine++;
+                this.needsLineChanged = true;
+            } else {
+                SignPage newPage = this.currentLayout.getNextPage(this.currentPage.getPageNumber());
+                if (newPage == null) {
+                    player.sendMessage(LanguageLocale.color("&4No new page was found going [DOWN]"));
+                    return;
+                }
+                this.currentPage = newPage;
+                this.pointerLine = newPage.getStartLine();
+                this.signCache = newPage.toSignCache();
+                this.needsTextChanged = true;
             }
-            this.page = newPage;
         }
-
-        //@TODO Find a better way to do this.
-        this.min = 0;
-        this.max = 3;
-        this.line = 0;
-
-        this.signCache = fromPartitionToCache(0, 3, this.page);
-        this.needsTextChanged = true;
     }
 
     public void tick(Player player) {
         if (!this.isTickerRunning) {
+            player.sendMessage(LanguageLocale.color("&bStarting tick() please wait..."));
             tick();
-            player.sendMessage(LanguageLocale.color("&2Sign turned on."));
+            player.sendMessage(LanguageLocale.color("&6Running!!!"));
         }
     }
 
-    public void tick() {
-        if (!this.isTickerRunning) {
-            this.isTickerRunning = true;
-            Sign sign = SignUtils.isSign(location.getBlock());
-            if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
+    private void tick() {
+        if (isTickerRunning) {
+            return;
+        }
+        this.isTickerRunning = true;
 
-            new BukkitRunnable() {
-                private boolean hold = false;
-                int pointer = 0;
-                int oldLine = line;
-                private final SignCache signCacheBuffer = new SignCache(sign); //Used to save the sign before we make changes to it.
-                private StringBuilder stringBuilder = new StringBuilder(); //Used to add the pointer.
+        Sign sign = SignUtils.isSign(location.getBlock());
+        if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
 
-                @Override
-                public void run() {
-                    if (stop && pointer == 0) {
-                        isTickerRunning = false;
-                        stop = false;
-                        this.cancel();
-                        return;
-                    }
+        new BukkitRunnable() {
+            private boolean hold = false;
+            private int pointerAt = 5;
+            private int oldPointerLine = pointerLine;
+            private final SignCache signCacheSave = new SignCache();
+            private StringBuffer stringBuffer;
 
-                    //Holding
-                    if (hold) return;
-
-                    if (pointer == 0 && !needsLineChanged && !needsTextChanged) {
-                        this.stringBuilder = new StringBuilder(); //Clear the StringBuffer.
-                        this.stringBuilder.append("*").append(sign.getLine(oldLine)); //Add the line.
-
-                        this.stringBuilder.setCharAt(0, '>'); //Add pointer.
-                        sign.setLine(this.oldLine, this.stringBuilder.toString()); //Set the line on the sign.
-                        if (!sign.update()) stop = true; //Update the sign.
-                        pointer++;
-                    } else if (pointer == 1 && !needsLineChanged && !needsTextChanged) {
-                        if (!this.signCacheBuffer.update(sign)) stop = true; //Reset the sign back to normal.
-                        pointer = 0;
-                    } else if (needsTextChanged) {
-                        oldLine = line;
-                        signCache.update(sign); //Update the sign.
-                        this.signCacheBuffer.fromSign(sign); //Update the sign cache before we makes changes to the sign.
-                        pointer = 0;
-                        needsTextChanged = false;
-                    } else if (needsLineChanged) {
-                        oldLine = line; //Get the new line number.
-                        pointer = 0;
-                        needsLineChanged = false;
-                    }
+            @Override
+            public void run() {
+                if (stop && pointerAt == 0) {
+                    isTickerRunning = false;
+                    stop = false;
+                    this.cancel();
+                    return;
                 }
-            }.runTaskTimer(this.plugin, this.tickSpeed, this.tickSpeed);
-        }
+                //Holding
+                if (hold) return;
+
+                if (!needsTextChanged || !needsLineChanged && pointerAt != 5) {
+                    if (pointerAt == 0) {
+                        this.stringBuffer.insert(0, ">");
+                        sign.setLine(this.oldPointerLine, this.stringBuffer.toString());
+                        if (!sign.update()) stop = true;
+                        pointerAt++;
+                    } else {
+                        if (!signCacheSave.update(sign)) stop = true;
+                        clearStringBufferAndUpdate();
+                        pointerAt--;
+                    }
+                } else if (needsTextChanged || this.pointerAt == 5) {
+                    this.oldPointerLine = pointerLine;
+                    signCache.update(sign);
+                    this.signCacheSave.fromSign(sign);
+                    clearStringBufferAndUpdate();
+                    this.pointerAt = 0;
+                } else if (needsLineChanged) {
+                    this.oldPointerLine = pointerLine;
+                    clearStringBufferAndUpdate();
+                    this.pointerAt = 0;
+                }
+            }
+
+            private void clearStringBufferAndUpdate() {
+                this.stringBuffer = new StringBuffer();
+                this.stringBuffer.append(this.signCacheSave.getLine(this.oldPointerLine));
+            }
+        }.runTaskTimer(plugin, this.tickSpeed, this.tickSpeed);
     }
 
-    public void updateSign(Sign sign, List<String> stringList) {
-        this.partition = Lists.partition(stringList, 4);
-        this.maxPages = this.partition.size();
-        this.signCache = fromPartitionToCache(0, 3, 0);
+    public void goToLayoutAndPage(String layoutName, int pageNumber) {
+        SignLayout signLayout = this.signOS.getSignLayout(layoutName);
+        if (signLayout == null) {
+            throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signLayout == null : NULL");
+        }
+        SignPage signPage = signLayout.getSignPage(pageNumber);
+        if (signPage == null) {
+            throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signPage == null : NULL");
+        }
+        this.currentLayout = signLayout;
+        this.currentPage = signPage;
+        this.pointerLine = signPage.getStartLine();
+        this.signCache = signPage.toSignCache();
         this.needsTextChanged = true;
     }
 
-    private SignCache fromPartitionToCache(int min, int max, int page) {
-        SignCache signCacheTemp = new SignCache();
-        for (int i = min; i <= max; i++) {
-            String line;
-            //If sign does have data on the line grab it if not then set it to "";
-            if (i < this.partition.get(page).size()) {
-                line = this.partition.get(page).get(i);
-            } else line = "";
-            signCacheTemp.setLine(i, line);
-        }
-        return signCacheTemp;
-    }
-
-    public Sign getSign() {
-        return SignUtils.isSign(location.getBlock());
+    public void showTempPage(SignLayout signLayout, int page) {
+        this.currentLayout = signLayout;
+        this.currentPage = signLayout.getSignPage(page);
+        this.pointerLine = this.currentPage.getStartLine();
+        this.signCache = this.currentPage.toSignCache();
+        this.needsTextChanged = true;
     }
 
     public JavaPlugin getPlugin() {
@@ -241,48 +226,36 @@ public class SignScreenManager {
         this.signScreen = signScreen;
     }
 
-    public int getPage() {
-        return page;
+    public SignOS getSignOS() {
+        return signOS;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setSignOS(SignOS signOS) {
+        this.signOS = signOS;
     }
 
-    public int getMaxPages() {
-        return maxPages;
+    public SignLayout getCurrentLayout() {
+        return currentLayout;
     }
 
-    public void setMaxPages(int maxPages) {
-        this.maxPages = maxPages;
+    public void setCurrentLayout(SignLayout currentLayout) {
+        this.currentLayout = currentLayout;
     }
 
-    public int getLine() {
-        return line;
+    public SignPage getCurrentPage() {
+        return currentPage;
     }
 
-    public void setLine(int line) {
-        this.line = line;
+    public void setCurrentPage(SignPage currentPage) {
+        this.currentPage = currentPage;
     }
 
-    public int getMaxText() {
-        return maxText;
+    public int getPointerLine() {
+        return pointerLine;
     }
 
-    public int getMin() {
-        return min;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
+    public void setPointerLine(int pointerLine) {
+        this.pointerLine = pointerLine;
     }
 
     public SignCache getSignCache() {
@@ -293,12 +266,20 @@ public class SignScreenManager {
         this.signCache = signCache;
     }
 
-    public List<List<String>> getPartition() {
-        return partition;
+    public boolean isNeedsLineChanged() {
+        return needsLineChanged;
     }
 
-    public void setPartition(List<List<String>> partition) {
-        this.partition = partition;
+    public void setNeedsLineChanged(boolean needsLineChanged) {
+        this.needsLineChanged = needsLineChanged;
+    }
+
+    public boolean isNeedsTextChanged() {
+        return needsTextChanged;
+    }
+
+    public void setNeedsTextChanged(boolean needsTextChanged) {
+        this.needsTextChanged = needsTextChanged;
     }
 
     public boolean isTickerRunning() {
