@@ -26,7 +26,7 @@ public class SignScreenManager {
     private SignPage currentPage;
 
     private int pointerLine = 0;
-    private SignCache signCache;
+    private SignCache signCache = new SignCache();
 
     private boolean needsLineChanged;
     private boolean needsTextChanged;
@@ -139,7 +139,7 @@ public class SignScreenManager {
                 //Holding
                 if (hold) return;
 
-                if (!needsTextChanged || !needsLineChanged && pointerAt != 5) {
+                if (!needsTextChanged || !needsLineChanged || this.pointerAt != 5) {
                     if (pointerAt == 0) {
                         this.stringBuffer.insert(0, ">");
                         sign.setLine(this.oldPointerLine, this.stringBuffer.toString());
@@ -152,7 +152,7 @@ public class SignScreenManager {
                     }
                 } else if (needsTextChanged || this.pointerAt == 5) {
                     this.oldPointerLine = pointerLine;
-                    signCache.update(sign);
+                    signCache.updateFancy(sign);
                     this.signCacheSave.fromSign(sign);
                     clearStringBufferAndUpdate();
                     this.pointerAt = 0;

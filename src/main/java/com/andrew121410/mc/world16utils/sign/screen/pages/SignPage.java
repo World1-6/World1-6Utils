@@ -14,10 +14,10 @@ public class SignPage {
     private int min;
     private int max;
 
-    private String line0;
-    private String line1;
-    private String line2;
-    private String line3;
+    private String line0 = null;
+    private String line1 = null;
+    private String line2 = null;
+    private String line3 = null;
 
     public SignPage(String name, String backPage, int startLine, int min, int max) {
         this.name = name;

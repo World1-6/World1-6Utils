@@ -28,12 +28,14 @@ public class SignLayout {
     }
 
     public SignPage getReversePage(int currentPage) {
-        if (currentPage == 0) return null;
+        int newInt = currentPage - 1;
+        if (newInt == -1) return null;
         return this.signPages.get(currentPage - 1);
     }
 
     public SignPage getNextPage(int currentPage) {
-        if (currentPage == numberOfPages) return null;
+        int newInt = currentPage + 1;
+        if (newInt >= numberOfPages) return null;
         return this.signPages.get(currentPage + 1);
     }
 
