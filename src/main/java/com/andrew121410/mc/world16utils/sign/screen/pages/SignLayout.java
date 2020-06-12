@@ -24,7 +24,11 @@ public class SignLayout {
     }
 
     public SignPage getSignPage(int number) {
-        return this.signPages.get(number);
+        try {
+            return this.signPages.get(number);
+        } catch (Exception exception) {
+            return null;
+        }
     }
 
     public SignPage getReversePage(int currentPage) {

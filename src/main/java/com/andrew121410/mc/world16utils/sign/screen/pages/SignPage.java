@@ -3,6 +3,7 @@ package com.andrew121410.mc.world16utils.sign.screen.pages;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SignPage {
 
@@ -33,6 +34,11 @@ public class SignPage {
         this.startLine = signPage.startLine;
         this.min = signPage.getMin();
         this.max = signPage.getMax();
+
+        this.line0 = signPage.line0;
+        this.line1 = signPage.line1;
+        this.line2 = signPage.line2;
+        this.line3 = signPage.line3;
 
         this.pageNumber = pageNumber;
     }
@@ -158,5 +164,43 @@ public class SignPage {
 
     public void setLine3(String line3) {
         this.line3 = line3;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SignPage signPage = (SignPage) o;
+        return pageNumber == signPage.pageNumber &&
+                startLine == signPage.startLine &&
+                min == signPage.min &&
+                max == signPage.max &&
+                Objects.equals(name, signPage.name) &&
+                Objects.equals(backPage, signPage.backPage) &&
+                Objects.equals(line0, signPage.line0) &&
+                Objects.equals(line1, signPage.line1) &&
+                Objects.equals(line2, signPage.line2) &&
+                Objects.equals(line3, signPage.line3);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, backPage, pageNumber, startLine, min, max, line0, line1, line2, line3);
+    }
+
+    @Override
+    public String toString() {
+        return "SignPage{" +
+                "name='" + name + '\'' +
+                ", backPage='" + backPage + '\'' +
+                ", pageNumber=" + pageNumber +
+                ", startLine=" + startLine +
+                ", min=" + min +
+                ", max=" + max +
+                ", line0='" + line0 + '\'' +
+                ", line1='" + line1 + '\'' +
+                ", line2='" + line2 + '\'' +
+                ", line3='" + line3 + '\'' +
+                '}';
     }
 }

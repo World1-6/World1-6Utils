@@ -26,7 +26,7 @@ public class SignScreenManager {
     private SignPage currentPage;
 
     private int pointerLine = 0;
-    private SignCache signCache = new SignCache();
+    private SignCache signCache;
 
     private boolean needsLineChanged;
     private boolean needsTextChanged;
@@ -53,8 +53,7 @@ public class SignScreenManager {
         } else this.tickSpeed = tickSpeed;
 
         this.signOS = this.signScreen.getSignOS();
-        Sign sign = SignUtils.isSign(location.getBlock());
-        if (sign != null) this.signScreen.onDoneConstructed(this);
+        this.signScreen.onDoneConstructed(this);
         goToLayoutAndPage("Main", 0);
     }
 
@@ -82,7 +81,7 @@ public class SignScreenManager {
                     return;
                 }
                 this.currentPage = newPage;
-                this.pointerLine = newPage.getStartLine();
+                this.pointerLine = newPage.getMax();
                 this.signCache = newPage.toSignCache();
                 this.needsTextChanged = true;
             }
@@ -139,15 +138,15 @@ public class SignScreenManager {
                 //Holding
                 if (hold) return;
 
-                if (!needsTextChanged || !needsLineChanged || this.pointerAt != 5) {
+                if (!needsTextChanged && !needsLineChanged && this.pointerAt != 5) {
                     if (pointerAt == 0) {
+                        clearStringBufferAndUpdate();
                         this.stringBuffer.insert(0, ">");
-                        sign.setLine(this.oldPointerLine, this.stringBuffer.toString());
+                        sign.setLine(this.oldPointerLine, LanguageLocale.color(this.stringBuffer.toString()));
                         if (!sign.update()) stop = true;
                         pointerAt++;
                     } else {
-                        if (!signCacheSave.update(sign)) stop = true;
-                        clearStringBufferAndUpdate();
+                        if (!signCacheSave.updateFancy(sign)) stop = true;
                         pointerAt--;
                     }
                 } else if (needsTextChanged || this.pointerAt == 5) {
@@ -156,10 +155,12 @@ public class SignScreenManager {
                     this.signCacheSave.fromSign(sign);
                     clearStringBufferAndUpdate();
                     this.pointerAt = 0;
+                    needsTextChanged = false;
                 } else if (needsLineChanged) {
                     this.oldPointerLine = pointerLine;
                     clearStringBufferAndUpdate();
                     this.pointerAt = 0;
+                    needsLineChanged = false;
                 }
             }
 
