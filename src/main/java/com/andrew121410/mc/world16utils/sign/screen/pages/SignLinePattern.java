@@ -1,7 +1,5 @@
 package com.andrew121410.mc.world16utils.sign.screen.pages;
 
-import org.bukkit.Bukkit;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,8 +33,6 @@ public class SignLinePattern {
                 this.sideIndexMap.put(howManySides, i);
             }
         }
-
-        this.sideIndexMap.forEach((k, v) -> Bukkit.broadcastMessage("sideIndexMap -> KEY: " + k + " VALUE" + v));
 
         this.maxSide = howManySides;
     }

@@ -6,7 +6,6 @@ import com.andrew121410.mc.world16utils.sign.SignUtils;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLinePattern;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -61,7 +60,7 @@ public class SignScreenManager {
             tick(player);
         }
 
-        this.signScreen.onButton(this, player, this.currentLayout, this.currentPage, this.pointerLine);
+        this.signScreen.onButton(this, player, this.currentLayout, this.currentPage, this.pointerLine, this.currentSide);
     }
 
     public void onScroll(Player player, boolean up) {
@@ -70,7 +69,6 @@ public class SignScreenManager {
         }
 
         SignLinePattern signLinePattern = this.currentPage.getSignLinePatternMap().get(this.pointerLine);
-        Bukkit.broadcastMessage(signLinePattern.toString());
 
         if (up) {
             int toSide = this.currentSide - 1;
@@ -89,7 +87,8 @@ public class SignScreenManager {
             } else {
                 SignPage newPage = this.currentLayout.getReversePage(this.currentPage.getPageNumber());
                 if (newPage == null) {
-                    player.sendMessage(LanguageLocale.color("&4No new page was found going [UP]"));
+                    if (!this.signScreen.nullPage(this, player, true))
+                        player.sendMessage(LanguageLocale.color("&4No new page was found going [UP]"));
                     return;
                 }
                 stagePageAndLine(newPage, true);
@@ -113,7 +112,8 @@ public class SignScreenManager {
             } else {
                 SignPage newPage = this.currentLayout.getNextPage(this.currentPage.getPageNumber());
                 if (newPage == null) {
-                    player.sendMessage(LanguageLocale.color("&4No new page was found going [DOWN]"));
+                    if (!this.signScreen.nullPage(this, player, false))
+                        player.sendMessage(LanguageLocale.color("&4No new page was found going [DOWN]"));
                     return;
                 }
                 stagePageAndLine(newPage, false);
