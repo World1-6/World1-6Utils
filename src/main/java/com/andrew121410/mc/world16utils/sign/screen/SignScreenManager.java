@@ -4,7 +4,6 @@ import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.SignUtils;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
-import com.andrew121410.mc.world16utils.sign.screen.pages.SignOS;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
@@ -20,13 +19,12 @@ public class SignScreenManager {
     private Location location;
 
     private ISignScreen signScreen;
-    private SignOS signOS;
 
     private SignLayout currentLayout;
     private SignPage currentPage;
 
     private int pointerLine = 0;
-    private SignCache signCache;
+    private SignCache signCache = null;
 
     private boolean needsLineChanged;
     private boolean needsTextChanged;
@@ -52,9 +50,7 @@ public class SignScreenManager {
             this.tickSpeed = DEFAULT_TICK_SPEED;
         } else this.tickSpeed = tickSpeed;
 
-        this.signOS = this.signScreen.getSignOS();
         this.signScreen.onDoneConstructed(this);
-        goToLayoutAndPage("Main", 0);
     }
 
     public void onClick(Player player) {
@@ -136,7 +132,7 @@ public class SignScreenManager {
                     return;
                 }
                 //Holding
-                if (hold) return;
+                if (hold || signCache == null) return;
 
                 if (!needsTextChanged && !needsLineChanged && this.pointerAt != 5) {
                     if (pointerAt == 0) {
@@ -171,12 +167,11 @@ public class SignScreenManager {
         }.runTaskTimer(plugin, this.tickSpeed, this.tickSpeed);
     }
 
-    public void goToLayoutAndPage(String layoutName, int pageNumber) {
-        SignLayout signLayout = this.signOS.getSignLayout(layoutName);
+    public void updateLayoutAndPage(SignLayout signLayout, int beginningPage) {
         if (signLayout == null) {
             throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signLayout == null : NULL");
         }
-        SignPage signPage = signLayout.getSignPage(pageNumber);
+        SignPage signPage = signLayout.getSignPage(beginningPage);
         if (signPage == null) {
             throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signPage == null : NULL");
         }
@@ -187,20 +182,8 @@ public class SignScreenManager {
         this.needsTextChanged = true;
     }
 
-    public void showTempPage(SignLayout signLayout, int page) {
-        this.currentLayout = signLayout;
-        this.currentPage = signLayout.getSignPage(page);
-        this.pointerLine = this.currentPage.getStartLine();
-        this.signCache = this.currentPage.toSignCache();
-        this.needsTextChanged = true;
-    }
-
     public JavaPlugin getPlugin() {
         return plugin;
-    }
-
-    public void setPlugin(JavaPlugin plugin) {
-        this.plugin = plugin;
     }
 
     public String getName() {
@@ -225,14 +208,6 @@ public class SignScreenManager {
 
     public void setSignScreen(ISignScreen signScreen) {
         this.signScreen = signScreen;
-    }
-
-    public SignOS getSignOS() {
-        return signOS;
-    }
-
-    public void setSignOS(SignOS signOS) {
-        this.signOS = signOS;
     }
 
     public SignLayout getCurrentLayout() {

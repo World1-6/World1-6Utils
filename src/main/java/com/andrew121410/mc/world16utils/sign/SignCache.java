@@ -8,10 +8,10 @@ import java.util.Objects;
 
 public class SignCache {
 
-    private String line0 = null;
-    private String line1 = null;
-    private String line2 = null;
-    private String line3 = null;
+    private String line0 = "";
+    private String line1 = "";
+    private String line2 = "";
+    private String line3 = "";
 
     public SignCache() {
     }
@@ -31,7 +31,6 @@ public class SignCache {
     }
 
     public boolean update(Sign sign) {
-        replaceLineNullsToEmpty();
         sign.setLine(0, this.line0);
         sign.setLine(1, this.line1);
         sign.setLine(2, this.line2);
@@ -40,19 +39,11 @@ public class SignCache {
     }
 
     public boolean updateFancy(Sign sign) {
-        replaceLineNullsToEmpty();
         sign.setLine(0, LanguageLocale.color(this.line0));
         sign.setLine(1, LanguageLocale.color(this.line1));
         sign.setLine(2, LanguageLocale.color(this.line2));
         sign.setLine(3, LanguageLocale.color(this.line3));
         return sign.update();
-    }
-
-    public void replaceLineNullsToEmpty() {
-        if (this.getLine0() == null) this.setLine0("");
-        if (this.getLine1() == null) this.setLine1("");
-        if (this.getLine2() == null) this.setLine2("");
-        if (this.getLine3() == null) this.setLine3("");
     }
 
     public String getLine(int lineNumber) {
