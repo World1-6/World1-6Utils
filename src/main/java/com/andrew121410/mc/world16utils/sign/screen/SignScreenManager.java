@@ -4,12 +4,16 @@ import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.SignUtils;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignLinePattern;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Objects;
 
 public class SignScreenManager {
 
@@ -22,16 +26,15 @@ public class SignScreenManager {
 
     private SignLayout currentLayout;
     private SignPage currentPage;
+    private int currentSide = 1;
 
     private int pointerLine = 0;
+    private int pointerLineOffset = 0;
+
     private SignCache signCache = null;
 
     private boolean needsLineChanged;
     private boolean needsTextChanged;
-
-    private final static int SIGN_MAX_TEXT = 15;
-    private final static int SIGN_MIN = 0;
-    private final static int SIGN_MAX = 3;
 
     private boolean isTickerRunning = false;
     private boolean stop = false;
@@ -66,9 +69,22 @@ public class SignScreenManager {
             tick(player);
         }
 
+        SignLinePattern signLinePattern = this.currentPage.getSignLinePatternMap().get(this.pointerLine);
+        Bukkit.broadcastMessage(signLinePattern.toString());
+
         if (up) {
-            if (this.pointerLine != this.currentPage.getMin()) {
-                this.pointerLine--;
+            int toSide = this.currentSide - 1;
+            if (toSide >= signLinePattern.getMinSide()) {
+                Integer index = signLinePattern.getIndexOfSide(toSide);
+                if (index == null) {
+                    player.sendMessage(LanguageLocale.color("&4Index == null [UP]"));
+                    return;
+                }
+                this.pointerLineOffset = index;
+                this.currentSide = toSide;
+                this.needsLineChanged = true;
+            } else if (this.pointerLine != this.currentPage.getMin()) {
+                stageLine(this.pointerLine - 1, true);
                 this.needsLineChanged = true;
             } else {
                 SignPage newPage = this.currentLayout.getReversePage(this.currentPage.getPageNumber());
@@ -76,14 +92,23 @@ public class SignScreenManager {
                     player.sendMessage(LanguageLocale.color("&4No new page was found going [UP]"));
                     return;
                 }
-                this.currentPage = newPage;
-                this.pointerLine = newPage.getMax();
+                stagePageAndLine(newPage, true);
                 this.signCache = newPage.toSignCache();
                 this.needsTextChanged = true;
             }
         } else {
-            if (this.pointerLine != this.currentPage.getMax()) {
-                this.pointerLine++;
+            int toSide = this.currentSide + 1;
+            if (toSide <= signLinePattern.getMaxSide()) {
+                Integer index = signLinePattern.getIndexOfSide(toSide);
+                if (index == null) {
+                    player.sendMessage(LanguageLocale.color("&4Index == null [DOWN]"));
+                    return;
+                }
+                this.pointerLineOffset = index;
+                this.currentSide = toSide;
+                this.needsLineChanged = true;
+            } else if (this.pointerLine != this.currentPage.getMax()) {
+                stageLine(this.pointerLine + 1, false);
                 this.needsLineChanged = true;
             } else {
                 SignPage newPage = this.currentLayout.getNextPage(this.currentPage.getPageNumber());
@@ -91,8 +116,7 @@ public class SignScreenManager {
                     player.sendMessage(LanguageLocale.color("&4No new page was found going [DOWN]"));
                     return;
                 }
-                this.currentPage = newPage;
-                this.pointerLine = newPage.getStartLine();
+                stagePageAndLine(newPage, false);
                 this.signCache = newPage.toSignCache();
                 this.needsTextChanged = true;
             }
@@ -118,14 +142,15 @@ public class SignScreenManager {
 
         new BukkitRunnable() {
             private boolean hold = false;
-            private int pointerAt = 5;
+            private int pointerAT = 5;
             private int oldPointerLine = pointerLine;
+            private int oldPointerLineOffset = pointerLineOffset;
             private final SignCache signCacheSave = new SignCache();
             private StringBuffer stringBuffer;
 
             @Override
             public void run() {
-                if (stop && pointerAt == 0) {
+                if (stop && pointerAT == 0) {
                     isTickerRunning = false;
                     stop = false;
                     this.cancel();
@@ -134,28 +159,30 @@ public class SignScreenManager {
                 //Holding
                 if (hold || signCache == null) return;
 
-                if (!needsTextChanged && !needsLineChanged && this.pointerAt != 5) {
-                    if (pointerAt == 0) {
+                if (!needsTextChanged && !needsLineChanged && this.pointerAT != 5) {
+                    if (pointerAT == 0) {
                         clearStringBufferAndUpdate();
-                        this.stringBuffer.insert(0, ">");
+                        this.stringBuffer.insert(this.oldPointerLineOffset, ">");
                         sign.setLine(this.oldPointerLine, LanguageLocale.color(this.stringBuffer.toString()));
                         if (!sign.update()) stop = true;
-                        pointerAt++;
+                        pointerAT++;
                     } else {
                         if (!signCacheSave.updateFancy(sign)) stop = true;
-                        pointerAt--;
+                        pointerAT--;
                     }
-                } else if (needsTextChanged || this.pointerAt == 5) {
+                } else if (needsTextChanged || this.pointerAT == 5) {
                     this.oldPointerLine = pointerLine;
+                    this.oldPointerLineOffset = pointerLineOffset;
                     signCache.updateFancy(sign);
                     this.signCacheSave.fromSign(sign);
                     clearStringBufferAndUpdate();
-                    this.pointerAt = 0;
+                    this.pointerAT = 0;
                     needsTextChanged = false;
                 } else if (needsLineChanged) {
                     this.oldPointerLine = pointerLine;
+                    this.oldPointerLineOffset = pointerLineOffset;
                     clearStringBufferAndUpdate();
-                    this.pointerAt = 0;
+                    this.pointerAT = 0;
                     needsLineChanged = false;
                 }
             }
@@ -178,8 +205,34 @@ public class SignScreenManager {
         this.currentLayout = signLayout;
         this.currentPage = signPage;
         this.pointerLine = signPage.getStartLine();
+        this.pointerLineOffset = signPage.getSignLinePatternMap().get(this.pointerLine).getIndexOfSide(1);
+        this.currentSide = signPage.getSignLinePatternMap().get(this.pointerLine).getMinSide();
         this.signCache = signPage.toSignCache();
         this.needsTextChanged = true;
+    }
+
+    private void stagePageAndLine(SignPage signPage, boolean startWithMax) {
+        stagePage(signPage);
+        if (startWithMax) {
+            stageLine(signPage.getMax(), true);
+        } else {
+            stageLine(signPage.getMin(), false);
+        }
+    }
+
+    private void stagePage(SignPage signPage) {
+        this.currentPage = signPage;
+    }
+
+    private void stageLine(int line, boolean startWithMax) {
+        this.pointerLine = line;
+        SignLinePattern signLinePattern = this.currentPage.getSignLinePatternMap().get(this.pointerLine);
+        if (startWithMax) {
+            this.currentSide = signLinePattern.getMaxSide();
+        } else {
+            this.currentSide = signLinePattern.getMinSide();
+        }
+        this.pointerLineOffset = signLinePattern.getIndexOfSide(this.currentSide);
     }
 
     public JavaPlugin getPlugin() {
@@ -226,12 +279,28 @@ public class SignScreenManager {
         this.currentPage = currentPage;
     }
 
+    public int getCurrentSide() {
+        return currentSide;
+    }
+
+    public void setCurrentSide(int currentSide) {
+        this.currentSide = currentSide;
+    }
+
     public int getPointerLine() {
         return pointerLine;
     }
 
     public void setPointerLine(int pointerLine) {
         this.pointerLine = pointerLine;
+    }
+
+    public int getPointerLineOffset() {
+        return pointerLineOffset;
+    }
+
+    public void setPointerLineOffset(int pointerLineOffset) {
+        this.pointerLineOffset = pointerLineOffset;
     }
 
     public SignCache getSignCache() {
@@ -280,5 +349,53 @@ public class SignScreenManager {
 
     public void setTickSpeed(long tickSpeed) {
         this.tickSpeed = tickSpeed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SignScreenManager that = (SignScreenManager) o;
+        return currentSide == that.currentSide &&
+                pointerLine == that.pointerLine &&
+                pointerLineOffset == that.pointerLineOffset &&
+                needsLineChanged == that.needsLineChanged &&
+                needsTextChanged == that.needsTextChanged &&
+                isTickerRunning == that.isTickerRunning &&
+                stop == that.stop &&
+                tickSpeed == that.tickSpeed &&
+                Objects.equals(plugin, that.plugin) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(signScreen, that.signScreen) &&
+                Objects.equals(currentLayout, that.currentLayout) &&
+                Objects.equals(currentPage, that.currentPage) &&
+                Objects.equals(signCache, that.signCache);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(plugin, name, location, signScreen, currentLayout, currentPage, currentSide, pointerLine, pointerLineOffset, signCache, needsLineChanged, needsTextChanged, isTickerRunning, stop, tickSpeed);
+    }
+
+    @Override
+    public String toString() {
+        return "SignScreenManager{" +
+                "plugin=" + plugin +
+                ", name='" + name + '\'' +
+                ", location=" + location +
+                ", signScreen=" + signScreen +
+                ", currentLayout=" + currentLayout +
+                ", currentPage=" + currentPage +
+                ", currentSide=" + currentSide +
+                ", pointerLine=" + pointerLine +
+                ", pointerLineOffset=" + pointerLineOffset +
+                ", signCache=" + signCache +
+                ", needsLineChanged=" + needsLineChanged +
+                ", needsTextChanged=" + needsTextChanged +
+                ", isTickerRunning=" + isTickerRunning +
+                ", stop=" + stop +
+                ", tickSpeed=" + tickSpeed +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.andrew121410.mc.world16utils.sign.screen.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SignLayout {
 
@@ -53,5 +54,31 @@ public class SignLayout {
 
     public int getNumberOfPages() {
         return numberOfPages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SignLayout that = (SignLayout) o;
+        return numberOfPages == that.numberOfPages &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(reverseLayout, that.reverseLayout) &&
+                Objects.equals(signPages, that.signPages);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, reverseLayout, numberOfPages, signPages);
+    }
+
+    @Override
+    public String toString() {
+        return "SignLayout{" +
+                "name='" + name + '\'' +
+                ", reverseLayout='" + reverseLayout + '\'' +
+                ", numberOfPages=" + numberOfPages +
+                ", signPages=" + signPages +
+                '}';
     }
 }

@@ -2,10 +2,12 @@ package com.andrew121410.mc.world16utils.sign.screen.pages;
 
 import com.andrew121410.mc.world16utils.sign.SignCache;
 
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class SignPage {
+
+    private Map<Integer, SignLinePattern> signLinePatternMap;
+    private String[] topRawPattern;
 
     private String name;
     private String backPage;
@@ -15,25 +17,27 @@ public class SignPage {
     private int min;
     private int max;
 
-    private String line0 = null;
-    private String line1 = null;
-    private String line2 = null;
-    private String line3 = null;
+    private String line0 = "";
+    private String line1 = "";
+    private String line2 = "";
+    private String line3 = "";
 
-    public SignPage(String name, String backPage, int startLine, int min, int max) {
+    public SignPage(String name, String backPage, int startLine, int min, int max, String[] pattern) {
         this.name = name;
         this.backPage = backPage;
         this.startLine = startLine;
         this.min = min;
         this.max = max;
+        this.topRawPattern = pattern;
+        this.signLinePatternMap = new HashMap<>();
     }
 
     protected SignPage(SignPage signPage, int pageNumber) {
-        this.name = signPage.getName();
-        this.backPage = signPage.getBackPage();
+        this.name = signPage.name;
+        this.backPage = signPage.backPage;
         this.startLine = signPage.startLine;
-        this.min = signPage.getMin();
-        this.max = signPage.getMax();
+        this.min = signPage.min;
+        this.max = signPage.max;
 
         this.line0 = signPage.line0;
         this.line1 = signPage.line1;
@@ -41,6 +45,16 @@ public class SignPage {
         this.line3 = signPage.line3;
 
         this.pageNumber = pageNumber;
+
+        this.topRawPattern = signPage.topRawPattern;
+        this.signLinePatternMap = signPage.signLinePatternMap;
+
+        int index = 0;
+        for (String linePattern : this.topRawPattern) {
+            SignLinePattern signLinePattern = new SignLinePattern(index, linePattern);
+            this.signLinePatternMap.put(index, signLinePattern);
+            index++;
+        }
     }
 
     public String getLine(int lineNumber) {
@@ -86,84 +100,52 @@ public class SignPage {
         return signCache;
     }
 
-    public String getName() {
-        return name;
+    public Map<Integer, SignLinePattern> getSignLinePatternMap() {
+        return signLinePatternMap;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String[] getTopRawPattern() {
+        return topRawPattern;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getBackPage() {
         return backPage;
     }
 
-    public void setBackPage(String backPage) {
-        this.backPage = backPage;
-    }
-
     public int getPageNumber() {
         return pageNumber;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
     }
 
     public int getStartLine() {
         return startLine;
     }
 
-    public void setStartLine(int startLine) {
-        this.startLine = startLine;
-    }
-
     public int getMin() {
         return min;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
     }
 
     public int getMax() {
         return max;
     }
 
-    public void setMax(int max) {
-        this.max = max;
-    }
-
     public String getLine0() {
         return line0;
-    }
-
-    public void setLine0(String line0) {
-        this.line0 = line0;
     }
 
     public String getLine1() {
         return line1;
     }
 
-    public void setLine1(String line1) {
-        this.line1 = line1;
-    }
-
     public String getLine2() {
         return line2;
     }
 
-    public void setLine2(String line2) {
-        this.line2 = line2;
-    }
-
     public String getLine3() {
         return line3;
-    }
-
-    public void setLine3(String line3) {
-        this.line3 = line3;
     }
 
     @Override
@@ -175,6 +157,8 @@ public class SignPage {
                 startLine == signPage.startLine &&
                 min == signPage.min &&
                 max == signPage.max &&
+                Objects.equals(signLinePatternMap, signPage.signLinePatternMap) &&
+                Arrays.equals(topRawPattern, signPage.topRawPattern) &&
                 Objects.equals(name, signPage.name) &&
                 Objects.equals(backPage, signPage.backPage) &&
                 Objects.equals(line0, signPage.line0) &&
@@ -185,13 +169,17 @@ public class SignPage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, backPage, pageNumber, startLine, min, max, line0, line1, line2, line3);
+        int result = Objects.hash(signLinePatternMap, name, backPage, pageNumber, startLine, min, max, line0, line1, line2, line3);
+        result = 31 * result + Arrays.hashCode(topRawPattern);
+        return result;
     }
 
     @Override
     public String toString() {
         return "SignPage{" +
-                "name='" + name + '\'' +
+                "signLinePatternMap=" + signLinePatternMap +
+                ", topRawPattern=" + Arrays.toString(topRawPattern) +
+                ", name='" + name + '\'' +
                 ", backPage='" + backPage + '\'' +
                 ", pageNumber=" + pageNumber +
                 ", startLine=" + startLine +
