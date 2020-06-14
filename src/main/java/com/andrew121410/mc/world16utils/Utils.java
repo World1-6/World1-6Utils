@@ -4,11 +4,18 @@ import org.bukkit.Bukkit;
 
 public class Utils {
 
-    public static final String DATE_OF_VERSION = "4/13/2020";
+    public static final String DATE_OF_VERSION = "6/13/2020";
     public static final String PREFIX = "[&9World1-6Utils&r]";
     public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
     public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
     public static final String EMERGENCY_TAG = PREFIX + "->&c[EMERGENCY]&r";
+
+    public String getLastStrings(String myString, int index) {
+        if (myString.length() > index)
+            return myString.substring(myString.length() - index);
+        else
+            return myString;
+    }
 
     public boolean isInteger(String input) {
         try {
