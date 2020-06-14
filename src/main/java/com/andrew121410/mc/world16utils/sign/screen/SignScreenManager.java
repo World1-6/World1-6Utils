@@ -131,7 +131,7 @@ public class SignScreenManager {
         }
     }
 
-    private void tick() {
+    public void tick() {
         if (isTickerRunning) {
             return;
         }
