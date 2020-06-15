@@ -216,7 +216,7 @@ public class SignScreenManager {
         if (startWithMax) {
             stageLine(signPage.getMax(), true);
         } else {
-            stageLine(signPage.getMin(), false);
+            stageLine(signPage.getStartLine(), false);
         }
     }
 
