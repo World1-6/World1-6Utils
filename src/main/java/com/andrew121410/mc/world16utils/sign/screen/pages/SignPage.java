@@ -29,6 +29,11 @@ public class SignPage {
         this.min = min;
         this.max = max;
         this.topRawPattern = pattern;
+
+        if (this.topRawPattern == null) {
+            this.topRawPattern = new String[]{"*", "*", "*", "*"};
+        }
+
         this.signLinePatternMap = new HashMap<>();
     }
 
