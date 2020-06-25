@@ -1,11 +1,11 @@
 package com.andrew121410.mc.world16utils.player;
 
-import net.minecraft.server.v1_15_R1.EntityPlayer;
-import net.minecraft.server.v1_15_R1.PacketPlayOutPosition;
-import net.minecraft.server.v1_15_R1.PlayerConnection;
-import net.minecraft.server.v1_15_R1.Vec3D;
+import net.minecraft.server.v1_16_R1.EntityPlayer;
+import net.minecraft.server.v1_16_R1.PacketPlayOutPosition;
+import net.minecraft.server.v1_16_R1.PlayerConnection;
+import net.minecraft.server.v1_16_R1.Vec3D;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static net.minecraft.server.v1_15_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.X_ROT;
-import static net.minecraft.server.v1_15_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.Y_ROT;
+import static net.minecraft.server.v1_16_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.X_ROT;
+import static net.minecraft.server.v1_16_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.Y_ROT;
 
 public class SmoothTeleport {
 
