@@ -2,15 +2,22 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+      <profile name="Annotation profile for World1-6Utils" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="World1-6Utils" />
+        <module name="World1-6Utils_V1_12_R1" />
+        <module name="World1-6Utils_V1_16_R1" />
+        <module name="World1-6Utils-API" />
+        <module name="World1-6Utils-Plugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="World1-6Utils" target="1.8" />
+      <module name="World1-6Utils-API" target="1.8" />
+      <module name="World1-6Utils-Plugin" target="1.8" />
+      <module name="World1-6Utils_V1_12_R1" target="1.8" />
+      <module name="World1-6Utils_V1_16_R1" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
