@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="af04c413-498e-4b06-8564-df12ec872fbb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/World1-6Utils.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils-API/World1-6Utils-API.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-API/World1-6Utils-API.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils-API/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-API/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils-Plugin/World1-6Utils-Plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-Plugin/World1-6Utils-Plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils-Plugin/src/main/java/com/andrew121410/mc/world16utils/blocks/sign/screen/SignScreenManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-Plugin/src/main/java/com/andrew121410/mc/world16utils/blocks/sign/screen/SignScreenManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/World1-6Utils_V1_12_R1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/World1-6Utils_V1_12_R1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/src/main/java/com/andrew121410/mc/world16utils/player/SmoothTeleport_V1_12_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/src/main/java/com/andrew121410/mc/world16utils/player/SmoothTeleport_V1_12_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/World1-6Utils_V1_16_R1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/World1-6Utils_V1_16_R1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Andrew &lt;andrewcherring@gmail.com&gt;" />
+        <option value="Andrew121410 &lt;andrewcherring@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="sign-manager-update" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KonanWorkspace">
+    <executables />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.1.3\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1bxd6BjMuclRBWHm7iAi4YgDtCW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\project\Intellj IDEA\Git\World1-6Utils\World1-6Utils-Plugin\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Maven.world1-6utils [clean,package,-e]">
+    <configuration name="World1-6Utils-API [clean,install]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/World1-6Utils-API" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="world1-6utils [clean,install]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="world1-6utils [clean,package,-e]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+                <option value="-e" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Maven.world1-6utils [clean,install]" />
+      <item itemvalue="Maven.World1-6Utils-API [clean,install]" />
+      <item itemvalue="Maven.world1-6utils [clean,package,-e]" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="af04c413-498e-4b06-8564-df12ec872fbb" name="Default Changelist" comment="" />
+      <created>1589577501012</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589577501012</updated>
+      <workItem from="1589577502270" duration="5868000" />
+      <workItem from="1589591302516" duration="235000" />
+      <workItem from="1589591551501" duration="15000" />
+      <workItem from="1589592539069" duration="1444000" />
+      <workItem from="1589594177865" duration="1141000" />
+      <workItem from="1589603344426" duration="2804000" />
+      <workItem from="1589606242618" duration="25000" />
+      <workItem from="1591720200640" duration="340000" />
+      <workItem from="1591720887149" duration="1391000" />
+      <workItem from="1591722514277" duration="5012000" />
+      <workItem from="1591727576727" duration="72000" />
+      <workItem from="1591727687145" duration="134000" />
+      <workItem from="1591728452515" duration="48000" />
+      <workItem from="1591728814648" duration="141000" />
+      <workItem from="1591729086510" duration="612000" />
+      <workItem from="1591730174168" duration="2519000" />
+      <workItem from="1591741424375" duration="36000" />
+      <workItem from="1591741593994" duration="39000" />
+      <workItem from="1591746059984" duration="1336000" />
+      <workItem from="1591749667671" duration="237000" />
+      <workItem from="1591750013992" duration="227000" />
+      <workItem from="1591750395658" duration="293000" />
+      <workItem from="1591750861789" duration="150000" />
+      <workItem from="1591751119109" duration="60000" />
+      <workItem from="1591751299717" duration="479000" />
+      <workItem from="1591751883433" duration="450000" />
+      <workItem from="1591756208878" duration="133000" />
+      <workItem from="1591762711098" duration="579000" />
+      <workItem from="1591763292717" duration="1000" />
+      <workItem from="1591763556725" duration="262000" />
+      <workItem from="1591763956978" duration="1050000" />
+      <workItem from="1591765103388" duration="545000" />
+      <workItem from="1591765724257" duration="857000" />
+      <workItem from="1591766674472" duration="352000" />
+      <workItem from="1591835390409" duration="716000" />
+      <workItem from="1591836230157" duration="285000" />
+      <workItem from="1591836674879" duration="15000" />
+      <workItem from="1591836776483" duration="81000" />
+      <workItem from="1591836989518" duration="467000" />
+      <workItem from="1591838458123" duration="892000" />
+      <workItem from="1591839543365" duration="170000" />
+      <workItem from="1591839828526" duration="1675000" />
+      <workItem from="1591843093653" duration="652000" />
+      <workItem from="1591843882557" duration="367000" />
+      <workItem from="1591844456897" duration="403000" />
+      <workItem from="1591845018591" duration="744000" />
+      <workItem from="1591845876299" duration="94000" />
+      <workItem from="1591846048255" duration="139000" />
+      <workItem from="1591846298542" duration="17000" />
+      <workItem from="1591910764359" duration="3744000" />
+      <workItem from="1591914630854" duration="6789000" />
+      <workItem from="1591924797171" duration="1231000" />
+      <workItem from="1591926131484" duration="16000" />
+      <workItem from="1591926211700" duration="16000" />
+      <workItem from="1591926530896" duration="22000" />
+      <workItem from="1591926939099" duration="30000" />
+      <workItem from="1591927021339" duration="1307000" />
+      <workItem from="1591928349011" duration="326000" />
+      <workItem from="1591928677972" duration="16000" />
+      <workItem from="1591929032298" duration="12000" />
+      <workItem from="1591929315523" duration="87000" />
+      <workItem from="1591929583099" duration="116000" />
+      <workItem from="1591929797830" duration="113000" />
+      <workItem from="1591929951854" duration="1415000" />
+      <workItem from="1591933508015" duration="544000" />
+      <workItem from="1591934319831" duration="499000" />
+      <workItem from="1591935019418" duration="229000" />
+      <workItem from="1591935337214" duration="275000" />
+      <workItem from="1591935743195" duration="340000" />
+      <workItem from="1591936228406" duration="569000" />
+      <workItem from="1591936900091" duration="120000" />
+      <workItem from="1591937243048" duration="257000" />
+      <workItem from="1591938589865" duration="67000" />
+      <workItem from="1591938797952" duration="277000" />
+      <workItem from="1591939319531" duration="62000" />
+      <workItem from="1591939527574" duration="209000" />
+      <workItem from="1591939813251" duration="797000" />
+      <workItem from="1591940702167" duration="139000" />
+      <workItem from="1591941015013" duration="124000" />
+      <workItem from="1591941245971" duration="66000" />
+      <workItem from="1591941436337" duration="114000" />
+      <workItem from="1591941666139" duration="152000" />
+      <workItem from="1591941917460" duration="34000" />
+      <workItem from="1591942084908" duration="173000" />
+      <workItem from="1591942447683" duration="295000" />
+      <workItem from="1591942893158" duration="246000" />
+      <workItem from="1591943236586" duration="330000" />
+      <workItem from="1591943701001" duration="155000" />
+      <workItem from="1591943973332" duration="55000" />
+      <workItem from="1591944236069" duration="227000" />
+      <workItem from="1591944601391" duration="237000" />
+      <workItem from="1591945044109" duration="104000" />
+      <workItem from="1592011723895" duration="7080000" />
+      <workItem from="1592026973958" duration="103000" />
+      <workItem from="1592027250525" duration="1697000" />
+      <workItem from="1592029381723" duration="645000" />
+      <workItem from="1592030163771" duration="96000" />
+      <workItem from="1592030416073" duration="285000" />
+      <workItem from="1592030827347" duration="891000" />
+      <workItem from="1592031742775" duration="223000" />
+      <workItem from="1592077004178" duration="576000" />
+      <workItem from="1592078204172" duration="685000" />
+      <workItem from="1592079004374" duration="430000" />
+      <workItem from="1592079554456" duration="127000" />
+      <workItem from="1592079779711" duration="164000" />
+      <workItem from="1592080124861" duration="1867000" />
+      <workItem from="1592082152155" duration="450000" />
+      <workItem from="1592084369657" duration="904000" />
+      <workItem from="1592085665991" duration="20000" />
+      <workItem from="1592085691577" duration="2000" />
+      <workItem from="1592085954266" duration="88000" />
+      <workItem from="1592086067630" duration="2000" />
+      <workItem from="1592086404810" duration="244000" />
+      <workItem from="1592087096669" duration="49000" />
+      <workItem from="1592090600926" duration="12000" />
+      <workItem from="1592090721009" duration="38000" />
+      <workItem from="1592090796115" duration="663000" />
+      <workItem from="1592092120372" duration="54000" />
+      <workItem from="1592093084035" duration="52000" />
+      <workItem from="1592093562478" duration="113000" />
+      <workItem from="1592094094787" duration="35000" />
+      <workItem from="1592094144019" duration="2000" />
+      <workItem from="1592255225284" duration="249000" />
+      <workItem from="1593031057343" duration="185000" />
+      <workItem from="1593031277620" duration="112000" />
+      <workItem from="1593114582326" duration="149000" />
+      <workItem from="1593114735018" duration="40000" />
+      <workItem from="1596074359378" duration="39000" />
+      <workItem from="1596157544377" duration="555000" />
+      <workItem from="1596158401791" duration="111000" />
+      <workItem from="1596419699582" duration="672000" />
+      <workItem from="1596420388559" duration="1315000" />
+      <workItem from="1596422265055" duration="8000" />
+      <workItem from="1596422669059" duration="1083000" />
+      <workItem from="1596423854616" duration="248000" />
+      <workItem from="1596424615890" duration="126000" />
+      <workItem from="1596424820322" duration="4262000" />
+      <workItem from="1596429126369" duration="504000" />
+      <workItem from="1596429645335" duration="1369000" />
+      <workItem from="1596431054645" duration="1609000" />
+      <workItem from="1596432680526" duration="10000" />
+      <workItem from="1596433122024" duration="302000" />
+      <workItem from="1596486648540" duration="5499000" />
+      <workItem from="1596493251655" duration="386000" />
+    </task>
+    <task id="LOCAL-00001" summary="We are getting there.">
+      <created>1589594288844</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589594288844</updated>
+    </task>
+    <task id="LOCAL-00002" summary="I'm about to give up...">
+      <created>1589606259865</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1589606259865</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Rewrite.">
+      <created>1591752318206</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1591752318206</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update.">
+      <created>1591766754173</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1591766754173</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update.">
+      <created>1591844479188</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1591844479188</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Save.">
+      <created>1591846309138</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1591846309138</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Rewrite the sign system.">
+      <created>1591933543413</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1591933543413</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Update.">
+      <created>1591937307904</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1591937307904</updated>
+    </task>
+    <task id="LOCAL-00009" summary="It is actaully working for once.">
+      <created>1591945138161</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1591945138161</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Clean up.">
+      <created>1592013184157</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1592013184157</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Sign patterns.">
+      <created>1592085596973</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1592085596973</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Clean up.">
+      <created>1592090886434</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1592090886434</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Make tick() public.">
+      <created>1592093122675</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1592093122675</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Updated Utils.java">
+      <created>1592094118844</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1592094118844</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Respect startLine.">
+      <created>1592255397386</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1592255397386</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Make pattern nullable.">
+      <created>1593031359994</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1593031359994</updated>
+    </task>
+    <task id="LOCAL-00017" summary="(1.16.1) Update.">
+      <created>1593114761113</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1593114761113</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Better support at handling NMS classes.">
+      <created>1596422166735</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1596422166735</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Complete redo of the plugin (Doesn't compile yet.)">
+      <created>1596433304837</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1596433304837</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="We are getting there." />
+    <MESSAGE value="I'm about to give up..." />
+    <MESSAGE value="Rewrite." />
+    <MESSAGE value="Save." />
+    <MESSAGE value="Rewrite the sign system." />
+    <MESSAGE value="Update." />
+    <MESSAGE value="It is actaully working for once." />
+    <MESSAGE value="Sign patterns." />
+    <MESSAGE value="Clean up." />
+    <MESSAGE value="Make tick() public." />
+    <MESSAGE value="Updated Utils.java" />
+    <MESSAGE value="Respect startLine." />
+    <MESSAGE value="Make pattern nullable." />
+    <MESSAGE value="(1.16.1) Update." />
+    <MESSAGE value="Better support at handling NMS classes." />
+    <MESSAGE value="Complete redo of the plugin (Doesn't compile yet.)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Complete redo of the plugin (Doesn't compile yet.)" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="249" y="0" key="#Project_Structure" timestamp="1596493316915">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1596493316915" />
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596493303695">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1596493303695" />
+    <state x="542" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596427561194">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="542" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1596427561194" />
+    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser" timestamp="1596427939930">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1596427939930" />
+    <state x="377" y="336" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1596489587892">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="377" y="336" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1596489587892" />
+    <state x="517" y="293" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1596425839148">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="517" y="293" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1536.824@0.0.1536.824" timestamp="1596425839148" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592011743355">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592011743355" />
+    <state x="309" y="0" key="CommitChangelistDialog2" timestamp="1596433298423">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="309" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1596433298423" />
+    <state x="548" y="167" key="FileChooserDialogImpl" timestamp="1596486844996">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="548" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1596486844996" />
+    <state width="1493" height="198" key="GridCell.Tab.0.bottom" timestamp="1596493560985">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="198" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
+    <state width="1493" height="198" key="GridCell.Tab.0.center" timestamp="1596493560985">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="198" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
+    <state width="1493" height="198" key="GridCell.Tab.0.left" timestamp="1596493560985">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="198" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
+    <state width="1493" height="198" key="GridCell.Tab.0.right" timestamp="1596493560985">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="198" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1596431023921">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1596431023921" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1596431023921">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1596431023921" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1596431023921">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1596431023921" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1596431023921">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1596431023921" />
+    <state x="249" y="0" key="SettingsEditor" timestamp="1596492743597">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1596492743597" />
+    <state x="361" y="132" key="Vcs.Push.Dialog.v2" timestamp="1596433306520">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="132" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1596433306520" />
+    <state x="578" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592092145695">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="578" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1592092145695" />
+    <state x="226" y="104" key="new project wizard" timestamp="1596425902110">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="226" y="104" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1596425902110" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1596490601895">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1596490601895" />
+  </component>
+</project>

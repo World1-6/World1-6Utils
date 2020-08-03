@@ -16,7 +16,7 @@ import java.util.Set;
 import static net.minecraft.server.v1_12_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.X_ROT;
 import static net.minecraft.server.v1_12_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags.Y_ROT;
 
-public class SmoothTeleport_V1_12_R1 implements SmoothTeleport{
+public class SmoothTeleport_V1_12_R1 implements SmoothTeleport {
 
     private static final Set<PacketPlayOutPosition.EnumPlayerTeleportFlags> TELEPORT_FLAGS = Collections.unmodifiableSet(EnumSet.of(X_ROT, Y_ROT));
 

@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.blocks.sign.screen;
 
 import com.andrew121410.mc.world16utils.blocks.sign.SignUtils_V1_16_R1;
+import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLinePattern;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -8,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import com.andrew121410.mc.world16utils.blocks.sign.SignCache;
 import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLayout;
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLinePattern;
 import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignPage;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 

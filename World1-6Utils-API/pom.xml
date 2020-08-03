@@ -21,9 +21,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <directory>../target</directory>
-        <finalName>${project.artifactId}-${project.parent.version}</finalName>
-    </build>
 </project>
