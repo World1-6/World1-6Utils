@@ -5,21 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af04c413-498e-4b06-8564-df12ec872fbb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/World1-6Utils.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/World1-6Utils-API/src/main/java/com/andrew121410/mc/world16utils/enchantment/EnchantmentUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/src/main/java/com/andrew121410/mc/world16utils/enchantment/EnchantmentUtils_V1_12_R1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/src/main/java/com/andrew121410/mc/world16utils/enchantment/EnchantmentUtils_V1_16_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/World1-6Utils-API/World1-6Utils-API.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-API/World1-6Utils-API.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/World1-6Utils-API/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-API/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/World1-6Utils-API/src/main/java/com/andrew121410/mc/world16utils/blocks/BlockUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-API/src/main/java/com/andrew121410/mc/world16utils/blocks/BlockUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/World1-6Utils-Plugin/World1-6Utils-Plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-Plugin/World1-6Utils-Plugin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/World1-6Utils-Plugin/src/main/java/com/andrew121410/mc/world16utils/blocks/sign/screen/SignScreenManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils-Plugin/src/main/java/com/andrew121410/mc/world16utils/blocks/sign/screen/SignScreenManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/World1-6Utils_V1_12_R1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/World1-6Utils_V1_12_R1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/src/main/java/com/andrew121410/mc/world16utils/player/SmoothTeleport_V1_12_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_12_R1/src/main/java/com/andrew121410/mc/world16utils/player/SmoothTeleport_V1_12_R1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/World1-6Utils_V1_16_R1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/World1-6Utils_V1_16_R1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/World1-6Utils_V1_16_R1/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +59,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -77,7 +73,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -86,7 +82,7 @@
       <recent name="E:\project\Intellj IDEA\Git\World1-6Utils\World1-6Utils-Plugin\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.world1-6utils [clean,package,-e]">
+  <component name="RunManager" selected="Maven.world1-6utils [clean,install]">
     <configuration name="World1-6Utils-API [clean,install]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -326,7 +322,20 @@
       <workItem from="1596432680526" duration="10000" />
       <workItem from="1596433122024" duration="302000" />
       <workItem from="1596486648540" duration="5499000" />
-      <workItem from="1596493251655" duration="386000" />
+      <workItem from="1596493251655" duration="590000" />
+      <workItem from="1596493977681" duration="40000" />
+      <workItem from="1596494145131" duration="224000" />
+      <workItem from="1596494511900" duration="70000" />
+      <workItem from="1596494646877" duration="125000" />
+      <workItem from="1596494951918" duration="265000" />
+      <workItem from="1596495255505" duration="530000" />
+      <workItem from="1596495801322" duration="221000" />
+      <workItem from="1596496129574" duration="826000" />
+      <workItem from="1596497914691" duration="22000" />
+      <workItem from="1596498375292" duration="93000" />
+      <workItem from="1596498973637" duration="305000" />
+      <workItem from="1596502525801" duration="165000" />
+      <workItem from="1596502741737" duration="207000" />
     </task>
     <task id="LOCAL-00001" summary="We are getting there.">
       <created>1589594288844</created>
@@ -461,7 +470,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596433304837</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Get it to actually compile.">
+      <created>1596493772539</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1596493772539</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,13 +500,14 @@
     <MESSAGE value="(1.16.1) Update." />
     <MESSAGE value="Better support at handling NMS classes." />
     <MESSAGE value="Complete redo of the plugin (Doesn't compile yet.)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Complete redo of the plugin (Doesn't compile yet.)" />
+    <MESSAGE value="Get it to actually compile." />
+    <option name="LAST_COMMIT_MESSAGE" value="Get it to actually compile." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="249" y="0" key="#Project_Structure" timestamp="1596493316915">
+    <state x="249" y="0" key="#Project_Structure" timestamp="1596494965164">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1596493316915" />
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1596494965164" />
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596493303695">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -499,10 +516,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="542" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1596427561194" />
-    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser" timestamp="1596427939930">
+    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser" timestamp="1596502803479">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1596427939930" />
+    <state x="574" y="113" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1596502803479" />
     <state x="377" y="336" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1596489587892">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -511,34 +528,34 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="517" y="293" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1536.824@0.0.1536.824" timestamp="1596425839148" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592011743355">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1596498386775">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592011743355" />
-    <state x="309" y="0" key="CommitChangelistDialog2" timestamp="1596433298423">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1596498386775" />
+    <state x="309" y="0" key="CommitChangelistDialog2" timestamp="1596493769144">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="309" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1596433298423" />
+    <state x="309" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1596493769144" />
     <state x="548" y="167" key="FileChooserDialogImpl" timestamp="1596486844996">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1596486844996" />
-    <state width="1493" height="198" key="GridCell.Tab.0.bottom" timestamp="1596493560985">
+    <state width="1493" height="338" key="GridCell.Tab.0.bottom" timestamp="1596502949758">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="198" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
-    <state width="1493" height="198" key="GridCell.Tab.0.center" timestamp="1596493560985">
+    <state width="1493" height="338" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1596502949758" />
+    <state width="1493" height="338" key="GridCell.Tab.0.center" timestamp="1596502949758">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="198" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
-    <state width="1493" height="198" key="GridCell.Tab.0.left" timestamp="1596493560985">
+    <state width="1493" height="338" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1596502949758" />
+    <state width="1493" height="338" key="GridCell.Tab.0.left" timestamp="1596502949758">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="198" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
-    <state width="1493" height="198" key="GridCell.Tab.0.right" timestamp="1596493560985">
+    <state width="1493" height="338" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1596502949758" />
+    <state width="1493" height="338" key="GridCell.Tab.0.right" timestamp="1596502949758">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="198" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1596493560985" />
+    <state width="1493" height="338" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1596502949758" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1596431023921">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -559,10 +576,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1596492743597" />
-    <state x="361" y="132" key="Vcs.Push.Dialog.v2" timestamp="1596433306520">
+    <state x="361" y="132" key="Vcs.Push.Dialog.v2" timestamp="1596493779934">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="132" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1596433306520" />
+    <state x="361" y="132" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1596493779934" />
     <state x="578" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592092145695">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
