@@ -36,6 +36,12 @@
           </execution>
         </executions>
         <configuration>
+          <relocations>
+            <relocation>
+              <pattern>com.cryptomorin.xseries</pattern>
+              <shadedPattern>com.andrew121410.mc.world16utils.xutils</shadedPattern>
+            </relocation>
+          </relocations>
           <filters>
             <filter>
               <artifact>*:*</artifact>

@@ -29,10 +29,17 @@
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_V1_16_R1</artifactId>
+            <artifactId>World1-6Utils_V1_16_R2</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>7.1.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -74,6 +81,13 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.cryptomorin.xseries</pattern>
+                            <!-- Be sure to change the package below -->
+                            <shadedPattern>com.andrew121410.mc.world16utils.xutils</shadedPattern>
+                        </relocation>
+                    </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>

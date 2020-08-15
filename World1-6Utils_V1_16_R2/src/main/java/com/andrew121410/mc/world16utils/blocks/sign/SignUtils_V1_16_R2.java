@@ -1,19 +1,19 @@
 package com.andrew121410.mc.world16utils.blocks.sign;
 
-import net.minecraft.server.v1_16_R1.*;
+import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SignUtils_V1_16_R1 implements SignUtils{
+public class SignUtils_V1_16_R2 implements SignUtils{
 
     private JavaPlugin plugin;
 
-    public SignUtils_V1_16_R1(JavaPlugin plugin) {
+    public SignUtils_V1_16_R2(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

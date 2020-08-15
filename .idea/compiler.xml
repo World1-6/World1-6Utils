@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="World1-6Utils_V1_12_R1" />
-        <module name="World1-6Utils_V1_16_R1" />
+        <module name="World1-6Utils_V1_16_R2" />
         <module name="World1-6Utils-API" />
       </profile>
       <profile name="Annotation profile for World1-6Utils" enabled="true">
@@ -22,7 +22,7 @@
       <module name="World1-6Utils-API" target="1.8" />
       <module name="World1-6Utils-Plugin" target="1.8" />
       <module name="World1-6Utils_V1_12_R1" target="1.8" />
-      <module name="World1-6Utils_V1_16_R1" target="1.8" />
+      <module name="World1-6Utils_V1_16_R2" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
