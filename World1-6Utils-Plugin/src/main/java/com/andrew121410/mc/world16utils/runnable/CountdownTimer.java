@@ -20,11 +20,17 @@ public class CountdownTimer implements Runnable {
 
     public CountdownTimer(JavaPlugin plugin, int seconds, Runnable beforeTimer, Runnable afterTimer, Consumer<CountdownTimer> everySecond) {
         this.plugin = plugin;
-
         this.seconds = seconds;
         this.secondsLeft = seconds;
-
         this.beforeTimer = beforeTimer;
+        this.afterTimer = afterTimer;
+        this.everySecond = everySecond;
+    }
+
+    public CountdownTimer(JavaPlugin plugin, int seconds, int secondsLeft, Runnable afterTimer, Consumer<CountdownTimer> everySecond) {
+        this.plugin = plugin;
+        this.seconds = seconds;
+        this.secondsLeft = secondsLeft;
         this.afterTimer = afterTimer;
         this.everySecond = everySecond;
     }
@@ -55,30 +61,20 @@ public class CountdownTimer implements Runnable {
         secondsLeft--;
     }
 
-    /**
-     * Gets the total seconds this timer was set to run for
-     *
-     * @return Total seconds timer should run
-     */
     public int getTotalSeconds() {
         return seconds;
     }
 
-    /**
-     * Gets the seconds left this timer should run
-     *
-     * @return Seconds left timer should run
-     */
     public int getSecondsLeft() {
         return secondsLeft;
     }
 
-    /**
-     * Schedules this instance to "run" every second
-     */
     public void scheduleTimer() {
-        // Initialize our assigned task's id, for later use so we can cancel
         this.assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 0L, 20L);
     }
 
+    @Deprecated
+    public void scheduleTimerAsync() {
+        this.assignedTaskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this, 0L, 20L);
+    }
 }

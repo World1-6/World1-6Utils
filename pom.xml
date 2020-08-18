@@ -23,6 +23,7 @@
         <module>World1-6Utils-API</module>
         <module>World1-6Utils-Plugin</module>
         <module>World1-6Utils_V1_16_R2</module>
+        <module>World1-6Utils_V1_16_R1</module>
         <module>World1-6Utils_V1_12_R1</module>
     </modules>
 
