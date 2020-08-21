@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 public class UniverseBlockUtils {
 
-    public boolean isFarmLand(XMaterial xMaterial) {
+    public static boolean isFarmLand(XMaterial xMaterial) {
         return xMaterial.parseMaterial() == Material.FARMLAND;
     }
 }
