@@ -61,6 +61,19 @@ public class CountdownTimer implements Runnable {
         secondsLeft--;
     }
 
+    public void scheduleTimer() {
+        this.assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 0L, 20L);
+    }
+
+    @Deprecated
+    public void scheduleTimerAsync() {
+        this.assignedTaskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this, 0L, 20L);
+    }
+
+    public void cancelTimer() {
+        Bukkit.getScheduler().cancelTask(this.assignedTaskId);
+    }
+
     public int getTotalSeconds() {
         return seconds;
     }
@@ -69,12 +82,7 @@ public class CountdownTimer implements Runnable {
         return secondsLeft;
     }
 
-    public void scheduleTimer() {
-        this.assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 0L, 20L);
-    }
-
-    @Deprecated
-    public void scheduleTimerAsync() {
-        this.assignedTaskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this, 0L, 20L);
+    public Integer getAssignedTaskId() {
+        return assignedTaskId;
     }
 }

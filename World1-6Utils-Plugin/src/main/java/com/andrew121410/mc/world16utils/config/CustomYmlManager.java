@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.config;
 
-import com.andrew121410.mc.world16utils.Utils;
+import com.andrew121410.mc.world16utils.utils.Utils;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

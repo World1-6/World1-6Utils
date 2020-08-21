@@ -69,7 +69,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>com.andrew121410.mc.world16utils.Main</Main-Class>
+                            <Main-Class>com.andrew121410.mc.world16utils.World16Utils</Main-Class>
                             <Implementation-Version>${maven.build.timestamp}</Implementation-Version>
                             <Specification-Version>${maven.build.timestamp}</Specification-Version>
                         </manifestEntries>
@@ -93,7 +93,7 @@
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
                             <!-- Be sure to change the package below -->
-                            <shadedPattern>com.andrew121410.mc.world16utils.xutils</shadedPattern>
+                            <shadedPattern>com.andrew121410.mc.world16utils.utils.xutils</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>

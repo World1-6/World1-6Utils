@@ -1,6 +1,5 @@
 name: World1-6Utils
 version: ${project.version}
-main: com.andrew121410.mc.com.andrew121410.mc.world16utils.Main
-api-version: 1.15
+main: com.andrew121410.mc.com.andrew121410.mc.world16utils.World16Utils
 authors: [Andrew121410]
 description: A utils for my plugins

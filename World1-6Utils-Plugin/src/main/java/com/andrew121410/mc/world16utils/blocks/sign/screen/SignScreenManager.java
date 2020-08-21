@@ -1,11 +1,11 @@
 package com.andrew121410.mc.world16utils.blocks.sign.screen;
 
 import com.andrew121410.mc.world16utils.blocks.sign.SignCache;
-import com.andrew121410.mc.world16utils.blocks.sign.SignUtils_V1_16_R2;
 import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLayout;
 import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLinePattern;
 import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignPage;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
+import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -17,6 +17,7 @@ import java.util.Objects;
 public class SignScreenManager {
 
     private JavaPlugin plugin;
+    private ClassWrappers classWrappers;
 
     private String name;
     private Location location;
@@ -41,8 +42,9 @@ public class SignScreenManager {
     public static final long DEFAULT_TICK_SPEED = 10L;
     private long tickSpeed;
 
-    public SignScreenManager(JavaPlugin plugin, Location location, String name, Long tickSpeed, ISignScreen signScreen) {
+    public SignScreenManager(JavaPlugin plugin, ClassWrappers classWrappers, Location location, String name, Long tickSpeed, ISignScreen signScreen) {
         this.plugin = plugin;
+        this.classWrappers = classWrappers;
         this.name = name;
         this.location = location;
 
@@ -137,7 +139,7 @@ public class SignScreenManager {
         }
         this.isTickerRunning = true;
 
-        Sign sign = new SignUtils_V1_16_R2(this.plugin).isSign(location.getBlock());
+        Sign sign = classWrappers.getSignUtils().isSign(location.getBlock());
         if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
 
         new BukkitRunnable() {

@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils;
+package com.andrew121410.mc.world16utils.utils;
 
 import org.bukkit.Bukkit;
 
