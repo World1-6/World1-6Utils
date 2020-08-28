@@ -8,6 +8,7 @@ import com.andrew121410.mc.world16utils.blocks.BlockUtils_V1_16_R2;
 import com.andrew121410.mc.world16utils.blocks.sign.SignUtils;
 import com.andrew121410.mc.world16utils.blocks.sign.SignUtils_V1_12_R1;
 import com.andrew121410.mc.world16utils.blocks.sign.SignUtils_V1_16_R1;
+import com.andrew121410.mc.world16utils.blocks.sign.SignUtils_V1_16_R2;
 import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils;
 import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils_V1_12_R1;
 import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils_V1_16_R1;
@@ -20,8 +21,6 @@ import org.bukkit.Bukkit;
 
 public class ClassWrappers {
 
-    private World16Utils plugin;
-
     public BlockUtils blockUtils;
     private SignUtils signUtils;
     private SmoothTeleport smoothTeleport;
@@ -32,7 +31,7 @@ public class ClassWrappers {
         switch (version) {
             case "v1_16_R2":
                 this.blockUtils = new BlockUtils_V1_16_R2();
-                this.signUtils = new SignUtils_V1_12_R1(plugin);
+                this.signUtils = new SignUtils_V1_16_R2(plugin);
                 this.smoothTeleport = new SmoothTeleport_V1_16_R2();
                 this.enchantmentUtils = new EnchantmentUtils_V1_16_R2();
                 break;
