@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="World1-6Utils_V1_12_R1" />
-        <module name="World1-6Utils_V1_16_R1" />
         <module name="World1-6Utils-API" />
         <module name="World1-6Utils_V1_16_R2" />
       </profile>

@@ -29,14 +29,6 @@
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_V1_16_R1</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.andrew121410.mc</groupId>
             <artifactId>World1-6Utils_V1_16_R2</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -46,14 +38,14 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>7.2.1</version>
+            <version>7.5.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.2-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
