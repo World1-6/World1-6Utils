@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils.blocks.sign.screen.pages;
+package com.andrew121410.mc.world16utils.sign.screen.pages;
 
 import java.util.ArrayList;
 import java.util.List;

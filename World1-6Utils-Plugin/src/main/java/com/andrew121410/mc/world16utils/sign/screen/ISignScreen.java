@@ -1,7 +1,7 @@
-package com.andrew121410.mc.world16utils.blocks.sign.screen;
+package com.andrew121410.mc.world16utils.sign.screen;
 
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLayout;
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignPage;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
 import org.bukkit.entity.Player;
 
 public interface ISignScreen {

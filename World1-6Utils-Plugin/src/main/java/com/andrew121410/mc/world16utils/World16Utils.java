@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils;
 
+import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +19,10 @@ public final class World16Utils extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public void registerEvents() {
+        new OnInventoryClickEvent(this);
     }
 
     public static World16Utils getInstance() {
