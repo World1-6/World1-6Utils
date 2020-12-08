@@ -1,11 +1,8 @@
 package com.andrew121410.mc.world16utils.gui.simple;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SimpleGUIWindow extends GUIWindow {
 
@@ -30,15 +27,19 @@ public class SimpleGUIWindow extends GUIWindow {
     }
 
     @Override
-    public List<ItemStack> populateInventory() {
-        return this.guiItemMap.values().stream().map(SimpleGUIItem::getItemStack).collect(Collectors.toList());
+    public void populateInventory() {
+        this.guiItemMap.forEach((k, v) -> this.getInventory().setItem(k, v.getItemStack()));
     }
 
     @Override
     public boolean onSlotClicked(InventoryClickEvent event) {
-        if (this.guiItemMap.containsKey(event.getSlot())) {
-            this.guiItemMap.get(event.getSlot()).getConsumer().accept(event);
-            return true;
+        if (event == null) return false;
+        SimpleGUIItem simpleGUIItem = this.guiItemMap.get(event.getSlot());
+        if (simpleGUIItem != null) {
+            if (simpleGUIItem.getConsumer() != null) {
+                simpleGUIItem.getConsumer().accept(event);
+                return true;
+            }
         }
         return false;
     }
