@@ -66,7 +66,7 @@ public class ChatResponseManager {
                     }
                     player.sendTitle(response.getTitle() != null ? response.getTitle() : Translate.color("&bType in response")
                             , response.getSubtitle() != null ? response.getSubtitle() : ""
-                            , 10, 70, 20);
+                            , 0, 61, 0);
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Translate.color("&eType &ccancel &eto stop!")));
                 }
             }

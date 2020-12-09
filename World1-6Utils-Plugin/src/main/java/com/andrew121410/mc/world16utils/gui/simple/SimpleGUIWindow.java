@@ -1,7 +1,9 @@
 package com.andrew121410.mc.world16utils.gui.simple;
 
+import com.andrew121410.mc.world16utils.gui.GUIWindow;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleGUIWindow extends GUIWindow {
@@ -10,10 +12,10 @@ public class SimpleGUIWindow extends GUIWindow {
     private int slots;
     private Map<Integer, SimpleGUIItem> guiItemMap;
 
-    public SimpleGUIWindow(String name, int slots, Map<Integer, SimpleGUIItem> guiItemMap) {
+    public SimpleGUIWindow(String name, int slots) {
         this.name = name;
         this.slots = slots;
-        this.guiItemMap = guiItemMap;
+        this.guiItemMap = new HashMap<>();
     }
 
     @Override
@@ -34,6 +36,7 @@ public class SimpleGUIWindow extends GUIWindow {
     @Override
     public boolean onSlotClicked(InventoryClickEvent event) {
         if (event == null) return false;
+        if (event.getCurrentItem() == null) return false;
         SimpleGUIItem simpleGUIItem = this.guiItemMap.get(event.getSlot());
         if (simpleGUIItem != null) {
             if (simpleGUIItem.getConsumer() != null) {
@@ -42,5 +45,9 @@ public class SimpleGUIWindow extends GUIWindow {
             }
         }
         return false;
+    }
+
+    public void update(Map<Integer, SimpleGUIItem> guiItemMap) {
+        this.guiItemMap = guiItemMap;
     }
 }

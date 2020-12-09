@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils.gui.simple;
+package com.andrew121410.mc.world16utils.gui;
 
 import com.andrew121410.mc.world16utils.chat.Translate;
 import org.bukkit.Bukkit;
