@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class OnAsyncPlayerChatEvent implements Listener {
 
@@ -30,8 +31,13 @@ public class OnAsyncPlayerChatEvent implements Listener {
                 player.sendMessage(Translate.color("&eSuccessfully canceled."));
                 return;
             }
-            chatResponseManager.get(player).accept(player, event.getMessage());
-            chatResponseManager.remove(player.getUniqueId());
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    chatResponseManager.get(player).accept(player, event.getMessage());
+                    chatResponseManager.remove(player.getUniqueId());
+                }
+            }.runTask(this.plugin);
         }
     }
 }
