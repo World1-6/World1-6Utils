@@ -1,21 +1,22 @@
 package com.andrew121410.mc.world16utils.gui.simple;
 
+import com.andrew121410.mc.world16utils.gui.GUIItem;
 import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleGUIWindow extends GUIWindow {
 
     private String name;
     private int slots;
-    private Map<Integer, SimpleGUIItem> guiItemMap;
+    private Map<Integer, GUIItem> guiItemMap;
 
-    public SimpleGUIWindow(String name, int slots) {
+    public SimpleGUIWindow(String name, int slots, Map<Integer, GUIItem> guiItemMap) {
         this.name = name;
         this.slots = slots;
-        this.guiItemMap = new HashMap<>();
+        this.guiItemMap = guiItemMap;
     }
 
     @Override
@@ -29,7 +30,12 @@ public class SimpleGUIWindow extends GUIWindow {
     }
 
     @Override
-    public void populateInventory() {
+    public void onCreate(Player player) {
+
+    }
+
+    @Override
+    public void populateInventory(Player player) {
         this.guiItemMap.forEach((k, v) -> this.getInventory().setItem(k, v.getItemStack()));
     }
 
@@ -37,22 +43,13 @@ public class SimpleGUIWindow extends GUIWindow {
     public boolean onSlotClicked(InventoryClickEvent event) {
         if (event == null) return false;
         if (event.getCurrentItem() == null) return false;
-        SimpleGUIItem simpleGUIItem = this.guiItemMap.get(event.getSlot());
-        if (simpleGUIItem != null) {
-            if (simpleGUIItem.getConsumer() != null) {
-                simpleGUIItem.getConsumer().accept(event);
+        GUIItem guiItem = this.guiItemMap.get(event.getSlot());
+        if (guiItem != null) {
+            if (guiItem.getConsumer() != null) {
+                guiItem.getConsumer().accept(event);
                 return true;
             }
         }
         return false;
-    }
-
-    public void update(Map<Integer, SimpleGUIItem> guiItemMap) {
-        this.guiItemMap = guiItemMap;
-    }
-
-    public void update(Map<Integer, SimpleGUIItem> guiItemMap, int slots) {
-        this.guiItemMap = guiItemMap;
-        this.slots = slots;
     }
 }
