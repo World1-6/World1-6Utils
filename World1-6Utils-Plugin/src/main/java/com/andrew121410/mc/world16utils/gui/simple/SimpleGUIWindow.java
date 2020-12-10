@@ -50,4 +50,9 @@ public class SimpleGUIWindow extends GUIWindow {
     public void update(Map<Integer, SimpleGUIItem> guiItemMap) {
         this.guiItemMap = guiItemMap;
     }
+
+    public void update(Map<Integer, SimpleGUIItem> guiItemMap, int slots) {
+        this.guiItemMap = guiItemMap;
+        this.slots = slots;
+    }
 }
