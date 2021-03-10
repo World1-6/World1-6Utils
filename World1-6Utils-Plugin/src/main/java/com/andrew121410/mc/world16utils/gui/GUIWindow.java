@@ -4,6 +4,7 @@ import com.andrew121410.mc.world16utils.chat.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -35,6 +36,15 @@ public abstract class GUIWindow implements InventoryHolder {
         this.populateInventory(player);
         player.openInventory(this.inventory);
     }
+
+    public void refresh(Player player) {
+        this.inventory.clear();
+        this.populateInventory(player);
+        player.updateInventory();
+        Bukkit.broadcastMessage("GUIWIndow.refresh(Player) was called!");
+    }
+
+    public abstract void onClose(InventoryCloseEvent event);
 
     @Override
     public Inventory getInventory() {

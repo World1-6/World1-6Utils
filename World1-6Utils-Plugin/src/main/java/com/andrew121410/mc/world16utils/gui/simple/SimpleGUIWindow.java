@@ -4,6 +4,7 @@ import com.andrew121410.mc.world16utils.gui.GUIItem;
 import com.andrew121410.mc.world16utils.gui.GUIWindow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import java.util.Map;
 
@@ -51,5 +52,10 @@ public class SimpleGUIWindow extends GUIWindow {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
+
     }
 }
