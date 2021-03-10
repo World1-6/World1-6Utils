@@ -1,6 +1,6 @@
-package com.andrew121410.mc.world16utils.blocks.sign.screen.pages;
+package com.andrew121410.mc.world16utils.sign.screen.pages;
 
-import com.andrew121410.mc.world16utils.blocks.sign.SignCache;
+import com.andrew121410.mc.world16utils.sign.SignCache;
 
 import java.util.*;
 

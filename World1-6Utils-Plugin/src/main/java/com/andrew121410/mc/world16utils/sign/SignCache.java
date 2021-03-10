@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils.blocks.sign;
+package com.andrew121410.mc.world16utils.sign;
 
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import org.bukkit.block.Sign;

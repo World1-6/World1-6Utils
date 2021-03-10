@@ -1,11 +1,11 @@
-package com.andrew121410.mc.world16utils.blocks.sign.screen;
+package com.andrew121410.mc.world16utils.sign.screen;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import com.andrew121410.mc.world16utils.blocks.sign.SignCache;
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLayout;
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignLinePattern;
-import com.andrew121410.mc.world16utils.blocks.sign.screen.pages.SignPage;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
+import com.andrew121410.mc.world16utils.sign.SignCache;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignLinePattern;
+import com.andrew121410.mc.world16utils.sign.screen.pages.SignPage;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
