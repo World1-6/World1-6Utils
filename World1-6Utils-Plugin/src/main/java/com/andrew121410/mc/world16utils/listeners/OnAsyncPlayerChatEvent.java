@@ -3,12 +3,12 @@ package com.andrew121410.mc.world16utils.listeners;
 import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.chat.Translate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class OnAsyncPlayerChatEvent implements Listener {
 
@@ -31,13 +31,10 @@ public class OnAsyncPlayerChatEvent implements Listener {
                 player.sendMessage(Translate.color("&eSuccessfully canceled."));
                 return;
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    chatResponseManager.get(player).accept(player, event.getMessage());
-                    chatResponseManager.remove(player.getUniqueId());
-                }
-            }.runTask(this.plugin);
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                chatResponseManager.get(player).accept(player, event.getMessage());
+                chatResponseManager.remove(player.getUniqueId());
+            });
         }
     }
 }

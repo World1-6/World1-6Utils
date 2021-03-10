@@ -41,7 +41,6 @@ public abstract class GUIWindow implements InventoryHolder {
         this.inventory.clear();
         this.populateInventory(player);
         player.updateInventory();
-        Bukkit.broadcastMessage("GUIWIndow.refresh(Player) was called!");
     }
 
     public abstract void onClose(InventoryCloseEvent event);
