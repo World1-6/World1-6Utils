@@ -1,0 +1,73 @@
+package com.andrew121410.mc.world16utils.gui.buttons;
+
+import com.andrew121410.mc.world16utils.chat.Translate;
+import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.utils.Utils;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+
+public class LoreShifterButton extends GUIButton {
+
+    private BiConsumer<InventoryClickEvent, Integer> biConsumer;
+
+    private ItemStack itemStack;
+    private String prefix = "&b&l>&r ";
+    private List<String> loreList;
+
+    private int lineNumber = 0;
+    private String untouchedLine;
+    private String modifiedLine;
+
+    public LoreShifterButton(int slot, ItemStack itemStack, String[] lores, BiConsumer<InventoryClickEvent, Integer> biConsumer) {
+        super(slot, itemStack);
+        this.itemStack = itemStack;
+        this.loreList = Arrays.asList(lores);
+        this.biConsumer = biConsumer;
+
+        String lore = Utils.getIndexFromStringList(this.loreList, 0);
+        this.untouchedLine = lore;
+        this.modifiedLine = prefix + lore;
+        this.loreList.set(0, modifiedLine);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(this.loreList.stream().map(Translate::color).collect(Collectors.toList()));
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    @Override
+    public void onClick(InventoryClickEvent event) {
+        InventoryHolder inventoryHolder = event.getInventory().getHolder();
+        if (!(inventoryHolder instanceof GUIWindow)) return;
+        GUIWindow guiWindow = (GUIWindow) inventoryHolder;
+        Player player = (Player) event.getWhoClicked();
+
+        if (event.getClick() == ClickType.RIGHT) {
+            this.loreList.set(this.lineNumber, this.untouchedLine);
+            this.lineNumber++;
+            String lore = Utils.getIndexFromStringList(this.loreList, this.lineNumber);
+            if (lore == null) {
+                this.lineNumber = 0; //Reset it back to 0;
+                lore = Utils.getIndexFromStringList(this.loreList, this.lineNumber);
+            }
+            this.untouchedLine = lore;
+            this.modifiedLine = this.prefix + lore;
+            this.loreList.set(this.lineNumber, this.modifiedLine);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setLore(this.loreList.stream().map(Translate::color).collect(Collectors.toList()));
+            itemStack.setItemMeta(itemMeta);
+            //Refresh?
+            guiWindow.refresh(player);
+        } else if (event.getClick() == ClickType.LEFT) {
+            this.biConsumer.accept(event, this.lineNumber);
+        }
+    }
+}

@@ -1,7 +1,7 @@
 package com.andrew121410.mc.world16utils.gui.simple;
 
-import com.andrew121410.mc.world16utils.gui.GUIItem;
 import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -12,9 +12,9 @@ public class SimpleGUIWindow extends GUIWindow {
 
     private String name;
     private int slots;
-    private Map<Integer, GUIItem> guiItemMap;
+    private Map<Integer, GUIButton> guiItemMap;
 
-    public SimpleGUIWindow(String name, int slots, Map<Integer, GUIItem> guiItemMap) {
+    public SimpleGUIWindow(String name, int slots, Map<Integer, GUIButton> guiItemMap) {
         this.name = name;
         this.slots = slots;
         this.guiItemMap = guiItemMap;
@@ -44,12 +44,9 @@ public class SimpleGUIWindow extends GUIWindow {
     public boolean onSlotClicked(InventoryClickEvent event) {
         if (event == null) return false;
         if (event.getCurrentItem() == null) return false;
-        GUIItem guiItem = this.guiItemMap.get(event.getSlot());
-        if (guiItem != null) {
-            if (guiItem.getConsumer() != null) {
-                guiItem.getConsumer().accept(event);
-                return true;
-            }
+        GUIButton guiButton = this.guiItemMap.get(event.getSlot());
+        if (guiButton != null) {
+            guiButton.onClick(event);
         }
         return false;
     }
