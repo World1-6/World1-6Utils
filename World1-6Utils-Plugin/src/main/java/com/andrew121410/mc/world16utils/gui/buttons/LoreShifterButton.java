@@ -3,6 +3,7 @@ package com.andrew121410.mc.world16utils.gui.buttons;
 import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.gui.GUIWindow;
 import com.andrew121410.mc.world16utils.utils.Utils;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class LoreShifterButton extends GUIButton {
 
-    private BiConsumer<InventoryClickEvent, Integer> biConsumer;
+    private BiConsumer<GUIClickEvent, Integer> biConsumer;
 
     private ItemStack itemStack;
     private String prefix = "&b&l>&r ";
@@ -26,7 +27,7 @@ public class LoreShifterButton extends GUIButton {
     private String untouchedLine;
     private String modifiedLine;
 
-    public LoreShifterButton(int slot, ItemStack itemStack, String[] lores, BiConsumer<InventoryClickEvent, Integer> biConsumer) {
+    public LoreShifterButton(int slot, ItemStack itemStack, String[] lores, BiConsumer<GUIClickEvent, Integer> biConsumer) {
         super(slot, itemStack);
         this.itemStack = itemStack;
         this.loreList = Arrays.asList(lores);
@@ -63,9 +64,11 @@ public class LoreShifterButton extends GUIButton {
             itemMeta.setLore(this.loreList.stream().map(Translate::color).collect(Collectors.toList()));
             itemStack.setItemMeta(itemMeta);
             //Refresh?
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
             guiWindow.refresh(player);
         } else if (event.getClick() == ClickType.LEFT) {
-            this.biConsumer.accept(event, this.lineNumber);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+            this.biConsumer.accept(guiClickEvent, this.lineNumber);
         }
     }
 }
