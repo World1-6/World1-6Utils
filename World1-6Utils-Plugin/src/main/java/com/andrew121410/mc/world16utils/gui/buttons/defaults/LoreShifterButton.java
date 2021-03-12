@@ -1,7 +1,9 @@
-package com.andrew121410.mc.world16utils.gui.buttons;
+package com.andrew121410.mc.world16utils.gui.buttons.defaults;
 
 import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIClickEvent;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
