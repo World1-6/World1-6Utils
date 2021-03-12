@@ -6,7 +6,6 @@ import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -44,10 +43,9 @@ public class LoreShifterButton extends GUIButton {
     }
 
     @Override
-    public void onClick(InventoryClickEvent event) {
-        InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof GUIWindow)) return;
-        GUIWindow guiWindow = (GUIWindow) inventoryHolder;
+    public void onClick(GUIClickEvent guiClickEvent) {
+        InventoryClickEvent event = guiClickEvent.getEvent();
+        GUIWindow guiWindow = guiClickEvent.getGuiWindow();
         Player player = (Player) event.getWhoClicked();
 
         if (event.getClick() == ClickType.RIGHT) {

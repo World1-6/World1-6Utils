@@ -1,7 +1,7 @@
-package com.andrew121410.mc.world16utils.gui.advance;
+package com.andrew121410.mc.world16utils.gui;
 
-import com.andrew121410.mc.world16utils.gui.GUIWindow;
 import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -39,7 +39,7 @@ public abstract class AdvanceGUIWindow extends GUIWindow {
         if (event == null) return false;
         if (event.getCurrentItem() == null) return false;
         GUIButton guiButton = this.guiButtonMap.get(event.getSlot());
-        if (guiButton != null) guiButton.onClick(event);
+        if (guiButton != null) guiButton.onClick(new GUIClickEvent(this, event));
         return false;
     }
 

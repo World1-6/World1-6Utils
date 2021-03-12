@@ -1,6 +1,5 @@
 package com.andrew121410.mc.world16utils.gui.buttons;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class GUIButton {
@@ -21,5 +20,5 @@ public abstract class GUIButton {
         return itemStack;
     }
 
-    public abstract void onClick(InventoryClickEvent event);
+    public abstract void onClick(GUIClickEvent guiClickEvent);
 }
