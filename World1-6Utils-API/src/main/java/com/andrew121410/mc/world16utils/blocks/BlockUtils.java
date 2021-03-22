@@ -10,5 +10,4 @@ public interface BlockUtils {
     boolean isOpenable(Block block);
 
     boolean doOpenable(Block block, boolean open);
-
 }

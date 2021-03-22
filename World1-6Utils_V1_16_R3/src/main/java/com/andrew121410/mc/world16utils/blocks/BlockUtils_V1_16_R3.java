@@ -23,9 +23,10 @@ public class BlockUtils_V1_16_R3 implements BlockUtils {
 
     @Override
     public boolean doOpenable(Block block, boolean value) {
+        if (!isOpenable(block)) return false;
         Openable openable = (Openable) block.getBlockData();
         openable.setOpen(value);
         block.setBlockData(openable);
-        return false;
+        return true;
     }
 }

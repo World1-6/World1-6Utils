@@ -25,10 +25,11 @@ public class BlockUtils_V1_12_R1 implements BlockUtils {
 
     @Override
     public boolean doOpenable(Block block, boolean value) {
+        if (!isOpenable(block)) return false;
         Openable openable = (Openable) block.getState().getData();
         openable.setOpen(value);
         block.getState().setData((MaterialData) openable);
         block.getState().update();
-        return false;
+        return true;
     }
 }
