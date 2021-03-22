@@ -1,23 +1,25 @@
-package com.andrew121410.mc.world16utils.gui.simple;
+package com.andrew121410.mc.world16utils.gui;
 
-import com.andrew121410.mc.world16utils.gui.GUIItem;
-import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.GUIClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SimpleGUIWindow extends GUIWindow {
 
     private String name;
     private int slots;
-    private Map<Integer, GUIItem> guiItemMap;
+    private Map<Integer, GUIButton> guiItemMap;
 
-    public SimpleGUIWindow(String name, int slots, Map<Integer, GUIItem> guiItemMap) {
+    public SimpleGUIWindow(String name, int slots, List<GUIButton> guiButtons) {
         this.name = name;
         this.slots = slots;
-        this.guiItemMap = guiItemMap;
+        this.guiItemMap = guiButtons.stream().collect(Collectors.toMap(GUIButton::getSlot, k -> k));
     }
 
     @Override
@@ -44,13 +46,8 @@ public class SimpleGUIWindow extends GUIWindow {
     public boolean onSlotClicked(InventoryClickEvent event) {
         if (event == null) return false;
         if (event.getCurrentItem() == null) return false;
-        GUIItem guiItem = this.guiItemMap.get(event.getSlot());
-        if (guiItem != null) {
-            if (guiItem.getConsumer() != null) {
-                guiItem.getConsumer().accept(event);
-                return true;
-            }
-        }
+        GUIButton guiButton = this.guiItemMap.get(event.getSlot());
+        if (guiButton != null) guiButton.onClick(new GUIClickEvent(this, event));
         return false;
     }
 

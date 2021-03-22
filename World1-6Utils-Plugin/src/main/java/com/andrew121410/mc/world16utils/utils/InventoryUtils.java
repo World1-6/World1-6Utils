@@ -19,4 +19,12 @@ public class InventoryUtils {
         item.setItemMeta(itemMeta);
         return item;
     }
+
+    public static ItemStack createItem(Material material, int amount, String displayName) {
+        ItemStack item = new ItemStack(material, amount);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(Translate.color(displayName));
+        item.setItemMeta(itemMeta);
+        return item;
+    }
 }
