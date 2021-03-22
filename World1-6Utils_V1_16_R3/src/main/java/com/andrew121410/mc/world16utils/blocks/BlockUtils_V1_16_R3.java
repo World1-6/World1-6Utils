@@ -2,7 +2,10 @@ package com.andrew121410.mc.world16utils.blocks;
 
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Stairs;
 
 public class BlockUtils_V1_16_R3 implements BlockUtils {
@@ -14,6 +17,14 @@ public class BlockUtils_V1_16_R3 implements BlockUtils {
     @Override
     public boolean isDoor(Block block) {
         return Tag.DOORS.isTagged(block.getType()); //or Material.getClass().isAssignableFrom(Door.class)
+    }
+
+    @Override
+    public Block getDoorBaseBlock(Block block) {
+        if (!isDoor(block)) return null;
+        Door door = (Door) block.getBlockData();
+        if (door.getHalf() == Bisected.Half.TOP) return block.getRelative(BlockFace.DOWN);
+        return block;
     }
 
     @Override

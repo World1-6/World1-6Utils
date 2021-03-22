@@ -7,6 +7,8 @@ public interface BlockUtils {
 
     boolean isDoor(Block block);
 
+    Block getDoorBaseBlock(Block block);
+
     boolean isOpenable(Block block);
 
     boolean doOpenable(Block block, boolean open);
