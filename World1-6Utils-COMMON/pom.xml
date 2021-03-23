@@ -9,16 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>World1-6Utils-API</artifactId>
+    <artifactId>World1-6Utils-COMMON</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils-COMMON</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
