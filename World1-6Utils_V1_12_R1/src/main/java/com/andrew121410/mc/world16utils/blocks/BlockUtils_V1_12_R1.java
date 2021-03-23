@@ -2,6 +2,7 @@ package com.andrew121410.mc.world16utils.blocks;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
@@ -35,10 +36,12 @@ public class BlockUtils_V1_12_R1 implements BlockUtils {
     @Override
     public boolean doOpenable(Block block, boolean value) {
         if (!isOpenable(block)) return false;
-        Openable openable = (Openable) block.getState().getData();
+        //Calling getState returns a NEW snapshot of the state (SO DON'T TOUCH)
+        BlockState blockState = block.getState();
+        Openable openable = (Openable) blockState.getData();
         openable.setOpen(value);
-        block.getState().setData((MaterialData) openable);
-        block.getState().update();
+        blockState.setData((MaterialData) openable);
+        blockState.update();
         return true;
     }
 }
