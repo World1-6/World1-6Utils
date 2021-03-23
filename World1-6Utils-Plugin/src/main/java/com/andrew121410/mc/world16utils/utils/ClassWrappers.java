@@ -13,14 +13,20 @@ import com.andrew121410.mc.world16utils.player.SmoothTeleport_V1_16_R3;
 import com.andrew121410.mc.world16utils.sign.SignUtils;
 import com.andrew121410.mc.world16utils.sign.SignUtils_V1_12_R1;
 import com.andrew121410.mc.world16utils.sign.SignUtils_V1_16_R3;
+import com.andrew121410.mc.world16utils.worldedit.WorldEdit;
+import com.andrew121410.mc.world16utils.worldedit.WorldEdit_614;
+import com.andrew121410.mc.world16utils.worldedit.WorldEdit_723;
 import org.bukkit.Bukkit;
 
 public class ClassWrappers {
 
-    public BlockUtils blockUtils;
+    private BlockUtils blockUtils;
     private SignUtils signUtils;
     private SmoothTeleport smoothTeleport;
     private EnchantmentUtils enchantmentUtils;
+
+    //Extra
+    private WorldEdit worldEdit;
 
     public ClassWrappers(World16Utils plugin) {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -30,12 +36,16 @@ public class ClassWrappers {
                 this.signUtils = new SignUtils_V1_16_R3(plugin);
                 this.smoothTeleport = new SmoothTeleport_V1_16_R3();
                 this.enchantmentUtils = new EnchantmentUtils_V1_16_R3();
+                //Extra
+                this.worldEdit = new WorldEdit_723();
                 break;
             case "v1_12_R1":
                 this.blockUtils = new BlockUtils_V1_12_R1();
                 this.signUtils = new SignUtils_V1_12_R1(plugin);
                 this.smoothTeleport = new SmoothTeleport_V1_12_R1();
                 this.enchantmentUtils = new EnchantmentUtils_V1_12_R1();
+                //Extra
+                this.worldEdit = new WorldEdit_614();
                 break;
         }
     }
@@ -54,5 +64,9 @@ public class ClassWrappers {
 
     public EnchantmentUtils getEnchantmentUtils() {
         return enchantmentUtils;
+    }
+
+    public WorldEdit getWorldEdit() {
+        return worldEdit;
     }
 }
