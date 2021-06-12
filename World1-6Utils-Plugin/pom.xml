@@ -12,26 +12,12 @@
     <artifactId>World1-6Utils-Plugin</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils-COMMON</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>
             <artifactId>World1-6Utils-API</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_V1_12_R1</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -44,7 +30,7 @@
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_WE_614</artifactId>
+            <artifactId>World1-6Utils_V1_17_R1</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
             <optional>true</optional>
@@ -61,14 +47,14 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>7.8.0</version>
+            <version>8.0.0</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -79,22 +65,8 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Main-Class>com.andrew121410.mc.world16utils.World16Utils</Main-Class>
-                            <Implementation-Version>${maven.build.timestamp}</Implementation-Version>
-                            <Specification-Version>${maven.build.timestamp}</Specification-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -107,7 +79,6 @@
                     <relocations>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
-                            <!-- Be sure to change the package below -->
                             <shadedPattern>com.andrew121410.mc.world16utils.utils.xutils</shadedPattern>
                         </relocation>
                     </relocations>
@@ -125,6 +96,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <repositories>
         <repository>

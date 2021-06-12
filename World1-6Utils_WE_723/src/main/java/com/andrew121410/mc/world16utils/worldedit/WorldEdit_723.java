@@ -1,6 +1,5 @@
 package com.andrew121410.mc.world16utils.worldedit;
 
-import com.andrew121410.mc.world16utils.math.BoundingBox;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -13,6 +12,7 @@ import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
 
 public class WorldEdit_723 implements WorldEdit {
 
@@ -44,6 +44,6 @@ public class WorldEdit_723 implements WorldEdit {
         } catch (IncompleteRegionException e) {
             return null;
         }
-        return new BoundingBox(BukkitAdapter.adapt(player.getWorld(), region.getMinimumPoint()), BukkitAdapter.adapt(player.getWorld(), region.getMaximumPoint()));
+        return new BoundingBox(region.getMinimumPoint().getX(), region.getMinimumPoint().getY(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getY(), region.getMaximumPoint().getZ());
     }
 }

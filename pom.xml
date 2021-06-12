@@ -11,27 +11,23 @@
 
     <name>World1-6Utils</name>
     <description>A Utils plugin for World1-6 plugins.</description>
-    <!--    <url></url>-->
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
     <modules>
-        <module>World1-6Utils-COMMON</module>
         <module>World1-6Utils-API</module>
         <module>World1-6Utils-Plugin</module>
         <module>World1-6Utils_V1_16_R3</module>
-        <module>World1-6Utils_V1_12_R1</module>
-        <module>World1-6Utils_WE_614</module>
+        <module>World1-6Utils_V1_17_R1</module>
         <module>World1-6Utils_WE_723</module>
     </modules>
 
     <repositories>
         <repository>
-            <id>spigotmc-repo</id>
+            <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
@@ -53,10 +49,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

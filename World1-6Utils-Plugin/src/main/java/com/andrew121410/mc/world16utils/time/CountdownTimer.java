@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils.runnable;
+package com.andrew121410.mc.world16utils.time;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -80,6 +80,10 @@ public class CountdownTimer implements Runnable {
 
     public int getSecondsLeft() {
         return secondsLeft;
+    }
+
+    public String getFancyTimeLeft() {
+        return new SimpleTimeConversion(this.secondsLeft).getFancyDate();
     }
 
     public Integer getAssignedTaskId() {

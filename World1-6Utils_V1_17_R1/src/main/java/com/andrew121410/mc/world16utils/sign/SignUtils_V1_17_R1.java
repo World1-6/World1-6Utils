@@ -1,33 +1,39 @@
 package com.andrew121410.mc.world16utils.sign;
 
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SignUtils_V1_12_R1 implements SignUtils {
+public class SignUtils_V1_17_R1 implements SignUtils {
 
     private JavaPlugin plugin;
 
-    public SignUtils_V1_12_R1(JavaPlugin plugin) {
+    public SignUtils_V1_17_R1(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void edit(Player player, Sign sign) {
-        Location loc = sign.getLocation();
-        BlockPosition pos = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
-        EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-        TileEntitySign tileEntitySign = (TileEntitySign) nmsPlayer.world.getTileEntity(pos);
-        PlayerConnection conn = nmsPlayer.playerConnection;
+        Location location = sign.getLocation();
+        BlockPos blockPos = new BlockPos(location.getX(), location.getY(), location.getZ());
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        SignBlockEntity signBlockEntity = (SignBlockEntity) serverPlayer.level.getTileEntity(blockPos, true);
+        ServerGamePacketListenerImpl connection = serverPlayer.connection;
 
-        tileEntitySign.isEditable = true;
-        tileEntitySign.a(nmsPlayer);
-        conn.sendPacket(new PacketPlayOutOpenSignEditor(pos));
+        if (signBlockEntity == null) return;
+
+        signBlockEntity.setEditable(true);
+        signBlockEntity.setAllowedPlayerEditor(serverPlayer.getUUID());
+        connection.send(new ClientboundOpenSignEditorPacket(blockPos));
     }
 
     @Override

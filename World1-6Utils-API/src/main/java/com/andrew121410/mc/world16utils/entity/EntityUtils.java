@@ -1,11 +1,12 @@
 package com.andrew121410.mc.world16utils.entity;
 
-import com.andrew121410.mc.world16utils.math.BoundingBox;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.BoundingBox;
 
 import java.util.Collection;
 
 public interface EntityUtils {
 
-    Collection<Entity> getNearbyEntities(BoundingBox boundingBox);
+    Collection<Entity> getNearbyEntities(World world, BoundingBox boundingBox);
 }
