@@ -83,5 +83,12 @@
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
         </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.bukkit</groupId>-->
+        <!--            <artifactId>craftbukkit</artifactId>-->
+        <!--            <version>1.17-R0.1-SNAPSHOT</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
     </dependencies>
 </project>
