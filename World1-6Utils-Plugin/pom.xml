@@ -12,6 +12,12 @@
     <artifactId>World1-6Utils-Plugin</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.andrew121410.mc</groupId>
+            <artifactId>World1-6Utils-COMMON</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>

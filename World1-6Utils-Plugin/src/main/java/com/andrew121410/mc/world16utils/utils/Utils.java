@@ -4,12 +4,6 @@ import java.util.List;
 
 public class Utils {
 
-    public static final String DATE_OF_VERSION = "6/12/2021";
-    public static final String PREFIX = "[&9World1-6Utils&r]";
-    public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
-    public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
-    public static final String EMERGENCY_TAG = PREFIX + "->&c[EMERGENCY]&r";
-
     public static boolean isByte(String input) {
         try {
             Byte.parseByte(input);

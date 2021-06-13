@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.config;
 
+import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.Bukkit;
@@ -38,11 +39,11 @@ public class CustomYmlManager {
             try {
                 file.createNewFile();
                 Bukkit.getServer().getConsoleSender()
-                        .sendMessage(LanguageLocale.color(Utils.USELESS_TAG + " The {nameoffile} has been created.").replace("{nameoffile}", this.fileName));
+                        .sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " The {nameoffile} has been created.").replace("{nameoffile}", this.fileName));
             } catch (IOException e) {
                 Bukkit.getServer().getConsoleSender()
                         .sendMessage(LanguageLocale
-                                .color(Utils.USELESS_TAG + " The {nameoffile} could not make for some reason.").replace("{nameoffile}", this.fileName));
+                                .color(World16Utils.USELESS_TAG + " The {nameoffile} could not make for some reason.").replace("{nameoffile}", this.fileName));
             }
         }
 
@@ -57,18 +58,18 @@ public class CustomYmlManager {
         try {
             fileConfiguration.save(file);
             if (this.debug) {
-                Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(Utils.USELESS_TAG + " &aThe {name} has been saved.").replace("{name}", this.fileName));
+                Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &aThe {name} has been saved.").replace("{name}", this.fileName));
             }
         } catch (IOException e) {
             Bukkit.getServer().getConsoleSender()
-                    .sendMessage(LanguageLocale.color(Utils.USELESS_TAG + " &cThe {name} has been NOT SAVED..").replace("{name}", this.fileName));
+                    .sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &cThe {name} has been NOT SAVED..").replace("{name}", this.fileName));
         }
     }
 
     public void reloadConfig() {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
         if (this.debug) {
-            Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(Utils.USELESS_TAG + " &6The {nameoffile} has been reloaded.").replace("{nameoffile}", this.fileName));
+            Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &6The {nameoffile} has been reloaded.").replace("{nameoffile}", this.fileName));
         }
     }
 }
