@@ -44,7 +44,7 @@ public class Packet_V1_17_R1 implements IPackets {
     @Override
     public void sendDebugGameTestClearPacket(Player player) {
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.CUSTOM_PAYLOAD);
-        packetContainer.getMinecraftKeys().write(0, new MinecraftKey("game_test_clear"));
+        packetContainer.getMinecraftKeys().write(0, new MinecraftKey("debug/game_test_clear"));
 
         try {
             this.protocolManager.sendServerPacket(player, packetContainer);
