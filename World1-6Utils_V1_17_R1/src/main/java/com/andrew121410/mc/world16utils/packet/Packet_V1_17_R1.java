@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.MinecraftKey;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,7 +31,7 @@ public class Packet_V1_17_R1 implements IPackets {
         friendlyByteBuf.writeInt(duration);
 
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.CUSTOM_PAYLOAD);
-        packetContainer.getStrings().write(0, "minecraft:debug/game_test_add_marker");
+        packetContainer.getMinecraftKeys().write(0, new MinecraftKey("debug/game_test_add_marker"));
         packetContainer.getModifier().write(1, friendlyByteBuf);
 
         try {
@@ -43,7 +44,7 @@ public class Packet_V1_17_R1 implements IPackets {
     @Override
     public void sendDebugGameTestClearPacket(Player player) {
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.CUSTOM_PAYLOAD);
-        packetContainer.getStrings().write(0, "debug/game_test_clear");
+        packetContainer.getMinecraftKeys().write(0, new MinecraftKey("game_test_clear"));
 
         try {
             this.protocolManager.sendServerPacket(player, packetContainer);
