@@ -18,5 +18,9 @@ public interface IPackets {
 
     void sendDebugCreateMarkerPacket(Player player, Location blockPosition, int color, String message, int duration);
 
+    default void sendDebugGameTestClearPacket(World world) {
+        for (Player player : world.getPlayers()) sendDebugGameTestClearPacket(player);
+    }
+
     void sendDebugGameTestClearPacket(Player player);
 }
