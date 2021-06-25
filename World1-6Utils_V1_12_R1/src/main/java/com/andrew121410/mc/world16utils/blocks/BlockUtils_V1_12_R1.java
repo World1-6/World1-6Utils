@@ -1,8 +1,13 @@
 package com.andrew121410.mc.world16utils.blocks;
 
+import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
@@ -43,5 +48,27 @@ public class BlockUtils_V1_12_R1 implements BlockUtils {
         blockState.setData((MaterialData) openable);
         blockState.update();
         return true;
+    }
+
+    @Override
+    public Sign isSign(Block block) {
+        BlockState blockState = block.getState();
+        if (blockState instanceof Sign) {
+            return (Sign) blockState;
+        }
+        return null;
+    }
+
+    @Override
+    public void edit(Player player, Sign sign) {
+        Location loc = sign.getLocation();
+        BlockPosition pos = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
+        EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+        TileEntitySign tileEntitySign = (TileEntitySign) nmsPlayer.world.getTileEntity(pos);
+        PlayerConnection conn = nmsPlayer.playerConnection;
+
+        tileEntitySign.isEditable = true;
+        tileEntitySign.a(nmsPlayer);
+        conn.sendPacket(new PacketPlayOutOpenSignEditor(pos));
     }
 }

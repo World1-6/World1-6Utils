@@ -1,6 +1,9 @@
 package com.andrew121410.mc.world16utils.blocks;
 
+import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 
 public interface BlockUtils {
     boolean isStairs(Block block);
@@ -18,4 +21,12 @@ public interface BlockUtils {
     boolean isOpenable(Block block);
 
     boolean doOpenable(Block block, boolean open);
+
+    Sign isSign(Block block);
+
+    void edit(Player player, Sign sign);
+
+    default String signCenterText(String text) {
+        return Utils.centerText(text, 16);
+    }
 }

@@ -135,7 +135,7 @@ public class SignScreenManager {
         }
         this.isTickerRunning = true;
 
-        Sign sign = World16Utils.getInstance().getClassWrappers().getSignUtils().isSign(location.getBlock());
+        Sign sign = World16Utils.getInstance().getClassWrappers().getBlockUtils().isSign(location.getBlock());
         if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
 
         new BukkitRunnable() {
