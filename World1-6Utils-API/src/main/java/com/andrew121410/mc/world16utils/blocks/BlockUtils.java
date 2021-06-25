@@ -26,7 +26,7 @@ public interface BlockUtils {
 
     void edit(Player player, Sign sign);
 
-    default String signCenterText(String text) {
+    static String signCenterText(String text) {
         return Utils.centerText(text, 16);
     }
 }
