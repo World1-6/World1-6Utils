@@ -31,6 +31,10 @@ public class SimpleBoundingBox implements Cloneable, ConfigurationSerializable {
         this.maxZ = maxZ;
     }
 
+    public static SimpleBoundingBox from(BoundingBox boundingBox) {
+        return new SimpleBoundingBox(boundingBox.getMinX(), boundingBox.getMinY(), boundingBox.getMinZ(), boundingBox.getMaxX(), boundingBox.getMaxY(), boundingBox.getMaxZ());
+    }
+
     public static SimpleBoundingBox from(Location one, Location two) {
         return new SimpleBoundingBox(one.getBlockX(), one.getBlockY(), one.getBlockZ(), two.getBlockX(), two.getBlockY(), two.getBlockZ());
     }
