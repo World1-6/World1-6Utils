@@ -14,6 +14,7 @@ import com.andrew121410.mc.world16utils.entity.EntityUtils_V1_12_R1;
 import com.andrew121410.mc.world16utils.entity.EntityUtils_V1_16_R3;
 import com.andrew121410.mc.world16utils.entity.EntityUtils_V1_17_R1;
 import com.andrew121410.mc.world16utils.packet.IPackets;
+import com.andrew121410.mc.world16utils.packet.Packet_V1_12_R1;
 import com.andrew121410.mc.world16utils.packet.Packet_V1_16_R3;
 import com.andrew121410.mc.world16utils.packet.Packet_V1_17_R1;
 import com.andrew121410.mc.world16utils.player.SmoothTeleport;
@@ -50,6 +51,7 @@ public class ClassWrappers {
                 this.smoothTeleport = new SmoothTeleport_V1_12_R1();
                 this.enchantmentUtils = new EnchantmentUtils_V1_12_R1();
                 this.entityUtils = new EntityUtils_V1_12_R1();
+                this.packets = new Packet_V1_12_R1();
                 //Extra
                 this.worldEdit = new WorldEdit_614();
                 break;

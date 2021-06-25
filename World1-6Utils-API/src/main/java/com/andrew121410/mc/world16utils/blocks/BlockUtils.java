@@ -9,6 +9,8 @@ public interface BlockUtils {
 
     Block getDoorBaseBlock(Block block);
 
+    Block ifDoorThenGetBlockUnderTheDoorIfNotThanReturn(Block block);
+
     boolean isOpenable(Block block);
 
     boolean doOpenable(Block block, boolean open);
