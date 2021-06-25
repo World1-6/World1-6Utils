@@ -29,13 +29,6 @@ public class BlockUtils_V1_12_R1 implements BlockUtils {
     }
 
     @Override
-    public Block ifDoorThenGetBlockUnderTheDoorIfNotThanReturn(Block block) {
-        Block doorBaseBlock = getDoorBaseBlock(block);
-        if (doorBaseBlock != null) return doorBaseBlock.getRelative(0, -1, 0);
-        return block;
-    }
-
-    @Override
     public boolean isOpenable(Block block) {
         return block.getState().getData() instanceof Openable;
     }
