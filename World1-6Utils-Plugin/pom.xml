@@ -28,14 +28,6 @@
 
         <dependency>
             <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_V1_12_R1</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.andrew121410.mc</groupId>
             <artifactId>World1-6Utils_V1_16_R3</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -59,17 +51,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.andrew121410.mc</groupId>
-            <artifactId>World1-6Utils_WE_614</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.1.0</version>
+            <version>8.3.0</version>
             <scope>compile</scope>
         </dependency>
 
