@@ -52,6 +52,8 @@ public class ClassWrappers {
                 //Extra
                 this.worldEdit = new WorldEdit_723();
                 break;
+            default:
+                throw new IllegalArgumentException("Unable to detect NMS version(" + version + ") for ClassWrappers");
         }
     }
 
