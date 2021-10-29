@@ -33,7 +33,6 @@ public class Packet_V1_17_R1 implements IPackets {
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.CUSTOM_PAYLOAD);
         packetContainer.getMinecraftKeys().write(0, new MinecraftKey("debug/game_test_add_marker"));
         packetContainer.getModifier().write(1, friendlyByteBuf);
-
         try {
             this.protocolManager.sendServerPacket(player, packetContainer);
         } catch (InvocationTargetException e) {
@@ -45,7 +44,7 @@ public class Packet_V1_17_R1 implements IPackets {
     public void sendDebugGameTestClearPacket(Player player) {
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.CUSTOM_PAYLOAD);
         packetContainer.getMinecraftKeys().write(0, new MinecraftKey("debug/game_test_clear"));
-
+        packetContainer.getModifier().write(1, new FriendlyByteBuf(Unpooled.buffer()));
         try {
             this.protocolManager.sendServerPacket(player, packetContainer);
         } catch (InvocationTargetException e) {
