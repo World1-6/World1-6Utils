@@ -15,7 +15,7 @@ import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class BlockUtils_V1_18_R1 implements BlockUtils {
@@ -65,7 +65,7 @@ public class BlockUtils_V1_18_R1 implements BlockUtils {
         Location location = sign.getLocation();
         BlockPos blockPos = new BlockPos(location.getX(), location.getY(), location.getZ());
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
-        SignBlockEntity signBlockEntity = (SignBlockEntity) serverPlayer.level.getTileEntity(blockPos, true);
+        SignBlockEntity signBlockEntity = (SignBlockEntity) serverPlayer.level.getBlockEntity(blockPos, true);
         ServerGamePacketListenerImpl connection = serverPlayer.connection;
 
         if (signBlockEntity == null) return;

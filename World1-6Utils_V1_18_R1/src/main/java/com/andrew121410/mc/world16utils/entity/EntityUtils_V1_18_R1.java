@@ -4,7 +4,7 @@ import com.google.common.base.Predicates;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.AABB;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 
