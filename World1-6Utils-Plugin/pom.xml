@@ -94,8 +94,10 @@
                             <artifact>*:*</artifact>
                             <excludes>
                                 <exclude>**/*.java</exclude>
-                                <exclude>**/*.SF</exclude>
+                                <exclude>**/*.MF</exclude>
                                 <exclude>**/*.DSA</exclude>
+                                <exclude>**/*.RSA</exclude>
+                                <exclude>**/*.SF</exclude>
                             </excludes>
                         </filter>
                     </filters>
