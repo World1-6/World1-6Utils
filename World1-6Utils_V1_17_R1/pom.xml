@@ -28,9 +28,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!--https://mvnrepository.com/artifact/net.md-5/specialsource-maven-plugin-->
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
-                <version>1.2.2</version>
+                <version>1.2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

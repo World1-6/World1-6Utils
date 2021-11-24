@@ -34,12 +34,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
-        <!--ProtocolLib-->
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
-        </repository>
-
         <!--WorldEdit-->
         <repository>
             <id>enginehub-maven</id>
@@ -47,10 +41,10 @@
         </repository>
 
         <!--Spigot NMS-->
-        <repository>
-            <id>nms-repo</id>
-            <url>https://repo.codemc.io/repository/nms/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>nms-repo</id>-->
+<!--            <url>https://repo.codemc.io/repository/nms/</url>-->
+<!--        </repository>-->
     </repositories>
 
     <build>
