@@ -1,6 +1,10 @@
 package com.andrew121410.mc.world16utils.blocks;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.bukkit.Location;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -11,10 +15,10 @@ import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public class BlockUtils_V1_16_R3 implements BlockUtils {
+public class BlockUtils_V1_18_R1 implements BlockUtils {
     @Override
     public boolean isStairs(Block block) {
         return block.getBlockData() instanceof Stairs;
@@ -58,14 +62,16 @@ public class BlockUtils_V1_16_R3 implements BlockUtils {
 
     @Override
     public void edit(Player player, Sign sign) {
-        Location loc = sign.getLocation();
-        BlockPosition pos = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
-        EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-        TileEntitySign tileEntitySign = (TileEntitySign) nmsPlayer.world.getTileEntity(pos);
-        PlayerConnection conn = nmsPlayer.playerConnection;
+        Location location = sign.getLocation();
+        BlockPos blockPos = new BlockPos(location.getX(), location.getY(), location.getZ());
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        SignBlockEntity signBlockEntity = (SignBlockEntity) serverPlayer.level.getBlockEntity(blockPos, true);
+        ServerGamePacketListenerImpl connection = serverPlayer.connection;
 
-        tileEntitySign.isEditable = true;
-        tileEntitySign.a(nmsPlayer);
-        conn.sendPacket(new PacketPlayOutOpenSignEditor(pos));
+        if (signBlockEntity == null) return;
+
+        signBlockEntity.setEditable(true);
+        signBlockEntity.setAllowedPlayerEditor(serverPlayer.getUUID());
+        connection.send(new ClientboundOpenSignEditorPacket(blockPos));
     }
 }

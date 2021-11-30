@@ -22,8 +22,8 @@
         <module>World1-6Utils-COMMON</module>
         <module>World1-6Utils-API</module>
         <module>World1-6Utils-Plugin</module>
-        <module>World1-6Utils_V1_16_R3</module>
         <module>World1-6Utils_V1_17_R1</module>
+        <module>World1-6Utils_V1_18_R1</module>
         <module>World1-6Utils_WE_723</module>
     </modules>
 
@@ -34,12 +34,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
-        <!--ProtocolLib-->
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
-        </repository>
-
         <!--WorldEdit-->
         <repository>
             <id>enginehub-maven</id>
@@ -47,10 +41,10 @@
         </repository>
 
         <!--Spigot NMS-->
-        <repository>
-            <id>nms-repo</id>
-            <url>https://repo.codemc.io/repository/nms/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>nms-repo</id>-->
+<!--            <url>https://repo.codemc.io/repository/nms/</url>-->
+<!--        </repository>-->
     </repositories>
 
     <build>
