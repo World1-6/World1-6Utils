@@ -13,7 +13,7 @@
     <artifactId>World1-6Utils_V1_18_R1</artifactId>
 
     <properties>
-        <craftbukkit.version>1.18-pre8-R0.1-SNAPSHOT</craftbukkit.version>
+        <craftbukkit.version>1.18-R0.1-SNAPSHOT</craftbukkit.version>
     </properties>
 
     <build>
