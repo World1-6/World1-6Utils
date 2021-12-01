@@ -52,13 +52,16 @@ public class SmoothTeleport_V1_17_R1 implements SmoothTeleport {
 
     @Override
     public void teleport(Player player, Location location) {
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        ServerGamePacketListenerImpl connection = serverPlayer.connection;
         double x = location.getX();
         double y = location.getY();
         double z = location.getZ();
-        ServerPlayer handle = ((CraftPlayer) player).getHandle();
-        if (handle.containerMenu != handle.inventoryMenu) handle.closeContainer();
-        handle.absMoveTo(x, y, z, handle.getYRot(), handle.getXRot());
-        ServerGamePacketListenerImpl connection = handle.connection;
+
+        if (serverPlayer.containerMenu != serverPlayer.inventoryMenu) serverPlayer.closeContainer();
+
+        serverPlayer.absMoveTo(x, y, z, serverPlayer.getYRot(), serverPlayer.getXRot());
+
         int teleportAwait = 0;
         try {
             justTeleportedField.set(connection, true);
