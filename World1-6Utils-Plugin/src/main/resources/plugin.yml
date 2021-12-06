@@ -1,9 +1,9 @@
 name: World1-6Utils
-version: ${project.version}
+version: 1.0
 main: com.andrew121410.mc.world16utils.World16Utils
 authors: [Andrew121410]
 description: A utils for my plugins
-api: 1.17
+api-version: 1.17
 
 softdepend:
   - WorldEdit
