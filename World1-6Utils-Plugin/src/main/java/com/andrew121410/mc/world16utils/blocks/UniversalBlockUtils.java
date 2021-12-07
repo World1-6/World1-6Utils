@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.blocks;
 
+import com.andrew121410.mc.world16utils.utils.Utils;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -56,6 +57,10 @@ public class UniversalBlockUtils {
             return (Sign) blockState;
         }
         return null;
+    }
+
+    public static String signCenterText(String text) {
+        return Utils.centerText(text, 16);
     }
 
     public static boolean isFarmLand(XMaterial xMaterial) {
