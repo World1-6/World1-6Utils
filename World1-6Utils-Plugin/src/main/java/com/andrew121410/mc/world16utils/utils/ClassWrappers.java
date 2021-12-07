@@ -29,12 +29,12 @@ public class ClassWrappers {
     private final IPackets packets;
 
     //Extra
-    private WorldEdit worldEdit;
+    private final WorldEdit worldEdit;
 
     public ClassWrappers(World16Utils plugin) {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         switch (version) {
-            case "v1_17_R1":
+            case "v1_17_R1" -> {
                 this.blockUtils = new BlockUtils_V1_17_R1();
                 this.smoothTeleport = new SmoothTeleport_V1_17_R1();
                 this.enchantmentUtils = new EnchantmentUtils_V1_17_R1();
@@ -42,8 +42,8 @@ public class ClassWrappers {
                 this.packets = new Packet_V1_17_R1();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_723() : null;
-                break;
-            case "v1_18_R1":
+            }
+            case "v1_18_R1" -> {
                 this.blockUtils = new BlockUtils_V1_18_R1();
                 this.smoothTeleport = new SmoothTeleport_V1_18_R1();
                 this.enchantmentUtils = new EnchantmentUtils_V1_18_R1();
@@ -51,9 +51,8 @@ public class ClassWrappers {
                 this.packets = new Packet_V1_18_R1();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_723() : null;
-                break;
-            default:
-                throw new IllegalArgumentException("Unable to detect NMS version(" + version + ") for ClassWrappers");
+            }
+            default -> throw new IllegalArgumentException("Unable to detect NMS version(" + version + ") for ClassWrappers");
         }
     }
 
