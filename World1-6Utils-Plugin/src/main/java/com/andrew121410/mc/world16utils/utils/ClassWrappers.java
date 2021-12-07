@@ -4,12 +4,6 @@ import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.blocks.BlockUtils;
 import com.andrew121410.mc.world16utils.blocks.BlockUtils_V1_17_R1;
 import com.andrew121410.mc.world16utils.blocks.BlockUtils_V1_18_R1;
-import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils;
-import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils_V1_17_R1;
-import com.andrew121410.mc.world16utils.enchantment.EnchantmentUtils_V1_18_R1;
-import com.andrew121410.mc.world16utils.entity.EntityUtils;
-import com.andrew121410.mc.world16utils.entity.EntityUtils_V1_17_R1;
-import com.andrew121410.mc.world16utils.entity.EntityUtils_V1_18_R1;
 import com.andrew121410.mc.world16utils.packet.IPackets;
 import com.andrew121410.mc.world16utils.packet.Packet_V1_17_R1;
 import com.andrew121410.mc.world16utils.packet.Packet_V1_18_R1;
@@ -24,8 +18,6 @@ public class ClassWrappers {
 
     private final BlockUtils blockUtils;
     private final SmoothTeleport smoothTeleport;
-    private final EnchantmentUtils enchantmentUtils;
-    private final EntityUtils entityUtils;
     private final IPackets packets;
 
     //Extra
@@ -37,8 +29,6 @@ public class ClassWrappers {
             case "v1_17_R1" -> {
                 this.blockUtils = new BlockUtils_V1_17_R1();
                 this.smoothTeleport = new SmoothTeleport_V1_17_R1();
-                this.enchantmentUtils = new EnchantmentUtils_V1_17_R1();
-                this.entityUtils = new EntityUtils_V1_17_R1();
                 this.packets = new Packet_V1_17_R1();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_723() : null;
@@ -46,8 +36,6 @@ public class ClassWrappers {
             case "v1_18_R1" -> {
                 this.blockUtils = new BlockUtils_V1_18_R1();
                 this.smoothTeleport = new SmoothTeleport_V1_18_R1();
-                this.enchantmentUtils = new EnchantmentUtils_V1_18_R1();
-                this.entityUtils = new EntityUtils_V1_18_R1();
                 this.packets = new Packet_V1_18_R1();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_723() : null;
@@ -62,14 +50,6 @@ public class ClassWrappers {
 
     public SmoothTeleport getSmoothTeleport() {
         return smoothTeleport;
-    }
-
-    public EnchantmentUtils getEnchantmentUtils() {
-        return enchantmentUtils;
-    }
-
-    public EntityUtils getEntityUtils() {
-        return entityUtils;
     }
 
     public IPackets getPackets() {

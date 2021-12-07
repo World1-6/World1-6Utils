@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.sign.screen;
 
 import com.andrew121410.mc.world16utils.World16Utils;
+import com.andrew121410.mc.world16utils.blocks.UniversalBlockUtils;
 import com.andrew121410.mc.world16utils.chat.LanguageLocale;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
@@ -135,7 +136,7 @@ public class SignScreenManager {
         }
         this.isTickerRunning = true;
 
-        Sign sign = World16Utils.getInstance().getClassWrappers().getBlockUtils().isSign(location.getBlock());
+        Sign sign = UniversalBlockUtils.isSign(location.getBlock());
         if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
 
         new BukkitRunnable() {
