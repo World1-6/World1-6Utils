@@ -24,7 +24,7 @@
         <module>World1-6Utils-Plugin</module>
         <module>World1-6Utils_V1_18_R2</module>
         <module>World1-6Utils_V1_19_R1</module>
-        <module>World1-6Utils_WE_723</module>
+        <module>World1-6Utils_WE_7210</module>
     </modules>
 
     <repositories>
@@ -44,6 +44,11 @@
         <repository>
             <id>nms-repo</id>
             <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 

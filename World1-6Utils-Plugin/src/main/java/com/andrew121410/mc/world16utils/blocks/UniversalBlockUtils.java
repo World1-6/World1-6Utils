@@ -12,6 +12,7 @@ import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Stairs;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,5 +92,10 @@ public class UniversalBlockUtils {
 
     public static List<Block> getNearbyBlocks(Location location, int radius) {
         return getNearbyBlocks(location, radius, true);
+    }
+
+    public void editSign(Player player, Sign sign) {
+        //https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/27a27cdb840880f785b654bbcacb0b4c7c77fad9
+        player.openSign(sign);
     }
 }
