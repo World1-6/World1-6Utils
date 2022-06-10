@@ -94,7 +94,7 @@ public class UniversalBlockUtils {
         return getNearbyBlocks(location, radius, true);
     }
 
-    public void editSign(Player player, Sign sign) {
+    public static void editSign(Player player, Sign sign) {
         //https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/27a27cdb840880f785b654bbcacb0b4c7c77fad9
         player.openSign(sign);
     }
