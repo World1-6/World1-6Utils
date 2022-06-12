@@ -32,13 +32,13 @@ public class SmoothTeleport_V1_19_R1 implements SmoothTeleport {
     static {
         try {
             justTeleportedField = getField("justTeleported");
-            awaitingPositionFromClientField = getField("y"); //awaitingPositionFromClient
+            awaitingPositionFromClientField = getField("B"); //awaitingPositionFromClient
             lastPosXField = getField("lastPosX");
             lastPosYField = getField("lastPosY");
             lastPosZField = getField("lastPosZ");
-            awaitingTeleportField = getField("z"); //awaitingTeleport
-            awaitingTeleportTimeField = getField("A"); //awaitingTeleportTime
-            aboveGroundVehicleTickCountField = getField("E"); //aboveGroundVehicleTickCount
+            awaitingTeleportField = getField("C"); //awaitingTeleport
+            awaitingTeleportTimeField = getField("D"); //awaitingTeleportTime
+            aboveGroundVehicleTickCountField = getField("H"); //aboveGroundVehicleTickCount
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
