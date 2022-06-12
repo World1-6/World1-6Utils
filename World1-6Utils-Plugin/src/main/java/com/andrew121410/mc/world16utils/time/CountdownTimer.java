@@ -1,22 +1,24 @@
 package com.andrew121410.mc.world16utils.time;
 
+import com.andrew121410.ccutils.utils.StringDataTimeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class CountdownTimer implements Runnable {
 
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     private Integer assignedTaskId;
 
-    private int seconds;
+    private final int seconds;
     private int secondsLeft;
 
-    private Consumer<CountdownTimer> everySecond;
+    private final Consumer<CountdownTimer> everySecond;
     private Runnable beforeTimer;
-    private Runnable afterTimer;
+    private final Runnable afterTimer;
 
     public CountdownTimer(JavaPlugin plugin, int seconds, Runnable beforeTimer, Runnable afterTimer, Consumer<CountdownTimer> everySecond) {
         this.plugin = plugin;
@@ -82,8 +84,12 @@ public class CountdownTimer implements Runnable {
         return secondsLeft;
     }
 
-    public String getFancyTimeLeft() {
-        return new SimpleTimeConversion(this.secondsLeft).getFancyDate();
+    public String getFancyTimeLeft(boolean shortText) {
+        long secondsM = TimeUnit.SECONDS.toMillis(this.seconds);
+        long secondsLeftM = TimeUnit.SECONDS.toMillis(this.secondsLeft);
+
+        // Uses milliseconds
+        return StringDataTimeBuilder.makeIntoEnglishWords(secondsM, secondsLeftM, shortText);
     }
 
     public Integer getAssignedTaskId() {
