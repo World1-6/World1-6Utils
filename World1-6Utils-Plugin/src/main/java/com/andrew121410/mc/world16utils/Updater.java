@@ -1,6 +1,6 @@
-package com.andrew121410.mc.world16utils.updater;
+package com.andrew121410.mc.world16utils;
 
-import com.andrew121410.mc.world16utils.World16Utils;
+import com.andrew121410.ccutils.utils.AbstractUpdater;
 
 public class Updater extends AbstractUpdater {
 
@@ -8,6 +8,6 @@ public class Updater extends AbstractUpdater {
     private static final String HASH_URL = "https://github.com/World1-6/World1-6Utils/releases/download/latest/hash.txt";
 
     public Updater(World16Utils plugin) {
-        super(plugin, JAR_URL, HASH_URL);
+        super(plugin.getClass(), JAR_URL, HASH_URL);
     }
 }
