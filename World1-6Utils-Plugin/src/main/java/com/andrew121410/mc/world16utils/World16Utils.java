@@ -34,7 +34,7 @@ public final class World16Utils extends JavaPlugin {
 
         // Check for updates
         this.getServer().getScheduler().runTaskAsynchronously(this, () -> {
-            if (updater.shouldUpdate(false)) {
+            if (updater.shouldUpdate()) {
                 getLogger().info("Looks like there is an update available for World1-6Utils!");
                 getLogger().info("You can update to it by using the command: /world1-6utils update");
             }
@@ -63,7 +63,7 @@ public final class World16Utils extends JavaPlugin {
             } else if (args[0].equalsIgnoreCase("update")) {
                 sender.sendMessage("Checking for updates...");
                 getServer().getScheduler().runTaskAsynchronously(this, () -> {
-                    if (updater.shouldUpdate(true)) {
+                    if (updater.shouldUpdate()) {
                         sender.sendMessage("Updating World1-6Utils...");
                         String message = updater.update();
                         sender.sendMessage(message);

@@ -1,8 +1,8 @@
 package com.andrew121410.mc.world16utils;
 
-import com.andrew121410.ccutils.utils.AbstractUpdater;
+import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 
-public class Updater extends AbstractUpdater {
+public class Updater extends AbstractBasicSelfUpdater {
 
     private static final String JAR_URL = "https://github.com/World1-6/World1-6Utils/releases/download/latest/World1-6Utils.jar";
     private static final String HASH_URL = "https://github.com/World1-6/World1-6Utils/releases/download/latest/hash.txt";
