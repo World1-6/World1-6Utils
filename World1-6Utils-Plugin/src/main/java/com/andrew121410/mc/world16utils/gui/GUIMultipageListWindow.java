@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.gui;
 
 import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.GUINextPageEvent;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.ClickEventButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.NoEventButton;
 import com.andrew121410.mc.world16utils.utils.InventoryUtils;
@@ -12,17 +13,30 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GUIMultipageListWindow extends AdvanceGUIWindow {
 
-    private final int itemsPerPage;
-    private final List<List<GUIButton>> pages;
+    private String guiName;
+    private int slots;
+
+    private int itemsPerPage;
+    private List<List<GUIButton>> pages;
 
     private int page = 0;
 
-    public GUIMultipageListWindow(List<GUIButton> buttons, int itemsPerPage) {
+    private Consumer<GUINextPageEvent> previousPageEvent;
+    private Consumer<GUINextPageEvent> nextPageEvent;
+
+    public GUIMultipageListWindow(String guiName, int slots, List<GUIButton> buttons, int itemsPerPage) {
+        this.guiName = guiName;
+        this.slots = slots;
+
         this.itemsPerPage = itemsPerPage;
         this.pages = Lists.partition(buttons, itemsPerPage);
+
+        this.previousPageEvent = null;
+        this.nextPageEvent = null;
 
         for (List<GUIButton> page : this.pages) {
             determineSlotNumbers(page);
@@ -36,14 +50,22 @@ public class GUIMultipageListWindow extends AdvanceGUIWindow {
         if (page != 0 && Utils.indexExists(pages, page - 1)) {
             bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "Previous Page"), (guiClickEvent) -> {
                 this.page--;
+                if (this.previousPageEvent != null)
+                    this.previousPageEvent.accept(new GUINextPageEvent(guiClickEvent, false));
                 this.onCreate(player);
+                if (this.previousPageEvent != null)
+                    this.previousPageEvent.accept(new GUINextPageEvent(guiClickEvent, true));
             }));
         }
 
         if (pages.size() >= 2 && Utils.indexExists(pages, page + 1)) {
             bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "Go to next page"), (guiClickEvent) -> {
                 this.page++;
+                if (this.nextPageEvent != null)
+                    this.nextPageEvent.accept(new GUINextPageEvent(guiClickEvent, false));
                 this.onCreate(player);
+                if (this.nextPageEvent != null)
+                    this.nextPageEvent.accept(new GUINextPageEvent(guiClickEvent, true));
             }));
         }
 
@@ -52,7 +74,7 @@ public class GUIMultipageListWindow extends AdvanceGUIWindow {
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, 1, "Current Page", "&aCurrent Page: &6" + this.page)));
         guiButtonList.addAll(bottomButtons);
 
-        this.update(guiButtonList, "Last Join", 54);
+        this.update(guiButtonList, this.guiName, this.slots);
         if (!super.isFirst()) {
             this.refresh(player);
         }
@@ -75,5 +97,45 @@ public class GUIMultipageListWindow extends AdvanceGUIWindow {
                 i = 0;
             }
         }
+    }
+
+    public String getGuiName() {
+        return guiName;
+    }
+
+    public void setGuiName(String guiName) {
+        this.guiName = guiName;
+    }
+
+    public int getSlots() {
+        return slots;
+    }
+
+    public void setSlots(int slots) {
+        this.slots = slots;
+    }
+
+    public int getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    public void setItemsPerPage(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+    }
+
+    public List<List<GUIButton>> getPages() {
+        return pages;
+    }
+
+    public void setPages(List<List<GUIButton>> pages) {
+        this.pages = pages;
+    }
+
+    public void setPreviousPageEvent(Consumer<GUINextPageEvent> previousPageEvent) {
+        this.previousPageEvent = previousPageEvent;
+    }
+
+    public void setNextPageEvent(Consumer<GUINextPageEvent> nextPageEvent) {
+        this.nextPageEvent = nextPageEvent;
     }
 }
