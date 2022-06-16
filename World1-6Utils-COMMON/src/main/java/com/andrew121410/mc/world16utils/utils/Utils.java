@@ -160,4 +160,8 @@ public class Utils {
             return false;
         }
     }
+
+    public boolean indexExists(final List list, final int index) {
+        return index >= 0 && index < list.size();
+    }
 }
