@@ -20,5 +20,13 @@ public abstract class GUIButton {
         return itemStack;
     }
 
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
     public abstract void onClick(GUIClickEvent guiClickEvent);
 }
