@@ -89,7 +89,7 @@ public final class World16Utils extends JavaPlugin {
         getCommand("world1-6utils").setTabCompleter((sender, command, s, args) -> {
             if (!sender.hasPermission("world16.world1-6utils")) return null;
 
-            if (args.length == 0) {
+            if (args.length == 1) {
                 return Arrays.asList("update");
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
                 return TabUtils.getContainsString(args[1], UpdateManager.getPluginNamesFromUpdaters());
