@@ -161,7 +161,7 @@ public class Utils {
         }
     }
 
-    public boolean indexExists(final List list, final int index) {
+    public static boolean indexExists(final List list, final int index) {
         return index >= 0 && index < list.size();
     }
 }
