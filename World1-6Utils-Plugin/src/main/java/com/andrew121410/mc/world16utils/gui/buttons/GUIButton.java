@@ -29,4 +29,30 @@ public abstract class GUIButton {
     }
 
     public abstract void onClick(GUIClickEvent guiClickEvent);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GUIButton guiButton = (GUIButton) o;
+
+        if (slot != guiButton.slot) return false;
+        return itemStack != null ? itemStack.equals(guiButton.itemStack) : guiButton.itemStack == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = slot;
+        result = 31 * result + (itemStack != null ? itemStack.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GUIButton{" +
+                "slot=" + slot +
+                ", itemStack=" + itemStack +
+                '}';
+    }
 }
