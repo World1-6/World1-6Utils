@@ -1,17 +1,21 @@
 package com.andrew121410.mc.world16utils;
 
+import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
+import com.andrew121410.mc.world16utils.updater.UpdateManager;
+import com.andrew121410.mc.world16utils.updater.Updater;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
+import com.andrew121410.mc.world16utils.utils.TabUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
 public final class World16Utils extends JavaPlugin {
 
-    public static final String DATE_OF_VERSION = "4/11/2022";
+    public static final String DATE_OF_VERSION = "6/15/2022";
     public static final String PREFIX = "[&9World1-6Utils&r]";
     public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
     public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
@@ -19,26 +23,24 @@ public final class World16Utils extends JavaPlugin {
 
     private static World16Utils instance;
 
-    private Updater updater;
     private ClassWrappers classWrappers;
     private ChatResponseManager chatResponseManager;
 
     @Override
+    public void onLoad() {
+        UpdateManager.init();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
-        this.updater = new Updater(this);
         this.classWrappers = new ClassWrappers(this);
         this.chatResponseManager = new ChatResponseManager(this);
         registerListeners();
         registerCommand();
 
-        // Check for updates
-        this.getServer().getScheduler().runTaskAsynchronously(this, () -> {
-            if (updater.shouldUpdate()) {
-                getLogger().info("Looks like there is an update available for World1-6Utils!");
-                getLogger().info("You can update to it by using the command: /world1-6utils update");
-            }
-        });
+        // Register updater also check for updates.
+        UpdateManager.registerUpdater(this, new Updater(this));
     }
 
     @Override
@@ -60,15 +62,24 @@ public final class World16Utils extends JavaPlugin {
 
             if (args.length == 0) {
                 sender.sendMessage("/world1-6utils update");
-            } else if (args[0].equalsIgnoreCase("update")) {
-                sender.sendMessage("Checking for updates...");
+            } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
+                String pluginName = args[1];
+
+                AbstractBasicSelfUpdater updater = UpdateManager.getUpdater(pluginName);
+                if (updater == null) {
+                    sender.sendMessage("There is no updater for " + pluginName + ".");
+                    return true;
+                }
+
+                sender.sendMessage("Checking for updates for " + pluginName + "...");
                 getServer().getScheduler().runTaskAsynchronously(this, () -> {
                     if (updater.shouldUpdate()) {
-                        sender.sendMessage("Updating World1-6Utils...");
+                        sender.sendMessage("An update is available!");
+                        sender.sendMessage("Downloading update...");
                         String message = updater.update();
                         sender.sendMessage(message);
                     } else {
-                        getLogger().info("World1-6Utils is up to date!");
+                        sender.sendMessage("There is no update available for " + pluginName + ".");
                     }
                 });
             }
@@ -80,6 +91,8 @@ public final class World16Utils extends JavaPlugin {
 
             if (args.length == 0) {
                 return Arrays.asList("update");
+            } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
+                return TabUtils.getContainsString(args[1], UpdateManager.getPluginNamesFromUpdaters());
             }
             return null;
         });

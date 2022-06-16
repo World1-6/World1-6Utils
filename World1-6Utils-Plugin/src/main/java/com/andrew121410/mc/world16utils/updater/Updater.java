@@ -1,6 +1,7 @@
-package com.andrew121410.mc.world16utils;
+package com.andrew121410.mc.world16utils.updater;
 
 import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
+import com.andrew121410.mc.world16utils.World16Utils;
 
 public class Updater extends AbstractBasicSelfUpdater {
 
