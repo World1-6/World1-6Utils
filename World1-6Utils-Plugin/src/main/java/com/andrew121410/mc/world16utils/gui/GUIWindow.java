@@ -49,4 +49,8 @@ public abstract class GUIWindow implements InventoryHolder {
     public Inventory getInventory() {
         return this.inventory;
     }
+
+    public boolean isFirst() {
+        return isFirst;
+    }
 }
