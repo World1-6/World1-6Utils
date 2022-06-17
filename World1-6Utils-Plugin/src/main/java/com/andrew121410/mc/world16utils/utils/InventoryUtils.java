@@ -30,7 +30,7 @@ public class InventoryUtils {
         return item;
     }
 
-    public static ItemStack getPlayerHead(OfflinePlayer player) {
-        return PlayerUtils.getPlayerHead(player);
+    public static ItemStack getPlayerHead(OfflinePlayer player, String displayName, List<String> lore) {
+        return PlayerUtils.getPlayerHead(player, displayName, lore);
     }
 }
