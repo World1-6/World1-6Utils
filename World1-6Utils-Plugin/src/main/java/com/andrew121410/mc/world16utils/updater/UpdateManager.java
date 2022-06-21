@@ -3,6 +3,7 @@ package com.andrew121410.mc.world16utils.updater;
 import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 import com.andrew121410.mc.world16utils.World16Utils;
 import net.frankheijden.serverutils.bukkit.managers.BukkitPluginManager;
+import net.frankheijden.serverutils.common.entities.results.CloseablePluginResult;
 import net.frankheijden.serverutils.common.entities.results.Result;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -57,8 +58,10 @@ public class UpdateManager {
                 // Unload the plugin first if shouldReload is true and the server has ServerUtils plugin
                 if (updateEntry.isShouldReload() && hasServerUtilsPlugin()) {
                     UpdateManager.getScheduler().runTask(World16Utils.getInstance(), () -> {
-                        Result result = BukkitPluginManager.get().disablePlugin(plugin).getResult();
+                        CloseablePluginResult<Plugin> closeablePluginResult = BukkitPluginManager.get().unloadPlugin(plugin);
+                        Result result = closeablePluginResult.getResult();
                         sender.sendMessage("Unloaded " + pluginName + "!: " + result.name());
+                        closeablePluginResult.tryClose();
                     });
                 }
 
