@@ -46,6 +46,12 @@
             <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
 
+        <!-- ServerUtils repo -->
+        <repository>
+            <id>fvdh</id>
+            <url>https://repo.fvdh.dev/releases</url>
+        </repository>
+
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>

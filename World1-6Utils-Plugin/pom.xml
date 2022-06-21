@@ -61,8 +61,15 @@
         <dependency>
             <groupId>com.github.andrew121410</groupId>
             <artifactId>CCUtilsJava</artifactId>
-            <version>77f0f51f</version>
+            <version>dc4fee70</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.frankheijden.serverutils</groupId>
+            <artifactId>ServerUtils</artifactId>
+            <version>3.5.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -1,6 +1,5 @@
 package com.andrew121410.mc.world16utils;
 
-import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 
 public final class World16Utils extends JavaPlugin {
 
-    public static final String DATE_OF_VERSION = "6/15/2022";
+    public static final String DATE_OF_VERSION = "6/20/2022";
     public static final String PREFIX = "[&9World1-6Utils&r]";
     public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
     public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
@@ -40,7 +39,7 @@ public final class World16Utils extends JavaPlugin {
         registerCommand();
 
         // Register updater also check for updates.
-        UpdateManager.registerUpdater(this, new Updater(this));
+        UpdateManager.registerUpdater(this, new Updater(this), false);
     }
 
     @Override
@@ -64,24 +63,7 @@ public final class World16Utils extends JavaPlugin {
                 sender.sendMessage("/world1-6utils update");
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
                 String pluginName = args[1];
-
-                AbstractBasicSelfUpdater updater = UpdateManager.getUpdater(pluginName);
-                if (updater == null) {
-                    sender.sendMessage("There is no updater for " + pluginName + ".");
-                    return true;
-                }
-
-                sender.sendMessage("Checking for updates for " + pluginName + "...");
-                getServer().getScheduler().runTaskAsynchronously(this, () -> {
-                    if (updater.shouldUpdate()) {
-                        sender.sendMessage("An update is available!");
-                        sender.sendMessage("Downloading update...");
-                        String message = updater.update();
-                        sender.sendMessage(message);
-                    } else {
-                        sender.sendMessage("There is no update available for " + pluginName + ".");
-                    }
-                });
+                UpdateManager.update(sender, pluginName);
             }
             return true;
         });
