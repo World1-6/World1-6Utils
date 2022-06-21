@@ -3,10 +3,12 @@ package com.andrew121410.mc.world16utils.updater;
 import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 import com.andrew121410.mc.world16utils.World16Utils;
 import net.frankheijden.serverutils.bukkit.managers.BukkitPluginManager;
+import net.frankheijden.serverutils.common.entities.results.Result;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,8 +56,10 @@ public class UpdateManager {
 
                 // Unload the plugin first if shouldReload is true and the server has ServerUtils plugin
                 if (updateEntry.isShouldReload() && hasServerUtilsPlugin()) {
-                    BukkitPluginManager.get().disablePlugin(plugin);
-                    sender.sendMessage("Unloaded " + pluginName + " from the server.");
+                    UpdateManager.getScheduler().runTask(World16Utils.getInstance(), () -> {
+                        Result result = BukkitPluginManager.get().disablePlugin(plugin).getResult();
+                        sender.sendMessage("Unloaded " + pluginName + "!: " + result.name());
+                    });
                 }
 
                 sender.sendMessage("Downloading update...");
@@ -64,10 +68,11 @@ public class UpdateManager {
 
                 // Load the plugin again if shouldReload is true and the server has ServerUtils plugin
                 if (updateEntry.isShouldReload() && hasServerUtilsPlugin()) {
-                    BukkitPluginManager.get().loadPlugin(file.getName());
-                    sender.sendMessage("Loaded " + pluginName + "!");
+                    UpdateManager.getScheduler().runTask(World16Utils.getInstance(), () -> {
+                        Result result = BukkitPluginManager.get().loadPlugin(file.getName()).getResult();
+                        sender.sendMessage("Loaded " + pluginName + "!: " + result.name());
+                    });
                 }
-
             } else {
                 sender.sendMessage("There is no update available for " + pluginName + ".");
             }
@@ -88,6 +93,10 @@ public class UpdateManager {
 
     public static boolean hasServerUtilsPlugin() {
         return World16Utils.getInstance().getServer().getPluginManager().getPlugin("ServerUtils") != null;
+    }
+
+    private static BukkitScheduler getScheduler() {
+        return World16Utils.getInstance().getServer().getScheduler();
     }
 }
 
