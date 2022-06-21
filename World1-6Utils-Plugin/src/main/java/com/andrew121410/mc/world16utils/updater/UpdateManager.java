@@ -32,6 +32,10 @@ public class UpdateManager {
         });
     }
 
+    public static void registerUpdater(JavaPlugin javaPlugin, AbstractBasicSelfUpdater updater) {
+        registerUpdater(javaPlugin, updater, false);
+    }
+
     public static void update(CommandSender sender, String pluginName) {
         UpdateEntry updateEntry = UpdateManager.getUpdateEntry(pluginName);
         if (updateEntry == null) {
