@@ -1,4 +1,4 @@
-package com.andrew121410.mc.world16utils.updater;
+package com.andrew121410.mc.world16utils;
 
 import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
 import com.andrew121410.mc.world16utils.World16Utils;

@@ -5,7 +5,6 @@ import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
-import com.andrew121410.mc.world16utils.updater.Updater;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import com.andrew121410.mc.world16utils.utils.TabUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 
 public final class World16Utils extends JavaPlugin {
 
-    public static final String DATE_OF_VERSION = "6/20/2022";
+    public static final String DATE_OF_VERSION = "6/24/2022";
     public static final String PREFIX = "[&9World1-6Utils&r]";
     public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
     public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
@@ -38,8 +37,8 @@ public final class World16Utils extends JavaPlugin {
         registerListeners();
         registerCommand();
 
-        // Register updater also check for updates.
-        UpdateManager.registerUpdater(this, new Updater(this), false);
+        // Register updater for this plugin, checks for updates, and registers it so that you can use "/world1-6utils update" to update this plugin
+        UpdateManager.registerUpdater(this, new Updater(this));
     }
 
     @Override
