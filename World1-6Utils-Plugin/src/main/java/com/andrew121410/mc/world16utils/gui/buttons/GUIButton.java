@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.gui.buttons;
 
+import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class GUIButton {

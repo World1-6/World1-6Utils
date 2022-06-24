@@ -1,7 +1,7 @@
 package com.andrew121410.mc.world16utils.listeners;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.AbstractGUIWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,10 +20,10 @@ public class OnInventoryCloseEvent implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (inventoryHolder instanceof GUIWindow) {
+        if (inventoryHolder instanceof AbstractGUIWindow) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                if (event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof GUIWindow) return;
-                GUIWindow guiWindow = (GUIWindow) inventoryHolder;
+                if (event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow) return;
+                AbstractGUIWindow guiWindow = (AbstractGUIWindow) inventoryHolder;
                 guiWindow.onClose(event);
             }, 2L);
         }

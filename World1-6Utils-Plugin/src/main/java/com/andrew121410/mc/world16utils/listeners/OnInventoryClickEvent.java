@@ -1,7 +1,7 @@
 package com.andrew121410.mc.world16utils.listeners;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.AbstractGUIWindow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,9 +20,9 @@ public class OnInventoryClickEvent implements Listener {
     public void onClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null) {
             InventoryHolder inventoryHolder = event.getClickedInventory().getHolder();
-            if (inventoryHolder instanceof GUIWindow) {
+            if (inventoryHolder instanceof AbstractGUIWindow) {
                 event.setCancelled(true);
-                GUIWindow guiWindow = (GUIWindow) inventoryHolder;
+                AbstractGUIWindow guiWindow = (AbstractGUIWindow) inventoryHolder;
                 guiWindow.onSlotClicked(event);
             }
         }

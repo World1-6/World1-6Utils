@@ -1,9 +1,9 @@
 package com.andrew121410.mc.world16utils.gui.buttons.defaults;
 
 import com.andrew121410.mc.world16utils.chat.Translate;
-import com.andrew121410.mc.world16utils.gui.GUIWindow;
+import com.andrew121410.mc.world16utils.gui.AbstractGUIWindow;
 import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
-import com.andrew121410.mc.world16utils.gui.buttons.GUIClickEvent;
+import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -48,7 +48,7 @@ public class LoreShifterButton extends GUIButton {
     @Override
     public void onClick(GUIClickEvent guiClickEvent) {
         InventoryClickEvent event = guiClickEvent.getEvent();
-        GUIWindow guiWindow = guiClickEvent.getGuiWindow();
+        AbstractGUIWindow guiWindow = guiClickEvent.getGuiWindow();
         Player player = (Player) event.getWhoClicked();
 
         if (event.getClick() == ClickType.RIGHT) {
