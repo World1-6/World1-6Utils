@@ -28,6 +28,11 @@ public class UpdateManager {
         });
     }
 
+    @Deprecated(forRemoval = true)
+    public static void registerUpdater(JavaPlugin javaPlugin, AbstractBasicSelfUpdater updater, boolean useless) {
+        registerUpdater(javaPlugin, updater);
+    }
+
     public static void update(CommandSender sender, String pluginName) {
         AbstractBasicSelfUpdater updater = UpdateManager.getUpdater(pluginName);
         if (updater == null) {
