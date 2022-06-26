@@ -25,6 +25,7 @@
         <module>World1-6Utils_V1_18_R2</module>
         <module>World1-6Utils_V1_19_R1</module>
         <module>World1-6Utils_WE_7210</module>
+        <module>World1-6Utils_CMI_API</module>
     </modules>
 
     <repositories>
