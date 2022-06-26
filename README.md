@@ -1,5 +1,4 @@
-[![Release](https://jitpack.io/v/World1-6/World1-6Utils.svg)]
-(https://jitpack.io/#World1-6/World1-6Utils)
+[![Release](https://jitpack.io/v/World1-6/World1-6Utils.svg)](https://jitpack.io/#World1-6/World1-6Utils)
 
 # World1-6Utils
 A library shared between all my plugins.
