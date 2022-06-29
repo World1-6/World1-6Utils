@@ -47,6 +47,12 @@
             <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
 
+        <!--Floodgate -->
+        <repository>
+            <id>opencollab-snapshot</id>
+            <url>https://repo.opencollab.dev/maven-snapshots/</url>
+        </repository>
+
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
