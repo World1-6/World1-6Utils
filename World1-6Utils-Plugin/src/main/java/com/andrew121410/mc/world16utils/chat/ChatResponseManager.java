@@ -14,34 +14,34 @@ import java.util.function.BiConsumer;
 
 public class ChatResponseManager {
 
-    private World16Utils plugin;
+    private final World16Utils plugin;
     private boolean running;
 
-    private Map<UUID, Response> consumerMap;
+    private final Map<UUID, Response> responseMap;
 
     public ChatResponseManager(World16Utils plugin) {
         this.plugin = plugin;
-        this.consumerMap = new HashMap<>();
+        this.responseMap = new HashMap<>();
     }
 
     public boolean create(Player player, String title, String subtitle, BiConsumer<Player, String> consumer) {
-        if (this.consumerMap.containsKey(player.getUniqueId())) return false;
-        this.consumerMap.put(player.getUniqueId(), new Response(title, subtitle, consumer));
+        if (this.responseMap.containsKey(player.getUniqueId())) return false;
+        this.responseMap.put(player.getUniqueId(), new Response(title, subtitle, consumer));
         loop();
         return true;
     }
 
     public boolean isWaiting(UUID uuid) {
-        return this.consumerMap.containsKey(uuid);
+        return this.responseMap.containsKey(uuid);
     }
 
     public BiConsumer<Player, String> get(Player player) {
-        if (!this.consumerMap.containsKey(player.getUniqueId())) return null;
-        return this.consumerMap.get(player.getUniqueId()).getConsumer();
+        if (!this.responseMap.containsKey(player.getUniqueId())) return null;
+        return this.responseMap.get(player.getUniqueId()).getConsumer();
     }
 
     public void remove(UUID uuid) {
-        this.consumerMap.remove(uuid);
+        this.responseMap.remove(uuid);
     }
 
     private void loop() {
@@ -50,11 +50,11 @@ public class ChatResponseManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (consumerMap.size() == 0) {
+                if (responseMap.size() == 0) {
                     running = false;
                     this.cancel();
                 }
-                Iterator<Map.Entry<UUID, Response>> iterator = consumerMap.entrySet().iterator();
+                Iterator<Map.Entry<UUID, Response>> iterator = responseMap.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<UUID, Response> entry = iterator.next();
                     UUID uuid = entry.getKey();
@@ -75,9 +75,9 @@ public class ChatResponseManager {
 }
 
 class Response {
-    private String title;
-    private String subtitle;
-    private BiConsumer<Player, String> consumer;
+    private final String title;
+    private final String subtitle;
+    private final BiConsumer<Player, String> consumer;
 
     public Response(String title, String subtitle, BiConsumer<Player, String> consumer) {
         this.title = title;
