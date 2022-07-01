@@ -23,28 +23,40 @@ public class GUIMultipageListWindow extends GUIWindow {
     private String name;
     private int slots = 54;
 
+    private int page = 0;
     private int itemsPerPage;
     private List<List<GUIButton>> pages;
-
-    private int page = 0;
 
     private Consumer<GUINextPageEvent> pageEvent = null;
 
     public GUIMultipageListWindow(String name, List<GUIButton> buttons, Integer itemsPerPage) {
         this.name = name;
-
         this.itemsPerPage = itemsPerPage != null ? itemsPerPage : 45;
-        this.pages = Lists.partition(buttons, this.itemsPerPage);
+        this.pages = setup(buttons);
+    }
 
-        // Set the correct slot numbers for the buttons.
-        for (List<GUIButton> page : this.pages) {
-            determineSlotNumbers(page);
-        }
+    public GUIMultipageListWindow(String name, List<GUIButton> buttons) {
+        this(name, buttons, null);
     }
 
     @Override
     public void onCreate(Player player) {
+        handle(player, null);
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent inventoryCloseEvent) {
+
+    }
+
+    private void handle(Player player, List<List<GUIButton>> searchResults) {
         List<GUIButton> bottomButtons = new ArrayList<>();
+        List<List<GUIButton>> pages = this.pages;
+
+        if (searchResults != null) {
+            pages = searchResults;
+            this.page = 0;
+        }
 
         if (page != 0 && Utils.indexExists(pages, page - 1)) {
             bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "Previous Page"), (guiClickEvent) -> {
@@ -71,40 +83,32 @@ public class GUIMultipageListWindow extends GUIWindow {
         List<GUIButton> guiButtonList = new ArrayList<>(pages.get(page));
 
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, 1, "Current Page", "&aCurrent Page: &6" + this.page)));
-        bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "Search", ""), null, null, (player1, string) -> {
-            List<GUIButton> sortByContainsList = new ArrayList<>();
+        if (searchResults == null)
+            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "Search", ""), null, null, (player1, string) -> {
+                List<GUIButton> sortByContainsList = new ArrayList<>();
 
-            List<GUIButton> toSort = new ArrayList<>();
-            for (List<GUIButton> guiButtons : this.pages) {
-                toSort.addAll(guiButtons);
-            }
+                List<GUIButton> toSort = new ArrayList<>();
+                for (List<GUIButton> guiButtons : this.pages) {
+                    toSort.addAll(guiButtons);
+                }
 
-            // Loop through all the buttons and add them to a list if they contain the search string.
-            for (GUIButton guiButton : toSort) {
-                ItemStack itemStack = guiButton.getItemStack();
-                if (itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName()) {
-                    if (itemStack.getItemMeta().getDisplayName().toLowerCase().contains(string.toLowerCase())) {
-                        sortByContainsList.add(guiButton);
+                // Loop through all the buttons and add them to a list if they contain the search string.
+                for (GUIButton guiButton : toSort) {
+                    ItemStack itemStack = guiButton.getItemStack();
+                    if (itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName()) {
+                        if (itemStack.getItemMeta().getDisplayName().toLowerCase().contains(string.toLowerCase())) {
+                            sortByContainsList.add(guiButton);
+                        }
                     }
                 }
-            }
 
-            if (sortByContainsList.size() == 0) {
-                player1.sendMessage("Nothing was found with the search string of: " + string);
-                return;
-            }
+                if (sortByContainsList.size() == 0) {
+                    player1.sendMessage("Nothing was found with the search string of: " + string);
+                    return;
+                }
 
-            List<List<GUIButton>> thePages = Lists.partition(sortByContainsList, itemsPerPage);
-            // For now only support one page for search.
-            sortByContainsList = thePages.get(0);
-
-            // Determine the slot numbers for the buttons.
-            determineSlotNumbers(sortByContainsList);
-
-            // Update the GUI and open it.
-            this.update(sortByContainsList, this.name, this.slots);
-            this.open(player1);
-        }));
+                this.handle(player1, setup(sortByContainsList));
+            }));
         guiButtonList.addAll(bottomButtons);
 
         this.update(guiButtonList, this.name, this.slots);
@@ -113,9 +117,15 @@ public class GUIMultipageListWindow extends GUIWindow {
         }
     }
 
-    @Override
-    public void onClose(InventoryCloseEvent inventoryCloseEvent) {
+    private List<List<GUIButton>> setup(List<GUIButton> guiButtonList) {
+        List<List<GUIButton>> thePages = Lists.partition(guiButtonList, this.itemsPerPage);
 
+        // Set the correct slot numbers for the buttons.
+        for (List<GUIButton> page : thePages) {
+            determineSlotNumbers(page);
+        }
+
+        return thePages;
     }
 
     private void determineSlotNumbers(List<GUIButton> guiButtonList) {

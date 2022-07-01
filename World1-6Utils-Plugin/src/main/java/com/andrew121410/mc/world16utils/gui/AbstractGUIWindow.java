@@ -40,7 +40,13 @@ public abstract class AbstractGUIWindow implements InventoryHolder {
     public void refresh(Player player) {
         this.inventory.clear();
         this.populateInventory(player);
-        player.updateInventory();
+
+        // Try to open the Inventory again if the GUI refreshed and the player isn't in the GUI.
+        if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow)) {
+            this.open(player);
+        } else {
+            player.updateInventory();
+        }
     }
 
     public abstract void onClose(InventoryCloseEvent event);
