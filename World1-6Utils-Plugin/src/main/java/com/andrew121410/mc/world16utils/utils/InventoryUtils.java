@@ -1,9 +1,7 @@
 package com.andrew121410.mc.world16utils.utils;
 
 import com.andrew121410.mc.world16utils.chat.Translate;
-import com.andrew121410.mc.world16utils.player.PlayerUtils;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -28,9 +26,5 @@ public class InventoryUtils {
         itemMeta.setDisplayName(Translate.color(displayName));
         item.setItemMeta(itemMeta);
         return item;
-    }
-
-    public static ItemStack getPlayerHead(OfflinePlayer player, String displayName, String... lore) {
-        return PlayerUtils.getPlayerHead(player, displayName, lore);
     }
 }

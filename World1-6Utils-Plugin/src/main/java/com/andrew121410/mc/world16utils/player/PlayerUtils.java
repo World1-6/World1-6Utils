@@ -12,10 +12,12 @@ import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.geysermc.floodgate.api.FloodgateApi;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class PlayerUtils {
 
@@ -25,12 +27,15 @@ public class PlayerUtils {
         return player.getTargetBlock(null, 5);
     }
 
-    public static ItemStack getPlayerHead(OfflinePlayer player, String displayName, String... lore) {
+    public static Block getBlockPlayerIsLookingAt(Player player, int range) {
+        return player.getTargetBlock(null, range);
+    }
+
+    private static ItemStack getPlayerHead(OfflinePlayer player) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
-        skullMeta.setDisplayName(displayName);
-        skullMeta.setLore(Arrays.asList(lore));
+        skullMeta.setDisplayName(player.getName());
 
         // Player heads don't work with bedrock players
         if (Bukkit.getPluginManager().getPlugin("floodgate") != null) {
@@ -42,24 +47,39 @@ public class PlayerUtils {
 
         PlayerProfile playerProfile = player.getPlayerProfile();
         if (!playerProfile.isComplete() && !playerTexturesMap.containsKey(player.getUniqueId())) {
-            playerProfile.update().thenAcceptAsync(updatedProfile -> {
-                if (updatedProfile == null || !updatedProfile.isComplete()) return;
-                playerTexturesMap.putIfAbsent(player.getUniqueId(), updatedProfile.getTextures());
-                skullMeta.setOwnerProfile(updatedProfile);
-                itemStack.setItemMeta(skullMeta);
-            }, runnable -> Bukkit.getScheduler().runTask(World16Utils.getInstance(), runnable));
-        } else {
-            PlayerTextures playerTextures;
-            // If the player is online then it's guaranteed to have textures in its PlayerProfile, so we can use it
-            if (player.isOnline()) {
-                playerTextures = player.getPlayerProfile().getTextures();
-            } else {
-                playerTextures = playerTexturesMap.getOrDefault(player.getUniqueId(), null);
+            try {
+                playerProfile = playerProfile.update().get();
+
+                // Just in case
+                if (playerProfile == null || !playerProfile.isComplete()) {
+                    itemStack.setItemMeta(skullMeta);
+                    return itemStack;
+                }
+
+                playerTexturesMap.putIfAbsent(player.getUniqueId(), playerProfile.getTextures());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            PlayerTextures playerTextures = playerTexturesMap.getOrDefault(player.getUniqueId(), null);
             playerProfile.setTextures(playerTextures);
-            skullMeta.setOwnerProfile(playerProfile);
-            itemStack.setItemMeta(skullMeta);
         }
+        skullMeta.setOwnerProfile(playerProfile);
+        itemStack.setItemMeta(skullMeta);
         return itemStack;
+    }
+
+    public static void getPlayerHead(OfflinePlayer player, Consumer<ItemStack> consumer) {
+        Bukkit.getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
+            ItemStack itemStack = getPlayerHead(player);
+            Bukkit.getScheduler().runTask(World16Utils.getInstance(), () -> consumer.accept(itemStack));
+        });
+    }
+
+    public static void getPlayerHeads(List<OfflinePlayer> players, Consumer<Map<OfflinePlayer, ItemStack>> consumer) {
+        Bukkit.getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
+            Map<OfflinePlayer, ItemStack> itemStackMap = players.stream().collect(Collectors.toMap(player -> player, PlayerUtils::getPlayerHead));
+            Bukkit.getScheduler().runTask(World16Utils.getInstance(), () -> consumer.accept(itemStackMap));
+        });
     }
 }
