@@ -56,26 +56,25 @@ public class GUIMultipageListWindow extends GUIWindow {
 
         if (searchResults != null) {
             pages = searchResults;
-            this.page = 0;
         }
 
         if (page != 0 && Utils.indexExists(pages, page - 1)) {
-            bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "Previous Page"), (guiClickEvent) -> {
+            bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, this.page - 1, PageEventType.PREV_PAGE, false));
                 this.page--;
-                this.onCreate(player);
+                this.handle(player, searchResults);
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, null, PageEventType.PREV_PAGE, true));
             }));
         }
 
         if (pages.size() >= 2 && Utils.indexExists(pages, page + 1)) {
-            bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "Go to next page"), (guiClickEvent) -> {
+            bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, this.page + 1, PageEventType.NEXT_PAGE, false));
                 this.page++;
-                this.onCreate(player);
+                this.handle(player, searchResults);
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, null, PageEventType.NEXT_PAGE, true));
             }));
@@ -83,9 +82,11 @@ public class GUIMultipageListWindow extends GUIWindow {
 
         List<AbstractGUIButton> guiButtonList = new ArrayList<>(pages.get(page));
 
-        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, 1, "Current Page", "&aCurrent Page: &6" + this.page)));
-        if (searchResults == null)
-            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "Search", ""), null, null, (player1, string) -> {
+        int realPageNumber = this.page + 1;
+        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
+
+        if (searchResults == null) {
+            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "&6Search", "Use this to search for things"), null, null, (player1, string) -> {
                 List<CloneableGUIButton> sortByContainsList = new ArrayList<>();
 
                 List<CloneableGUIButton> toSort = new ArrayList<>();
@@ -110,8 +111,17 @@ public class GUIMultipageListWindow extends GUIWindow {
                     return;
                 }
 
+                this.page = 0;
                 this.handle(player1, setup(sortByContainsList));
             }));
+        } else {
+            bottomButtons.add(new ClickEventButton(48, InventoryUtils.createItem(Material.BARRIER, 1, "&eReturn", "Click me to exit search mode", "You're currently in search mode"), (guiClickEvent) -> {
+                this.page = 0;
+                this.handle(player, null);
+            }));
+        }
+
+        // Add the bottom buttons to the GUIButtonList.
         guiButtonList.addAll(bottomButtons);
 
         this.update(guiButtonList, this.name, this.slots);
