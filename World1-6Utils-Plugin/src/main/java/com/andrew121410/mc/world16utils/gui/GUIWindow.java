@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.gui;
 
-import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,7 +14,7 @@ public abstract class GUIWindow extends AbstractGUIWindow {
 
     private String name;
     private int slots;
-    private Map<Integer, GUIButton> guiButtonMap;
+    private Map<Integer, AbstractGUIButton> guiButtonMap;
 
     public GUIWindow() {
     }
@@ -38,14 +38,14 @@ public abstract class GUIWindow extends AbstractGUIWindow {
     public boolean onSlotClicked(InventoryClickEvent event) {
         if (event == null) return false;
         if (event.getCurrentItem() == null) return false;
-        GUIButton guiButton = this.guiButtonMap.get(event.getSlot());
+        AbstractGUIButton guiButton = this.guiButtonMap.get(event.getSlot());
         if (guiButton != null) guiButton.onClick(new GUIClickEvent(this, event));
         return false;
     }
 
-    public void update(List<GUIButton> guiButtons, String name, Integer slots) {
+    public void update(List<AbstractGUIButton> guiButtons, String name, Integer slots) {
         if (guiButtons != null)
-            this.guiButtonMap = guiButtons.stream().collect(Collectors.toMap(GUIButton::getSlot, k -> k));
+            this.guiButtonMap = guiButtons.stream().collect(Collectors.toMap(AbstractGUIButton::getSlot, k -> k));
         else this.guiButtonMap = new HashMap<>();
         if (name != null) this.name = name;
         if (slots != null) this.slots = slots;

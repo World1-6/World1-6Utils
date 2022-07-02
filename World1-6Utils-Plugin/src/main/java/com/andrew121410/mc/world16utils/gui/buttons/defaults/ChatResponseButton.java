@@ -1,14 +1,14 @@
 package com.andrew121410.mc.world16utils.gui.buttons.defaults;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.BiConsumer;
 
-public class ChatResponseButton extends GUIButton {
+public class ChatResponseButton extends CloneableGUIButton {
 
     private final String title;
     private final String subtitle;

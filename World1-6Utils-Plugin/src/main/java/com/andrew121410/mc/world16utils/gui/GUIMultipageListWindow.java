@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.gui;
 
-import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.ChatResponseButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.ClickEventButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.NoEventButton;
@@ -25,17 +26,17 @@ public class GUIMultipageListWindow extends GUIWindow {
 
     private int page = 0;
     private int itemsPerPage;
-    private List<List<GUIButton>> pages;
+    private List<List<CloneableGUIButton>> pages;
 
     private Consumer<GUINextPageEvent> pageEvent = null;
 
-    public GUIMultipageListWindow(String name, List<GUIButton> buttons, Integer itemsPerPage) {
+    public GUIMultipageListWindow(String name, List<CloneableGUIButton> buttons, Integer itemsPerPage) {
         this.name = name;
         this.itemsPerPage = itemsPerPage != null ? itemsPerPage : 45;
         this.pages = setup(buttons);
     }
 
-    public GUIMultipageListWindow(String name, List<GUIButton> buttons) {
+    public GUIMultipageListWindow(String name, List<CloneableGUIButton> buttons) {
         this(name, buttons, null);
     }
 
@@ -49,9 +50,9 @@ public class GUIMultipageListWindow extends GUIWindow {
 
     }
 
-    private void handle(Player player, List<List<GUIButton>> searchResults) {
-        List<GUIButton> bottomButtons = new ArrayList<>();
-        List<List<GUIButton>> pages = this.pages;
+    private void handle(Player player, List<List<CloneableGUIButton>> searchResults) {
+        List<CloneableGUIButton> bottomButtons = new ArrayList<>();
+        List<List<CloneableGUIButton>> pages = this.pages;
 
         if (searchResults != null) {
             pages = searchResults;
@@ -80,20 +81,22 @@ public class GUIMultipageListWindow extends GUIWindow {
             }));
         }
 
-        List<GUIButton> guiButtonList = new ArrayList<>(pages.get(page));
+        List<AbstractGUIButton> guiButtonList = new ArrayList<>(pages.get(page));
 
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, 1, "Current Page", "&aCurrent Page: &6" + this.page)));
         if (searchResults == null)
             bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "Search", ""), null, null, (player1, string) -> {
-                List<GUIButton> sortByContainsList = new ArrayList<>();
+                List<CloneableGUIButton> sortByContainsList = new ArrayList<>();
 
-                List<GUIButton> toSort = new ArrayList<>();
-                for (List<GUIButton> guiButtons : this.pages) {
-                    toSort.addAll(guiButtons);
+                List<CloneableGUIButton> toSort = new ArrayList<>();
+                for (List<CloneableGUIButton> guiButtons : this.pages) {
+                    for (CloneableGUIButton guiButton : guiButtons) {
+                        toSort.add(guiButton.clone());
+                    }
                 }
 
                 // Loop through all the buttons and add them to a list if they contain the search string.
-                for (GUIButton guiButton : toSort) {
+                for (CloneableGUIButton guiButton : toSort) {
                     ItemStack itemStack = guiButton.getItemStack();
                     if (itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName()) {
                         if (itemStack.getItemMeta().getDisplayName().toLowerCase().contains(string.toLowerCase())) {
@@ -117,21 +120,21 @@ public class GUIMultipageListWindow extends GUIWindow {
         }
     }
 
-    private List<List<GUIButton>> setup(List<GUIButton> guiButtonList) {
-        List<List<GUIButton>> thePages = Lists.partition(guiButtonList, this.itemsPerPage);
+    private List<List<CloneableGUIButton>> setup(List<CloneableGUIButton> guiButtonList) {
+        List<List<CloneableGUIButton>> thePages = Lists.partition(guiButtonList, this.itemsPerPage);
 
         // Set the correct slot numbers for the buttons.
-        for (List<GUIButton> page : thePages) {
+        for (List<CloneableGUIButton> page : thePages) {
             determineSlotNumbers(page);
         }
 
         return thePages;
     }
 
-    private void determineSlotNumbers(List<GUIButton> guiButtonList) {
+    private void determineSlotNumbers(List<CloneableGUIButton> guiButtonList) {
         int i = 0;
 
-        for (GUIButton guiButton : guiButtonList) {
+        for (CloneableGUIButton guiButton : guiButtonList) {
             guiButton.setSlot(i);
 
             if (i < this.itemsPerPage) {
@@ -166,11 +169,11 @@ public class GUIMultipageListWindow extends GUIWindow {
         this.itemsPerPage = itemsPerPage;
     }
 
-    public List<List<GUIButton>> getPages() {
+    public List<List<CloneableGUIButton>> getPages() {
         return pages;
     }
 
-    public void setPages(List<List<GUIButton>> pages) {
+    public void setPages(List<List<CloneableGUIButton>> pages) {
         this.pages = pages;
     }
 

@@ -2,7 +2,7 @@ package com.andrew121410.mc.world16utils.gui.buttons.defaults;
 
 import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.gui.AbstractGUIWindow;
-import com.andrew121410.mc.world16utils.gui.buttons.GUIButton;
+import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import org.bukkit.Sound;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class LoreShifterButton extends GUIButton {
+public class LoreShifterButton extends CloneableGUIButton {
 
     private BiConsumer<GUIClickEvent, Integer> biConsumer;
 

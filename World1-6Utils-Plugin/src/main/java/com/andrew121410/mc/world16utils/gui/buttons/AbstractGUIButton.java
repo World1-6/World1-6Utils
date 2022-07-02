@@ -3,12 +3,12 @@ package com.andrew121410.mc.world16utils.gui.buttons;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class GUIButton {
+public abstract class AbstractGUIButton {
 
     private int slot;
     private ItemStack itemStack;
 
-    public GUIButton(int slot, ItemStack itemStack) {
+    public AbstractGUIButton(int slot, ItemStack itemStack) {
         this.slot = slot;
         this.itemStack = itemStack;
     }
@@ -36,7 +36,7 @@ public abstract class GUIButton {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GUIButton guiButton = (GUIButton) o;
+        AbstractGUIButton guiButton = (AbstractGUIButton) o;
 
         if (slot != guiButton.slot) return false;
         return itemStack != null ? itemStack.equals(guiButton.itemStack) : guiButton.itemStack == null;
