@@ -16,12 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class PlayerUtils {
 
-    public static final Map<UUID, PlayerTextures> playerTexturesMap = new HashMap<>();
+    public static final ConcurrentHashMap<UUID, PlayerTextures> PLAYER_TEXTURES_CONCURRENT_HASH_MAP = new ConcurrentHashMap<>();
+    public static final ExecutorService PROFILE_EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
 
     public static Block getBlockPlayerIsLookingAt(Player player) {
         return player.getTargetBlock(null, 5);
@@ -31,7 +35,7 @@ public class PlayerUtils {
         return player.getTargetBlock(null, range);
     }
 
-    private static ItemStack getPlayerHead(OfflinePlayer player) {
+    public static CompletableFuture<ItemStack> getPlayerHead(OfflinePlayer player) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
@@ -41,45 +45,85 @@ public class PlayerUtils {
         if (Bukkit.getPluginManager().getPlugin("floodgate") != null) {
             if (FloodgateApi.getInstance().isFloodgateId(player.getUniqueId())) {
                 itemStack.setItemMeta(skullMeta);
-                return itemStack;
+                return CompletableFuture.completedFuture(itemStack);
             }
         }
 
         PlayerProfile playerProfile = player.getPlayerProfile();
-        if (!playerProfile.isComplete() && !playerTexturesMap.containsKey(player.getUniqueId())) {
-            try {
-                playerProfile = playerProfile.update().get();
+        // PlayerProfile is already completed that means the profile has skin data so lets use that.
+        if (playerProfile.isComplete()) {
+            skullMeta.setOwnerProfile(playerProfile);
+            itemStack.setItemMeta(skullMeta);
+            return CompletableFuture.completedFuture(itemStack);
+        }
 
-                // Just in case
-                if (playerProfile == null || !playerProfile.isComplete()) {
+        // If the player is already in cache then return the head from that
+        ItemStack fromPlayerCache = getPlayerHeadFromCache(player);
+        if (fromPlayerCache != null) {
+            return CompletableFuture.completedFuture(fromPlayerCache);
+        }
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                PlayerProfile newPlayerProfile = player.getPlayerProfile().update().get();
+
+                if (newPlayerProfile == null || !newPlayerProfile.isComplete()) {
                     itemStack.setItemMeta(skullMeta);
                     return itemStack;
                 }
 
-                playerTexturesMap.putIfAbsent(player.getUniqueId(), playerProfile.getTextures());
+                PLAYER_TEXTURES_CONCURRENT_HASH_MAP.putIfAbsent(player.getUniqueId(), newPlayerProfile.getTextures());
+                skullMeta.setOwnerProfile(newPlayerProfile);
+                itemStack.setItemMeta(skullMeta);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            PlayerTextures playerTextures = playerTexturesMap.getOrDefault(player.getUniqueId(), null);
-            playerProfile.setTextures(playerTextures);
-        }
+            return itemStack;
+        }, PROFILE_EXECUTOR_SERVICE);
+    }
+
+    public static ItemStack getPlayerHeadFromCache(OfflinePlayer offlinePlayer) {
+        PlayerTextures playerTextures = PLAYER_TEXTURES_CONCURRENT_HASH_MAP.getOrDefault(offlinePlayer.getUniqueId(), null);
+        if (playerTextures == null) return null;
+
+        PlayerProfile playerProfile = offlinePlayer.getPlayerProfile();
+        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+
+        skullMeta.setDisplayName(offlinePlayer.getName());
+
+        playerProfile.setTextures(playerTextures);
         skullMeta.setOwnerProfile(playerProfile);
         itemStack.setItemMeta(skullMeta);
         return itemStack;
     }
 
     public static void getPlayerHead(OfflinePlayer player, Consumer<ItemStack> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
-            ItemStack itemStack = getPlayerHead(player);
-            Bukkit.getScheduler().runTask(World16Utils.getInstance(), () -> consumer.accept(itemStack));
-        });
+        getPlayerHead(player).thenAcceptAsync(consumer, runnable -> Bukkit.getScheduler().runTask(World16Utils.getInstance(), runnable));
     }
 
     public static void getPlayerHeads(List<OfflinePlayer> players, Consumer<Map<OfflinePlayer, ItemStack>> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
-            Map<OfflinePlayer, ItemStack> itemStackMap = players.stream().collect(Collectors.toMap(player -> player, PlayerUtils::getPlayerHead));
-            Bukkit.getScheduler().runTask(World16Utils.getInstance(), () -> consumer.accept(itemStackMap));
-        });
+        // Get all CompletableFutures
+        Map<OfflinePlayer, CompletableFuture<ItemStack>> completableFutures = new HashMap<>();
+        for (OfflinePlayer player : players) {
+            completableFutures.put(player, getPlayerHead(player));
+        }
+
+        Map<OfflinePlayer, ItemStack> itemStacks = new HashMap<>();
+        CompletableFuture.allOf(completableFutures.values().toArray(new CompletableFuture[0])).thenAcceptAsync((v) -> {
+            // Get all the ItemStacks then put them in the map
+            for (Map.Entry<OfflinePlayer, CompletableFuture<ItemStack>> entry : completableFutures.entrySet()) {
+                OfflinePlayer player = entry.getKey();
+                CompletableFuture<ItemStack> completableFuture = entry.getValue();
+                try {
+                    ItemStack itemStack = completableFuture.get();
+                    itemStacks.put(player, itemStack);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            // Call the consumer with the itemStacks map
+            consumer.accept(itemStacks);
+        }, runnable -> Bukkit.getScheduler().runTask(World16Utils.getInstance(), runnable));
     }
 }
