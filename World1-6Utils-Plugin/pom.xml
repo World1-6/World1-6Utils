@@ -100,12 +100,12 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
-                            <pattern>com.cryptomorin.xseries</pattern>
-                            <shadedPattern>com.andrew121410.mc.world16utils.utils.xutils</shadedPattern>
+                            <pattern>com.cryptomorin.xseries.</pattern>
+                            <shadedPattern>com.andrew121410.mc.world16utils.utils.xutils.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.andrew121410.ccutils</pattern>
-                            <shadedPattern>com.andrew121410.mc.world16utils.utils.ccutils</shadedPattern>
+                            <pattern>com.andrew121410.ccutils.</pattern>
+                            <shadedPattern>com.andrew121410.mc.world16utils.utils.ccutils.</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
