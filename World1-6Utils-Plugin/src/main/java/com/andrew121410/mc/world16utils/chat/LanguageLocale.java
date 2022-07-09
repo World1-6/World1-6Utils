@@ -42,4 +42,9 @@ public class LanguageLocale {
         String real = LANGUAGE_MAP.get(javaPlugin.getName()).get(key);
         return Translate.color(real);
     }
+
+    @Deprecated
+    public static String color(String key) {
+        return Translate.color(key);
+    }
 }
