@@ -1,7 +1,7 @@
 package com.andrew121410.mc.world16utils.chat;
 
+import com.andrew121410.mc.world16utils.config.CustomYmlManager;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -10,41 +10,37 @@ import java.util.Map;
 
 public class LanguageLocale {
 
-    private final JavaPlugin javaPlugin;
-    private final FileConfiguration config;
+    private final Map<String, String> languageMap = new HashMap<>();
 
-    public static final Map<String, Map<String, String>> LANGUAGE_MAP = new HashMap<>();
+    private final JavaPlugin javaPlugin;
+    private final CustomYmlManager customYmlManager;
+    private final FileConfiguration config;
 
     public LanguageLocale(JavaPlugin plugin, String languageFile) {
         this.javaPlugin = plugin;
 
-        if (!javaPlugin.getDataFolder().exists()) {
-            this.javaPlugin.getDataFolder().mkdir();
-        }
-
-        File langFolder = new File(this.javaPlugin.getDataFolder().getName(), "lang");
-        if (!langFolder.exists()) langFolder.mkdir();
-
-        File languageConfig = new File(langFolder, languageFile);
-        this.config = YamlConfiguration.loadConfiguration(languageConfig);
-
-        LANGUAGE_MAP.putIfAbsent(javaPlugin.getName(), new HashMap<>());
+        this.customYmlManager = new CustomYmlManager(plugin);
+        this.customYmlManager.setup(new File(plugin.getDataFolder(), "lang"), languageFile);
+        this.config = this.customYmlManager.getConfig();
     }
 
     public boolean loadLanguage() {
         for (String key : config.getKeys(false)) {
-            LANGUAGE_MAP.get(javaPlugin.getName()).putIfAbsent(key, config.getString(key));
+            languageMap.putIfAbsent(key, config.getString(key));
         }
         return true;
     }
 
     public String translate(String key) {
-        String real = LANGUAGE_MAP.get(javaPlugin.getName()).get(key);
-        return Translate.color(real);
+        return languageMap.getOrDefault(key, null);
     }
 
     @Deprecated
     public static String color(String key) {
         return Translate.color(key);
+    }
+
+    public CustomYmlManager getConfig() {
+        return customYmlManager;
     }
 }

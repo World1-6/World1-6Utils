@@ -1,9 +1,5 @@
 package com.andrew121410.mc.world16utils.config;
 
-import com.andrew121410.mc.world16utils.World16Utils;
-import com.andrew121410.mc.world16utils.chat.LanguageLocale;
-import com.andrew121410.mc.world16utils.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,63 +9,61 @@ import java.io.IOException;
 
 public class CustomYmlManager {
 
-    private JavaPlugin plugin;
-
-    private FileConfiguration fileConfiguration;
-    private File file;
+    private final JavaPlugin plugin;
 
     private String fileName;
-    private boolean debug;
+    private File file;
+    private FileConfiguration fileConfiguration;
 
-    public CustomYmlManager(JavaPlugin plugin, boolean debug) {
+    public CustomYmlManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.debug = debug;
     }
 
-    public void setup(String fileName) {
+    public CustomYmlManager(JavaPlugin plugin, boolean debug) {
+        this(plugin);
+    }
+
+    public void setup(File folder, String fileName) {
         this.fileName = fileName;
 
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
-        }
-
-        file = new File(plugin.getDataFolder(), this.fileName);
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                Bukkit.getServer().getConsoleSender()
-                        .sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " The {nameoffile} has been created.").replace("{nameoffile}", this.fileName));
-            } catch (IOException e) {
-                Bukkit.getServer().getConsoleSender()
-                        .sendMessage(LanguageLocale
-                                .color(World16Utils.USELESS_TAG + " The {nameoffile} could not make for some reason.").replace("{nameoffile}", this.fileName));
+        if (!folder.exists()) {
+            if (!folder.mkdir()) {
+                throw new RuntimeException("Failed to create directory: " + folder.getAbsolutePath());
             }
         }
 
-        fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        this.file = new File(folder, this.fileName);
+
+        if (!this.file.exists()) {
+            try {
+                if (!this.file.createNewFile()) {
+                    throw new RuntimeException("Failed to create file: " + this.file.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.file);
     }
 
-    public FileConfiguration getConfig() {
-        return fileConfiguration;
+    public void setup(String fileName) {
+        setup(this.plugin.getDataFolder(), fileName);
     }
 
     public void saveConfig() {
         try {
-            fileConfiguration.save(file);
-            if (this.debug) {
-                Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &aThe {name} has been saved.").replace("{name}", this.fileName));
-            }
+            this.fileConfiguration.save(this.file);
         } catch (IOException e) {
-            Bukkit.getServer().getConsoleSender()
-                    .sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &cThe {name} has been NOT SAVED..").replace("{name}", this.fileName));
+            e.printStackTrace();
         }
     }
 
     public void reloadConfig() {
-        fileConfiguration = YamlConfiguration.loadConfiguration(file);
-        if (this.debug) {
-            Bukkit.getServer().getConsoleSender().sendMessage(LanguageLocale.color(World16Utils.USELESS_TAG + " &6The {nameoffile} has been reloaded.").replace("{nameoffile}", this.fileName));
-        }
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
+    }
+
+    public FileConfiguration getConfig() {
+        return this.fileConfiguration;
     }
 }
