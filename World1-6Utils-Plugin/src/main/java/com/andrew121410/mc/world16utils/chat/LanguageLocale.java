@@ -1,6 +1,5 @@
 package com.andrew121410.mc.world16utils.chat;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,10 +10,8 @@ import java.util.Map;
 
 public class LanguageLocale {
 
-    private File langFolder;
-
-    private JavaPlugin javaPlugin;
-    private FileConfiguration config;
+    private final JavaPlugin javaPlugin;
+    private final FileConfiguration config;
 
     public static final Map<String, Map<String, String>> LANGUAGE_MAP = new HashMap<>();
 
@@ -25,16 +22,13 @@ public class LanguageLocale {
             this.javaPlugin.getDataFolder().mkdir();
         }
 
-        langFolder = new File(this.javaPlugin.getDataFolder().getName(), "lang");
+        File langFolder = new File(this.javaPlugin.getDataFolder().getName(), "lang");
         if (!langFolder.exists()) langFolder.mkdir();
 
-        if (langFolder == null) throw new RuntimeException("Something fucked up [LanguageLocale]");
-
         File languageConfig = new File(langFolder, languageFile);
+        this.config = YamlConfiguration.loadConfiguration(languageConfig);
 
         LANGUAGE_MAP.putIfAbsent(javaPlugin.getName(), new HashMap<>());
-
-        config = YamlConfiguration.loadConfiguration(languageConfig);
     }
 
     public boolean loadLanguage() {
@@ -46,10 +40,6 @@ public class LanguageLocale {
 
     public String translate(String key) {
         String real = LANGUAGE_MAP.get(javaPlugin.getName()).get(key);
-        return color(real);
-    }
-
-    public static String color(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+        return Translate.color(real);
     }
 }
