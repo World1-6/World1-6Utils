@@ -22,7 +22,6 @@
         <module>World1-6Utils-COMMON</module>
         <module>World1-6Utils-API</module>
         <module>World1-6Utils-Plugin</module>
-        <module>World1-6Utils_V1_18_R2</module>
         <module>World1-6Utils_V1_19_R1</module>
         <module>World1-6Utils_WE_7210</module>
         <module>World1-6Utils_CMI_API</module>
@@ -33,6 +32,12 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+
+        <!--PaperMC-->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
 
         <!--WorldEdit-->

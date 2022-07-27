@@ -13,12 +13,8 @@ import java.util.Arrays;
 
 public final class World16Utils extends JavaPlugin {
 
-    public static final String DATE_OF_VERSION = "6/24/2022";
+    public static final String DATE_OF_VERSION = "7/26/2022";
     public static final String PREFIX = "[&9World1-6Utils&r]";
-    public static final String USELESS_TAG = PREFIX + "->[&bUSELESS&r]";
-    public static final String DEBUG_TAG = PREFIX + "->[&eDEBUG&r]";
-    public static final String EMERGENCY_TAG = PREFIX + "->&c[EMERGENCY]&r";
-
     private static World16Utils instance;
 
     private ClassWrappers classWrappers;

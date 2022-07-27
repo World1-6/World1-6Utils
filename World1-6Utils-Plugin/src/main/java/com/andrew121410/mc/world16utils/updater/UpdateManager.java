@@ -47,7 +47,7 @@ public class UpdateManager {
             if (updater.shouldUpdate()) {
                 sender.sendMessage(Translate.color("&aAn update is available!"));
                 sender.sendMessage(Translate.color("&9Downloading update..."));
-                sender.sendMessage(updater.update());
+                sender.sendMessage(Translate.color("&d" + updater.update()));
             } else {
                 sender.sendMessage(Translate.color("&2There is no update available for " + pluginName + "."));
             }
