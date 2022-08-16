@@ -54,6 +54,10 @@ public class UpdateManager {
         });
     }
 
+    public static void updateAll(CommandSender sender) {
+        updaters.forEach((pluginName, updater) -> update(sender, pluginName));
+    }
+
     public static AbstractBasicSelfUpdater getUpdater(JavaPlugin javaPlugin) {
         return getUpdater(javaPlugin.getName());
     }

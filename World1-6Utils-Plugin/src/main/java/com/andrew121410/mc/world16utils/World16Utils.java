@@ -10,6 +10,7 @@ import com.andrew121410.mc.world16utils.utils.TabUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.List;
 
 public final class World16Utils extends JavaPlugin {
 
@@ -58,6 +59,12 @@ public final class World16Utils extends JavaPlugin {
                 sender.sendMessage("/world1-6utils update");
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
                 String pluginName = args[1];
+
+                if (pluginName.equalsIgnoreCase("all")) {
+                    UpdateManager.updateAll(sender);
+                    return true;
+                }
+
                 UpdateManager.update(sender, pluginName);
             }
             return true;
@@ -69,7 +76,9 @@ public final class World16Utils extends JavaPlugin {
             if (args.length == 1) {
                 return Arrays.asList("update");
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
-                return TabUtils.getContainsString(args[1], UpdateManager.getPluginNamesFromUpdaters());
+                List<String> strings = UpdateManager.getPluginNamesFromUpdaters();
+                strings.add("all");
+                return TabUtils.getContainsString(args[1], strings);
             }
             return null;
         });
