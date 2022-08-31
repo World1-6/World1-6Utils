@@ -89,7 +89,7 @@ public class CountdownTimer implements Runnable {
         long secondsLeftM = TimeUnit.SECONDS.toMillis(this.secondsLeft);
 
         // Uses milliseconds
-        return StringDataTimeBuilder.makeIntoEnglishWords(secondsM, secondsLeftM, shortText);
+        return StringDataTimeBuilder.makeIntoEnglishWords(secondsM, secondsLeftM, shortText, true);
     }
 
     public Integer getAssignedTaskId() {
