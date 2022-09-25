@@ -11,6 +11,9 @@ public class Kit {
     private List<ItemStack> item = new ArrayList<>();
     private HashMap<CMIPlayerInventory.CMIInventorySlot, ItemStack> extraItems = new HashMap<>();
 
+    public Kit(String paramString) {
+    }
+
     public List<ItemStack> getItems() {
         return null;
     }
