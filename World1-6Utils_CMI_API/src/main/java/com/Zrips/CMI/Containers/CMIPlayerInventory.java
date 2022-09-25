@@ -18,6 +18,14 @@ public class CMIPlayerInventory {
         MainInventory(),
         CraftingIngredients(),
         CraftingResult();
+
+        public List<Integer> getSlots() {
+            return null;
+        }
+
+        public Integer getSlot() {
+            return null;
+        }
     }
 
     public ItemStack getItem(CMIInventorySlot paramCMIInventorySlot) {
