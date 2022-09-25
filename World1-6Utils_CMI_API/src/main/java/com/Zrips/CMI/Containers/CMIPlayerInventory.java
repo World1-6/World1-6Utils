@@ -1,5 +1,9 @@
 package com.Zrips.CMI.Containers;
 
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
+
 public class CMIPlayerInventory {
     public enum CMIInventorySlot {
         Armor(),
@@ -14,5 +18,13 @@ public class CMIPlayerInventory {
         MainInventory(),
         CraftingIngredients(),
         CraftingResult();
+    }
+
+    public ItemStack getItem(CMIInventorySlot paramCMIInventorySlot) {
+        return null;
+    }
+
+    public List<ItemStack> getItems(CMIInventorySlot paramCMIInventorySlot) {
+        return null;
     }
 }
