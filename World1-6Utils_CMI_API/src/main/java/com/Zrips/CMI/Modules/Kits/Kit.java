@@ -18,6 +18,9 @@ public class Kit {
         return null;
     }
 
+    public void setItem(List<ItemStack> paramList) {
+    }
+
     public void addItem(ItemStack paramItemStack) {
     }
 
@@ -26,5 +29,19 @@ public class Kit {
     }
 
     public void setExtraItem(CMIPlayerInventory.CMIInventorySlot paramCMIInventorySlot, ItemStack paramItemStack) {
+    }
+
+    public long getDelay() {
+        return 0L;
+    }
+
+    public void setDelay(long paramLong) {
+    }
+
+    public boolean isEnabled() {
+        return false;
+    }
+
+    public void setEnabled(boolean paramBoolean) {
     }
 }
