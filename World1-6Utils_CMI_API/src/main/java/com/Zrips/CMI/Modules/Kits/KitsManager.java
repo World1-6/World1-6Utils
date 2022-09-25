@@ -7,4 +7,7 @@ public class KitsManager {
     public LinkedHashMap<String, Kit> getKitMap() {
         return null;
     }
+
+    public void addKit(Kit paramKit) {
+    }
 }

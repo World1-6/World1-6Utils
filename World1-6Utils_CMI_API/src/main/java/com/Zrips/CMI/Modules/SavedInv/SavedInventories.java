@@ -7,4 +7,7 @@ public class SavedInventories {
     public LinkedHashMap<Integer, CMIInventory> getInventories() {
         return null;
     }
+
+    public void addInventory(CMIInventory paramCMIInventory) {
+    }
 }

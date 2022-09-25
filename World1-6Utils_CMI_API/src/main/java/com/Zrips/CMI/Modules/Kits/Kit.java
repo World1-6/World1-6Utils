@@ -14,4 +14,10 @@ public class Kit {
     public List<ItemStack> getItems() {
         return null;
     }
+
+    public void addItem(ItemStack paramItemStack) {
+    }
+
+    public void setExtraItem(CMIPlayerInventory.CMIInventorySlot paramCMIInventorySlot, ItemStack paramItemStack) {
+    }
 }
