@@ -6,13 +6,11 @@ import java.util.LinkedHashMap;
 
 public class CMIUser {
 
-    private LinkedHashMap<String, CmiHome> homes;
-
     public void addHome(CmiHome home, boolean save) {
 
     }
 
     public LinkedHashMap<String, CmiHome> getHomes() {
-        return homes;
+        return null;
     }
 }

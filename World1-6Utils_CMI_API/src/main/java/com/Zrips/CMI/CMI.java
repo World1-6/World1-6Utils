@@ -1,17 +1,25 @@
 package com.Zrips.CMI;
 
+import com.Zrips.CMI.Modules.Kits.KitsManager;
+import com.Zrips.CMI.Modules.SavedInv.SavedInventoryManager;
 import com.Zrips.CMI.Modules.Warps.WarpManager;
 
 public class CMI {
 
-    protected PlayerManager PM;
-    protected WarpManager warpManager;
-
     public PlayerManager getPlayerManager() {
-        return this.PM;
+        return null;
     }
 
     public WarpManager getWarpManager() {
-        return this.warpManager;
+        return null;
     }
+
+    public KitsManager getKitsManager() {
+        return null;
+    }
+
+    public SavedInventoryManager getSavedInventoryManager() {
+        return null;
+    }
+
 }
