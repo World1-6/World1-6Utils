@@ -16,4 +16,11 @@ public class CMIInventory {
 
     public void setItems(HashMap<Integer, ItemStack> paramHashMap) {
     }
+
+    public double getMaxHealth() {
+        return 0.0D;
+    }
+
+    public void setMaxHealth(double paramDouble) {
+    }
 }
