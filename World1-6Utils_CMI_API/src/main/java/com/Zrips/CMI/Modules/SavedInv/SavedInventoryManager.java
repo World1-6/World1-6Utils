@@ -17,4 +17,8 @@ public class SavedInventoryManager {
 
     public void addInventory(CMIUser paramCMIUser, CMIInventory paramCMIInventory) {
     }
+
+    public SavedInventories getInventories(CMIUser paramCMIUser) {
+        return null;
+    }
 }
