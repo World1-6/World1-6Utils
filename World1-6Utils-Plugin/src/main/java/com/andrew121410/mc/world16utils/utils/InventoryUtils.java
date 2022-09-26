@@ -27,4 +27,36 @@ public class InventoryUtils {
         item.setItemMeta(itemMeta);
         return item;
     }
+
+    public static List<List<ItemStack>> splitInventoryIntoBaseAndExtraContents(List<ItemStack> inventoryContents) {
+        List<List<ItemStack>> listList = new ArrayList<>();
+        List<ItemStack> baseContents = new ArrayList<>();
+        List<ItemStack> extraContents = new ArrayList<>();
+        for (int i = 0; i < inventoryContents.size(); i++) {
+            ItemStack itemStack = inventoryContents.get(i);
+            if (i < 36) {
+                baseContents.add(itemStack);
+            } else {
+                extraContents.add(itemStack);
+            }
+        }
+        listList.add(baseContents);
+        listList.add(extraContents);
+        return listList;
+    }
+
+    public static ItemStack[] listToArray(List<ItemStack> itemStackList) {
+        ItemStack[] itemStacks = new ItemStack[itemStackList.size()];
+        for (int i = 0; i < itemStackList.size(); i++) {
+            itemStacks[i] = itemStackList.get(i);
+        }
+        return itemStacks;
+    }
+
+    public static ItemStack getItemInItemStackArrayIfExist(ItemStack[] itemStacks, int index) {
+        if (index >= 0 && index < itemStacks.length) {
+            return itemStacks[index];
+        }
+        return null;
+    }
 }

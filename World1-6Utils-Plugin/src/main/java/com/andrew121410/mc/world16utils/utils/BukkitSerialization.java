@@ -89,7 +89,7 @@ public class BukkitSerialization {
         }
 
         for (int i = 0; i < player.getInventory().getSize(); i++) {
-            ItemStack itemStack = getItemStackIfExist(inventoryItemStacks, i);
+            ItemStack itemStack = InventoryUtils.getItemInItemStackArrayIfExist(inventoryItemStacks, i);
             if (itemStack == null || itemStack.getType().isAir()) continue;
             if (player.getInventory().getItem(i) != null) {
                 player.getInventory().addItem(itemStack);
@@ -97,12 +97,5 @@ public class BukkitSerialization {
                 player.getInventory().setItem(i, itemStack);
             }
         }
-    }
-
-    private static ItemStack getItemStackIfExist(ItemStack[] itemStacks, int index) {
-        if (index >= 0 && index < itemStacks.length) {
-            return itemStacks[index];
-        }
-        return null;
     }
 }
