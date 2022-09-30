@@ -42,14 +42,13 @@ public class UpdateManager {
             return;
         }
 
-        sender.sendMessage(Translate.color("&6Checking for updates for " + pluginName + "..."));
+        sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <yellow>Checking for updates..."));
         World16Utils.getInstance().getServer().getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
             if (updater.shouldUpdate()) {
-                sender.sendMessage(Translate.color("&aAn update is available!"));
-                sender.sendMessage(Translate.color("&9Downloading update..."));
-                sender.sendMessage(Translate.color("&d" + updater.update()));
+                sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <red>Updating..."));
+                sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <green>" + updater.update()));
             } else {
-                sender.sendMessage(Translate.color("&2There is no update available for " + pluginName + "."));
+                sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <green>There is no update available."));
             }
         });
     }
