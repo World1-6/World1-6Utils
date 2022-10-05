@@ -48,7 +48,7 @@ public class UpdateManager {
                 sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <red>Updating..."));
                 sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <green>" + updater.update()));
             } else {
-                sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <green>There is no update available."));
+                sender.sendMessage(Translate.miniMessage("<rainbow>" + pluginName + " -> <gray>There is no update available."));
             }
         });
     }
