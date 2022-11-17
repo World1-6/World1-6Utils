@@ -24,6 +24,10 @@ public class ChatResponseManager {
         this.responseMap = new HashMap<>();
     }
 
+    public boolean create(Player player, BiConsumer<Player, String> consumer) {
+        return this.create(player, null, null, consumer);
+    }
+
     public boolean create(Player player, String title, String subtitle, BiConsumer<Player, String> consumer) {
         if (this.responseMap.containsKey(player.getUniqueId())) return false;
         this.responseMap.put(player.getUniqueId(), new Response(title, subtitle, consumer));
