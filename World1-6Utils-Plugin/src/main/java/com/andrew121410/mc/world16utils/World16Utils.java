@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils;
 
+import com.andrew121410.mc.world16utils.chat.ChatClickCallbackManager;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
@@ -7,10 +8,12 @@ import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import com.andrew121410.mc.world16utils.utils.TabUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public final class World16Utils extends JavaPlugin {
 
@@ -19,7 +22,9 @@ public final class World16Utils extends JavaPlugin {
     private static World16Utils instance;
 
     private ClassWrappers classWrappers;
+
     private ChatResponseManager chatResponseManager;
+    private ChatClickCallbackManager chatClickCallbackManager;
 
     @Override
     public void onLoad() {
@@ -31,6 +36,7 @@ public final class World16Utils extends JavaPlugin {
         instance = this;
         this.classWrappers = new ClassWrappers(this);
         this.chatResponseManager = new ChatResponseManager(this);
+        this.chatClickCallbackManager = new ChatClickCallbackManager(this);
         registerListeners();
         registerCommand();
 
@@ -66,6 +72,12 @@ public final class World16Utils extends JavaPlugin {
                 }
 
                 UpdateManager.update(sender, pluginName);
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) {
+                String key = args[1];
+                Consumer<Player> consumer = this.chatClickCallbackManager.get(key);
+                if (consumer == null) return true;
+                consumer.accept((Player) sender);
+                this.chatClickCallbackManager.remove(key);
             }
             return true;
         });
@@ -94,5 +106,9 @@ public final class World16Utils extends JavaPlugin {
 
     public ChatResponseManager getChatResponseManager() {
         return chatResponseManager;
+    }
+
+    public ChatClickCallbackManager getChatClickCallbackManager() {
+        return chatClickCallbackManager;
     }
 }
