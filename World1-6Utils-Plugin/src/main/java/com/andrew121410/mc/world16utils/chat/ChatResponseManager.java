@@ -1,8 +1,9 @@
 package com.andrew121410.mc.world16utils.chat;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,10 +26,14 @@ public class ChatResponseManager {
     }
 
     public boolean create(Player player, BiConsumer<Player, String> consumer) {
-        return this.create(player, null, null, consumer);
+        return create(player, (Component) null, null, consumer);
     }
 
     public boolean create(Player player, String title, String subtitle, BiConsumer<Player, String> consumer) {
+        return create(player, Translate.colorc(title), Translate.colorc(subtitle), consumer);
+    }
+
+    public boolean create(Player player, Component title, Component subtitle, BiConsumer<Player, String> consumer) {
         if (this.responseMap.containsKey(player.getUniqueId())) return false;
         this.responseMap.put(player.getUniqueId(), new Response(title, subtitle, consumer));
         loop();
@@ -41,7 +46,7 @@ public class ChatResponseManager {
 
     public BiConsumer<Player, String> get(Player player) {
         if (!this.responseMap.containsKey(player.getUniqueId())) return null;
-        return this.responseMap.get(player.getUniqueId()).getConsumer();
+        return this.responseMap.get(player.getUniqueId()).consumer();
     }
 
     public void remove(UUID uuid) {
@@ -63,41 +68,28 @@ public class ChatResponseManager {
                     Map.Entry<UUID, Response> entry = iterator.next();
                     UUID uuid = entry.getKey();
                     Response response = entry.getValue();
+
                     Player player = plugin.getServer().getPlayer(uuid);
                     if (player == null) {
                         iterator.remove();
                         return;
                     }
-                    player.sendTitle(response.getTitle() != null ? response.getTitle() : Translate.color("&bType in response")
-                            , response.getSubtitle() != null ? response.getSubtitle() : ""
-                            , 0, 61, 0);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Translate.color("&eType &ccancel &eto stop!")));
+
+                    Component title = response.title() != null ? response.title() : Translate.colorc("&bType in response");
+                    Component subtitle = response.subtitle() != null ? response.subtitle() : Component.empty();
+                    player.showTitle(Title.title(title, subtitle,
+                            Title.Times.times(
+                                    Ticks.duration(0),
+                                    Ticks.duration(61),
+                                    Ticks.duration(0)
+                            )));
+
+                    player.sendActionBar(Translate.colorc("&eType &ccancel &eto stop!"));
                 }
             }
         }.runTaskTimer(this.plugin, 0L, 60L);
     }
 }
 
-class Response {
-    private final String title;
-    private final String subtitle;
-    private final BiConsumer<Player, String> consumer;
-
-    public Response(String title, String subtitle, BiConsumer<Player, String> consumer) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.consumer = consumer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public BiConsumer<Player, String> getConsumer() {
-        return consumer;
-    }
+record Response(Component title, Component subtitle, BiConsumer<Player, String> consumer) {
 }
