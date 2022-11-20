@@ -5,6 +5,7 @@ import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
+import com.andrew121410.mc.world16utils.listeners.OnPlayerQuitEvent;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import com.andrew121410.mc.world16utils.utils.TabUtils;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public final class World16Utils extends JavaPlugin {
@@ -52,6 +54,7 @@ public final class World16Utils extends JavaPlugin {
         new OnAsyncPlayerChatEvent(this, this.chatResponseManager);
         new OnInventoryClickEvent(this);
         new OnInventoryCloseEvent(this);
+        new OnPlayerQuitEvent(this);
     }
 
     private void registerCommand() {
@@ -73,11 +76,19 @@ public final class World16Utils extends JavaPlugin {
 
                 UpdateManager.update(sender, pluginName);
             } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) {
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage("You must be a player to use this command.");
+                    return true;
+                }
+
+                Map<String, Consumer<Player>> map = this.chatClickCallbackManager.getMap().get(player.getUniqueId());
+                if (map == null) return true;
+
                 String key = args[1];
-                Consumer<Player> consumer = this.chatClickCallbackManager.get(key);
+                Consumer<Player> consumer = map.get(key);
                 if (consumer == null) return true;
                 consumer.accept((Player) sender);
-                this.chatClickCallbackManager.remove(key);
+                map.remove(key);
             }
             return true;
         });

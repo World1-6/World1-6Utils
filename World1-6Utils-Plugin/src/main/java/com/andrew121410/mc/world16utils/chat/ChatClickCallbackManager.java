@@ -12,24 +12,25 @@ import java.util.function.Consumer;
 public class ChatClickCallbackManager {
 
     private final World16Utils plugin;
-    private final Map<String, Consumer<Player>> consumerMap;
+
+    private final Map<UUID, Map<String, Consumer<Player>>> map;
+    private final Map<UUID, Map<Long, String>> timeMap;
 
     public ChatClickCallbackManager(World16Utils plugin) {
         this.plugin = plugin;
-        this.consumerMap = new HashMap<>();
+        this.map = new HashMap<>();
+        this.timeMap = new HashMap<>();
     }
 
-    public ClickEvent create(Consumer<Player> consumer) {
+    public ClickEvent create(Player player, Consumer<Player> consumer) {
         String key = UUID.randomUUID().toString();
-        this.consumerMap.put(key, consumer);
+
+        this.map.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+        this.map.get(player.getUniqueId()).put(key, consumer);
         return ClickEvent.runCommand("/world1-6utils callclickevent " + key);
     }
 
-    public Consumer<Player> get(String key) {
-        return this.consumerMap.get(key);
-    }
-
-    public void remove(String key) {
-        this.consumerMap.remove(key);
+    public Map<UUID, Map<String, Consumer<Player>>> getMap() {
+        return map;
     }
 }
