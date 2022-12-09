@@ -2,7 +2,7 @@ package com.andrew121410.mc.world16utils.utils;
 
 import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.packet.IPackets;
-import com.andrew121410.mc.world16utils.packet.Packet_V1_19_R1;
+import com.andrew121410.mc.world16utils.packet.Packet_V1_19_R2;
 import com.andrew121410.mc.world16utils.worldedit.WorldEdit;
 import com.andrew121410.mc.world16utils.worldedit.WorldEdit_7210;
 import org.bukkit.Bukkit;
@@ -18,7 +18,12 @@ public class ClassWrappers {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         switch (version) {
             case "v1_19_R1" -> {
-                this.packets = new Packet_V1_19_R1();
+                this.packets = new Packet_V1_19_R2();
+                //Extra
+                this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
+            }
+            case "v_19_R2" -> {
+                this.packets = new Packet_V1_19_R2();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
             }
