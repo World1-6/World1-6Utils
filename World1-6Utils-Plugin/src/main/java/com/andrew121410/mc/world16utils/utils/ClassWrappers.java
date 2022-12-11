@@ -23,7 +23,7 @@ public class ClassWrappers {
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
             }
-            case "v_19_R2" -> {
+            case "v1_19_R2" -> {
                 this.packets = new Packet_V1_19_R2();
                 //Extra
                 this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
