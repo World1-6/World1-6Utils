@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.time;
 
-import com.andrew121410.ccutils.utils.StringDataTimeBuilder;
+import com.andrew121410.ccutils.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -89,7 +89,7 @@ public class CountdownTimer implements Runnable {
         long secondsLeftM = TimeUnit.SECONDS.toMillis(this.secondsLeft);
 
         // Uses milliseconds
-        return StringDataTimeBuilder.makeIntoEnglishWords(secondsM, secondsLeftM, shortText, true);
+        return TimeUtils.makeIntoEnglishWords(secondsM, secondsLeftM, shortText, true);
     }
 
     public Integer getAssignedTaskId() {

@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.updater;
 
-import com.andrew121410.ccutils.utils.AbstractBasicSelfUpdater;
+import com.andrew121410.ccutils.utils.HashBasedUpdater;
 import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.chat.Translate;
 import org.bukkit.command.CommandSender;
@@ -13,12 +13,12 @@ import java.util.Map;
 
 public class UpdateManager {
 
-    private static final Map<String, AbstractBasicSelfUpdater> updaters = new HashMap<>();
+    private static final Map<String, HashBasedUpdater> updaters = new HashMap<>();
 
     public static void init() {
     }
 
-    public static void registerUpdater(JavaPlugin javaPlugin, AbstractBasicSelfUpdater updater, boolean silent) {
+    public static void registerUpdater(JavaPlugin javaPlugin, HashBasedUpdater updater, boolean silent) {
         updaters.putIfAbsent(javaPlugin.getName(), updater);
 
         if (!silent) {
@@ -31,12 +31,12 @@ public class UpdateManager {
         }
     }
 
-    public static void registerUpdater(JavaPlugin javaPlugin, AbstractBasicSelfUpdater updater) {
+    public static void registerUpdater(JavaPlugin javaPlugin, HashBasedUpdater updater) {
         UpdateManager.registerUpdater(javaPlugin, updater, false);
     }
 
     public static void update(CommandSender sender, String pluginName) {
-        AbstractBasicSelfUpdater updater = UpdateManager.getUpdater(pluginName);
+        HashBasedUpdater updater = UpdateManager.getUpdater(pluginName);
         if (updater == null) {
             sender.sendMessage(Translate.color("&eThere is no updater for " + pluginName + "."));
             return;
@@ -57,11 +57,11 @@ public class UpdateManager {
         updaters.forEach((pluginName, updater) -> update(sender, pluginName));
     }
 
-    public static AbstractBasicSelfUpdater getUpdater(JavaPlugin javaPlugin) {
+    public static HashBasedUpdater getUpdater(JavaPlugin javaPlugin) {
         return getUpdater(javaPlugin.getName());
     }
 
-    public static AbstractBasicSelfUpdater getUpdater(String pluginName) {
+    public static HashBasedUpdater getUpdater(String pluginName) {
         return updaters.get(pluginName);
     }
 
