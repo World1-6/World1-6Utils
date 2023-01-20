@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.github.andrew121410</groupId>
             <artifactId>CCUtilsJava</artifactId>
-            <version>fe116a46</version>
+            <version>0dc8d953</version>
             <scope>compile</scope>
         </dependency>
 
