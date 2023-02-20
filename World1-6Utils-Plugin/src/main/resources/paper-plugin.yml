@@ -1,0 +1,24 @@
+name: World1-6Utils
+version: 1.0
+main: com.andrew121410.mc.world16utils.World16Utils
+authors: [ Andrew121410 ]
+description: A utils for my plugins
+api-version: "1.19"
+
+dependencies:
+  - name: WorldEdit
+    required: false
+    bootstrap: false
+  - name: floodgate
+    required: false
+    bootstrap: false
+
+commands:
+  world1-6utils:
+    usage: /world1-6utils
+    description: World1-6Utils
+
+permissions:
+  world16.world1-6utils:
+    description: World1-6Utils
+    default: op

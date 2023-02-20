@@ -1,8 +1,8 @@
 package com.andrew121410.mc.world16utils.blocks;
 
 import com.andrew121410.mc.world16utils.utils.Utils;
-import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -64,8 +64,8 @@ public class UniversalBlockUtils {
         return Utils.centerText(text, 16);
     }
 
-    public static boolean isFarmLand(XMaterial xMaterial) {
-        return xMaterial.parseMaterial() == XMaterial.FARMLAND.parseMaterial();
+    public static boolean isFarmLand(Material material) {
+        return material == Material.FARMLAND;
     }
 
     public static List<Block> getNearbyBlocks(Location location, int radius, boolean doY) {
