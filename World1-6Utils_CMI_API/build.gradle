@@ -1,0 +1,6 @@
+dependencies {
+    compileOnly project(':World1-6Utils-COMMON')
+    compileOnly project(':World1-6Utils-API')
+}
+
+description = 'World1-6Utils_CMI_API'

@@ -1,0 +1,35 @@
+allprojects {
+    group = 'com.andrew121410.mc.world16utils'
+    version = '1.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        maven {
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
+        maven {
+            url = uri("https://maven.enginehub.org/repo/")
+        }
+        maven {
+            url = uri("https://repo.opencollab.dev/maven-snapshots/")
+        }
+    }
+
+    dependencies {
+        compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
