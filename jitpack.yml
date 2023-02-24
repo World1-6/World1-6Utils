@@ -1,0 +1,5 @@
+jdk:
+  - openjdk17
+install:
+  - ./gradlew build :World1-6Utils-Plugin:publishToMavenLocal
+  - ./gradlew build :World1-6Utils_CMI_API:publishToMavenLocal
