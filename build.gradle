@@ -1,5 +1,5 @@
 allprojects {
-    group = 'com.andrew121410.mc.world16utils'
+    group = 'com.andrew121410.mc'
     version = '1.0'
 }
 
@@ -31,5 +31,11 @@ subprojects {
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    }
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = 'UTF-8'
+        }
     }
 }

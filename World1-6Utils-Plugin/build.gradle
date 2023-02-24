@@ -25,10 +25,6 @@ shadowJar {
 publishing {
     publications {
         release(MavenPublication) { publication ->
-            groupId = 'com.andrew121410.mc'
-            artifactId = 'World1-6Utils'
-            version = '1.0'
-
             project.shadow.component(publication)
         }
     }
