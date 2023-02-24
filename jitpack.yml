@@ -3,3 +3,5 @@ jdk:
 install:
   - ./gradlew build :World1-6Utils-Plugin:publishToMavenLocal
   - ./gradlew build :World1-6Utils_CMI_API:publishToMavenLocal
+before_install:
+  - chmod +x ./gradlew
