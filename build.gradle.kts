@@ -1,22 +1,25 @@
-allprojects {
-    group = 'com.andrew121410.mc'
-    version = '1.0'
+plugins {
+    `java-library`
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+    apply(plugin = "java-library")
 
     repositories {
-        mavenLocal()
         mavenCentral()
+
+        maven {
+            url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        }
+
+        maven {
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
 
         maven {
             url = uri("https://jitpack.io")
         }
-        maven {
-            url = uri("https://repo.papermc.io/repository/maven-public/")
-        }
+
         maven {
             url = uri("https://maven.enginehub.org/repo/")
         }
@@ -30,12 +33,11 @@ subprojects {
     }
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.encoding = 'UTF-8'
-        }
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
     }
 }
