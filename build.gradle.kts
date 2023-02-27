@@ -2,6 +2,11 @@ plugins {
     `java-library`
 }
 
+allprojects {
+    group = "com.andrew121410.mc"
+    version = "1.0"
+}
+
 subprojects {
     apply(plugin = "java-library")
 
