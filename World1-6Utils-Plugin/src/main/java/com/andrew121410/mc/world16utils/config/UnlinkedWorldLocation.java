@@ -78,6 +78,15 @@ public class UnlinkedWorldLocation implements ConfigurationSerializable {
     }
 
     public static UnlinkedWorldLocation deserialize(Map<String, Object> map) {
-        return new UnlinkedWorldLocation((String) map.get("world"), (Double) map.get("x"), (Double) map.get("y"), (Double) map.get("z"), (Float) map.get("pitch"), (Float) map.get("yaw"));
+        String world = (String) map.get("world");
+        double x = (Double) map.getOrDefault("x", 0);
+        double y = (Double) map.getOrDefault("y", 0);
+        double z = (Double) map.getOrDefault("z", 0);
+
+        // java.lang.Double cannot be cast to class java.lang.Float
+        double fakePitch = (Double) map.getOrDefault("pitch", 0);
+        double fakeYaw = (Double) map.getOrDefault("yaw", 0);
+
+        return new UnlinkedWorldLocation(world, x, y, z, (float) fakePitch, (float) fakeYaw);
     }
 }
