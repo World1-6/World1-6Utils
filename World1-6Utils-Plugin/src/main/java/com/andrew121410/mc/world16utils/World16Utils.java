@@ -2,6 +2,7 @@ package com.andrew121410.mc.world16utils;
 
 import com.andrew121410.mc.world16utils.chat.ChatClickCallbackManager;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
+import com.andrew121410.mc.world16utils.config.UnlinkedWorldLocation;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
@@ -9,6 +10,7 @@ import com.andrew121410.mc.world16utils.listeners.OnPlayerQuitEvent;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
 import com.andrew121410.mc.world16utils.utils.TabUtils;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +20,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public final class World16Utils extends JavaPlugin {
+
+    static {
+        ConfigurationSerialization.registerClass(UnlinkedWorldLocation.class, "UnlinkedWorldLocation");
+    }
 
     public static final String DATE_OF_VERSION = "7/26/2022";
     public static final String PREFIX = "[&9World1-6Utils&r]";
