@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This should be used for when you want to load up a location with Bukkit's deserialize and the world might not be loaded.
@@ -20,7 +21,9 @@ public class UnlinkedWorldLocation implements ConfigurationSerializable {
     private final float pitch;
     private final float yaw;
 
-    public UnlinkedWorldLocation(String world, double x, double y, double z, float pitch, float yaw) {
+    public UnlinkedWorldLocation(@NotNull String world, double x, double y, double z, float pitch, float yaw) {
+        Objects.requireNonNull(world, "World cannot be null!");
+
         this.world = world;
         this.x = x;
         this.y = y;
