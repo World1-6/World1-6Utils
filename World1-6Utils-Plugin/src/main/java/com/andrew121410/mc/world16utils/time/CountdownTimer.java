@@ -4,7 +4,6 @@ import com.andrew121410.ccutils.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class CountdownTimer implements Runnable {
@@ -84,12 +83,14 @@ public class CountdownTimer implements Runnable {
         return secondsLeft;
     }
 
-    public String getFancyTimeLeft(boolean shortText) {
-        long secondsM = TimeUnit.SECONDS.toMillis(this.seconds);
-        long secondsLeftM = TimeUnit.SECONDS.toMillis(this.secondsLeft);
+    public String getFancyTimeLeft(boolean shortText, boolean showSeconds) {
+        long currentTime = System.currentTimeMillis();
+        long startTime = currentTime - (secondsLeft * 1000L);
+        return TimeUtils.makeIntoEnglishWords(startTime, currentTime, shortText, showSeconds);
+    }
 
-        // Uses milliseconds
-        return TimeUtils.makeIntoEnglishWords(secondsM, secondsLeftM, shortText, true);
+    public String getFancyTimeLeft(boolean shortText) {
+        return getFancyTimeLeft(shortText, true);
     }
 
     public Integer getAssignedTaskId() {
