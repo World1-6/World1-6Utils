@@ -41,6 +41,10 @@ public class UnlinkedWorldLocation implements ConfigurationSerializable {
         return new Location(org.bukkit.Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }
 
+    public boolean isWorldLoaded() {
+        return org.bukkit.Bukkit.getWorld(world) != null;
+    }
+
     public String getWorld() {
         return world;
     }
