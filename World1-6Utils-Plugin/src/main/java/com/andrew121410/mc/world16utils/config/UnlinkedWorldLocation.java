@@ -40,6 +40,10 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
         return org.bukkit.Bukkit.getWorld(world);
     }
 
+    public String getWorldName() {
+        return world;
+    }
+
     @Deprecated(forRemoval = true)
     public Location toLocation() {
         return new Location(getWorld(), getX(), getY(), getZ(), getYaw(), getPitch());
