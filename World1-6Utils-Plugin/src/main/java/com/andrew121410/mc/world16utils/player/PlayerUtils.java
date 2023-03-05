@@ -1,14 +1,13 @@
 package com.andrew121410.mc.world16utils.player;
 
 import com.andrew121410.mc.world16utils.World16Utils;
-import io.papermc.paper.entity.RelativeTeleportFlag;
+import io.papermc.paper.entity.TeleportFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
@@ -31,8 +30,10 @@ public class PlayerUtils {
     public static final ExecutorService PROFILE_EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
 
     public static boolean smoothTeleport(Player player, Location location) {
-        // TODO: Verify if this is correct.
-        return player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN, true, false, RelativeTeleportFlag.YAW, RelativeTeleportFlag.PITCH);
+        return player.teleport(location,
+                TeleportFlag.EntityState.RETAIN_PASSENGERS,
+                TeleportFlag.Relative.YAW,
+                TeleportFlag.Relative.PITCH);
     }
 
     public static Block getBlockPlayerIsLookingAt(Player player) {
