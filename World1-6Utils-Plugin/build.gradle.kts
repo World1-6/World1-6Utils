@@ -9,8 +9,11 @@ dependencies {
     api(project(":World1-6Utils-COMMON"))
     api(project(":World1-6Utils-API"))
     api(project(":World1-6Utils_WE_7210"))
-    implementation("com.github.andrew121410:CCUtilsJava:0dc8d953")
+
+    // Other
+    api("com.github.andrew121410:CCUtilsJava:0dc8d953")
     compileOnly("org.geysermc.floodgate:api:2.0-SNAPSHOT")
+    api("org.spongepowered:configurate-yaml:4.1.2")
 }
 
 tasks {
@@ -28,6 +31,7 @@ tasks {
         archiveVersion.set("")
 
         relocate("com.andrew121410.ccutils.", "com.andrew121410.mc.world16utils.utils.ccutils.")
+        relocate("org.spongepowered.", "com.andrew121410.mc.world16utils.utils.spongepowered.")
         exclude("META-INF/*.MF", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
     }
 }

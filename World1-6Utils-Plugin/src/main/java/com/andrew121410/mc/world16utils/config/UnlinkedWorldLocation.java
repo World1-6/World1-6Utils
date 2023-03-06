@@ -3,6 +3,7 @@ package com.andrew121410.mc.world16utils.config;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -13,6 +14,8 @@ import java.util.Map;
  * <p>
  * Before you use the Location you must check if the world is loaded with isWorldLoaded()
  */
+
+@SerializableAs("UnlinkedWorldLocation")
 public class UnlinkedWorldLocation extends Location implements ConfigurationSerializable {
 
     private final String world;
