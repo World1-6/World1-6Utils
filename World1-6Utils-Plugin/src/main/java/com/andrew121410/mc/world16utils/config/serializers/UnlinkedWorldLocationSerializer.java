@@ -30,7 +30,7 @@ public class UnlinkedWorldLocationSerializer implements TypeSerializer<UnlinkedW
             node.raw(null);
             return;
         }
-        node.node("world5").set(obj.getWorldName());
+        node.node("world").set(obj.getWorldName());
         node.node("x").set(obj.getX());
         node.node("y").set(obj.getY());
         node.node("z").set(obj.getZ());

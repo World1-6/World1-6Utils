@@ -25,7 +25,7 @@ public class World16ConfigurateManager {
         this.typeSerializerCollectionList = new ArrayList<>();
     }
 
-    public void registerCustomTypeSerializer(TypeSerializerCollection typeSerializerCollection) {
+    public void registerTypeSerializerCollection(TypeSerializerCollection typeSerializerCollection) {
         this.typeSerializerCollectionList.add(typeSerializerCollection);
     }
 

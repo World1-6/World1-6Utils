@@ -12,15 +12,15 @@ public class BukkitConfigurateSerializers {
     public TypeSerializerCollection getBukkitSerializers() {
         TypeSerializerCollection.Builder serializers = TypeSerializerCollection.builder();
 
-        serializers.register(Location.class, new LocationSerializer());
-        serializers.register(BoundingBox.class, new BoundingBoxSerializer());
+        serializers.registerExact(Location.class, new LocationSerializer());
+        serializers.registerExact(BoundingBox.class, new BoundingBoxSerializer());
 
         return serializers.build();
     }
 
     public TypeSerializerCollection getWorld16UtilsSerializers() {
         TypeSerializerCollection.Builder serializers = TypeSerializerCollection.builder();
-        serializers.register(UnlinkedWorldLocation.class, new UnlinkedWorldLocationSerializer());
+        serializers.registerExact(UnlinkedWorldLocation.class, new UnlinkedWorldLocationSerializer());
         return serializers.build();
     }
 }
