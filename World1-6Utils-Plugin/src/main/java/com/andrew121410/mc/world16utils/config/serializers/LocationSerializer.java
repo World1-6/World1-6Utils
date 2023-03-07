@@ -34,7 +34,10 @@ public class LocationSerializer implements TypeSerializer<Location> {
             node.raw(null);
             return;
         }
-        node.node("world").set(location.getWorld().getName());
+
+        if (location.getWorld() != null) {
+            node.node("world").set(location.getWorld().getName());
+        }
         node.node("x").set(location.getX());
         node.node("y").set(location.getY());
         node.node("z").set(location.getZ());
