@@ -1,10 +1,6 @@
 package com.andrew121410.mc.world16utils.config;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.BoundingBox;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -16,9 +12,9 @@ import java.util.List;
 
 public class World16ConfigurateManager {
 
-    private List<TypeSerializerCollection> typeSerializerCollectionList;
+    private final List<TypeSerializerCollection> typeSerializerCollectionList;
 
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     public World16ConfigurateManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -46,33 +42,5 @@ public class World16ConfigurateManager {
                 .build();
 
         return loader;
-    }
-
-    private void test(Player player) {
-        YamlConfigurationLoader loader = this.getYamlConfigurationLoader("test.yml");
-
-        BoundingBox boundingBox = new BoundingBox(0, 0, 0, 1, 1, 1);
-        try {
-            CommentedConfigurationNode node = loader.load();
-            node.node("TheDamnBoundingBox").set(boundingBox);
-
-            node.node("Testing", "hi").set("Hello World");
-            node.node("Testing", "yes").set(5);
-            loader.save(node);
-        } catch (ConfigurateException e) {
-            throw new RuntimeException(e);
-        }
-
-        // test.yml
-        //TheDamnBoundingBox:
-        //    minX: 0.0
-        //    minY: 0.0
-        //    minZ: 0.0
-        //    maxX: 1.0
-        //    maxY: 1.0
-        //    maxZ: 1.0
-        //Testing:
-        //    hi: Hello World
-        //    yes: 5
     }
 }
