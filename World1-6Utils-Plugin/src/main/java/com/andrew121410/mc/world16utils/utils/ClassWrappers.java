@@ -7,18 +7,13 @@ import org.bukkit.Bukkit;
 
 public class ClassWrappers {
 
-    //Extra
-    private final WorldEdit worldEdit;
+    private WorldEdit worldEdit = null;
 
     public ClassWrappers(World16Utils plugin) {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        switch (version) {
-            case "v1_19_R2" -> {
-                //Extra
-                this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
-            }
-            default ->
-                    throw new IllegalArgumentException("Unable to detect NMS version(" + version + ") for ClassWrappers");
+
+        if (version.equals("v1_19_R2") || version.equals("v1_19_R3")) {//Extra
+            this.worldEdit = plugin.getServer().getPluginManager().getPlugin("WorldEdit") != null ? new WorldEdit_7210() : null;
         }
     }
 
