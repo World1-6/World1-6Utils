@@ -22,7 +22,8 @@ public class OnInventoryCloseEvent implements Listener {
         InventoryHolder inventoryHolder = event.getInventory().getHolder();
         if (inventoryHolder instanceof AbstractGUIWindow) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                if (event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow) return;
+                if (event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow)
+                    return;
                 AbstractGUIWindow guiWindow = (AbstractGUIWindow) inventoryHolder;
                 guiWindow.onClose(event);
             }, 2L);

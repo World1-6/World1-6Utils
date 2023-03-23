@@ -35,11 +35,6 @@ public class LanguageLocale {
         return languageMap.getOrDefault(key, null);
     }
 
-    @Deprecated
-    public static String color(String key) {
-        return Translate.color(key);
-    }
-
     public CustomYmlManager getConfig() {
         return customYmlManager;
     }

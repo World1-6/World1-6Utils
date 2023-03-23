@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.sign.screen.pages;
 
 import com.andrew121410.mc.world16utils.sign.SignCache;
+import net.kyori.adventure.text.Component;
 
 import java.util.*;
 
@@ -17,10 +18,10 @@ public class SignPage {
     private int min;
     private int max;
 
-    private String line0 = "";
-    private String line1 = "";
-    private String line2 = "";
-    private String line3 = "";
+    private Component line0 = Component.empty();
+    private Component line1 = Component.empty();
+    private Component line2 = Component.empty();
+    private Component line3 = Component.empty();
 
     public SignPage(String name, String backPage, int startLine, int min, int max, String[] pattern) {
         this.name = name;
@@ -62,37 +63,23 @@ public class SignPage {
         }
     }
 
-    public String getLine(int lineNumber) {
-        switch (lineNumber) {
-            case 0:
-                return this.line0;
-            case 1:
-                return this.line1;
-            case 2:
-                return this.line2;
-            case 3:
-                return this.line3;
-            default:
-                return null;
-        }
+    public Component getLine(int lineNumber) {
+        return switch (lineNumber) {
+            case 0 -> this.line0;
+            case 1 -> this.line1;
+            case 2 -> this.line2;
+            case 3 -> this.line3;
+            default -> null;
+        };
     }
 
-    public void setLine(int lineNumber, String lineString) {
+    public void setLine(int lineNumber, Component component) {
         switch (lineNumber) {
-            case 0:
-                this.line0 = lineString;
-                break;
-            case 1:
-                this.line1 = lineString;
-                break;
-            case 2:
-                this.line2 = lineString;
-                break;
-            case 3:
-                this.line3 = lineString;
-                break;
-            default:
-                throw new NoSuchElementException("Not found.");
+            case 0 -> this.line0 = component;
+            case 1 -> this.line1 = component;
+            case 2 -> this.line2 = component;
+            case 3 -> this.line3 = component;
+            default -> throw new NoSuchElementException("Not found.");
         }
     }
 
@@ -135,22 +122,6 @@ public class SignPage {
 
     public int getMax() {
         return max;
-    }
-
-    public String getLine0() {
-        return line0;
-    }
-
-    public String getLine1() {
-        return line1;
-    }
-
-    public String getLine2() {
-        return line2;
-    }
-
-    public String getLine3() {
-        return line3;
     }
 
     @Override

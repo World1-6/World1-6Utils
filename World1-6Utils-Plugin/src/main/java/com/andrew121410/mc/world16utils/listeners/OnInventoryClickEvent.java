@@ -20,9 +20,8 @@ public class OnInventoryClickEvent implements Listener {
     public void onClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null) {
             InventoryHolder inventoryHolder = event.getClickedInventory().getHolder();
-            if (inventoryHolder instanceof AbstractGUIWindow) {
+            if (inventoryHolder instanceof AbstractGUIWindow guiWindow) {
                 event.setCancelled(true);
-                AbstractGUIWindow guiWindow = (AbstractGUIWindow) inventoryHolder;
                 guiWindow.onSlotClicked(event);
             }
         }

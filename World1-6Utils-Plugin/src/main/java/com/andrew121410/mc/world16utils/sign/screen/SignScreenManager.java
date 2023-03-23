@@ -1,8 +1,7 @@
 package com.andrew121410.mc.world16utils.sign.screen;
 
-import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.blocks.UniversalBlockUtils;
-import com.andrew121410.mc.world16utils.chat.LanguageLocale;
+import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.sign.SignCache;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLayout;
 import com.andrew121410.mc.world16utils.sign.screen.pages.SignLinePattern;
@@ -74,7 +73,7 @@ public class SignScreenManager {
             if (toSide >= signLinePattern.getMinSide()) {
                 Integer index = signLinePattern.getIndexOfSide(toSide);
                 if (index == null) {
-                    player.sendMessage(LanguageLocale.color("&4Index == null [UP]"));
+                    player.sendMessage(Translate.colorc("&4Index == null [UP]"));
                     return;
                 }
                 this.pointerLineOffset = index;
@@ -87,7 +86,7 @@ public class SignScreenManager {
                 SignPage newPage = this.currentLayout.getReversePage(this.currentPage.getPageNumber());
                 if (newPage == null) {
                     if (!this.signScreen.nullPage(this, player, true))
-                        player.sendMessage(LanguageLocale.color("&4No new page was found going [UP]"));
+                        player.sendMessage(Translate.colorc("&4No new page was found going [UP]"));
                     return;
                 }
                 stagePageAndLine(newPage, true);
@@ -99,7 +98,7 @@ public class SignScreenManager {
             if (toSide <= signLinePattern.getMaxSide()) {
                 Integer index = signLinePattern.getIndexOfSide(toSide);
                 if (index == null) {
-                    player.sendMessage(LanguageLocale.color("&4Index == null [DOWN]"));
+                    player.sendMessage(Translate.colorc("&4Index == null [DOWN]"));
                     return;
                 }
                 this.pointerLineOffset = index;
@@ -112,7 +111,7 @@ public class SignScreenManager {
                 SignPage newPage = this.currentLayout.getNextPage(this.currentPage.getPageNumber());
                 if (newPage == null) {
                     if (!this.signScreen.nullPage(this, player, false))
-                        player.sendMessage(LanguageLocale.color("&4No new page was found going [DOWN]"));
+                        player.sendMessage(Translate.colorc("&4No new page was found going [DOWN]"));
                     return;
                 }
                 stagePageAndLine(newPage, false);
@@ -124,9 +123,9 @@ public class SignScreenManager {
 
     public void tick(Player player) {
         if (!this.isTickerRunning) {
-            player.sendMessage(LanguageLocale.color("&bStarting tick() please wait..."));
+            player.sendMessage(Translate.colorc("&bStarting tick() please wait..."));
             tick();
-            player.sendMessage(LanguageLocale.color("&6Running!!!"));
+            player.sendMessage(Translate.colorc("&6Running!!!"));
         }
     }
 
@@ -162,17 +161,17 @@ public class SignScreenManager {
                     if (pointerAT == 0) {
                         clearStringBufferAndUpdate();
                         this.stringBuffer.insert(this.oldPointerLineOffset, ">");
-                        sign.setLine(this.oldPointerLine, LanguageLocale.color(this.stringBuffer.toString()));
+                        sign.line(this.oldPointerLine, Translate.colorc(this.stringBuffer.toString()));
                         if (!sign.update()) stop = true;
                         pointerAT++;
                     } else {
-                        if (!signCacheSave.updateFancy(sign)) stop = true;
+                        if (!signCacheSave.update(sign)) stop = true;
                         pointerAT--;
                     }
                 } else if (needsTextChanged || this.pointerAT == 5) {
                     this.oldPointerLine = pointerLine;
                     this.oldPointerLineOffset = pointerLineOffset;
-                    signCache.updateFancy(sign);
+                    signCache.update(sign);
                     this.signCacheSave.fromSign(sign);
                     clearStringBufferAndUpdate();
                     this.pointerAT = 0;
