@@ -4,6 +4,7 @@ import com.andrew121410.mc.world16utils.chat.Translate;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -71,5 +72,18 @@ public class InventoryUtils {
             return itemStacks[index];
         }
         return null;
+    }
+
+    public static boolean repairItem(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if (itemMeta instanceof Damageable damageable) {
+            if (!damageable.hasDamage() || damageable.getDamage() == 0) return false;
+
+            damageable.setDamage(0);
+            itemStack.setItemMeta(damageable);
+            return true;
+        }
+        return false;
     }
 }
