@@ -33,6 +33,7 @@ public abstract class MiddleGUIWindow extends GUIWindow {
     }
 
     private void update(int numberOfButtons) {
+        n = numberOfButtons;
         size = numberOfButtons <= 3 ? 27 : ((numberOfButtons - 1) / 9 + 1) * 9;
         startSlot = (size - (n * 2 - 1)) / 2; // calculate starting slot for first button
     }
