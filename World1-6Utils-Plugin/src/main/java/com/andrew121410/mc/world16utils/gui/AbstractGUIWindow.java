@@ -1,6 +1,6 @@
 package com.andrew121410.mc.world16utils.gui;
 
-import com.andrew121410.mc.world16utils.chat.Translate;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,7 +17,7 @@ public abstract class AbstractGUIWindow implements InventoryHolder {
         this.isFirst = true;
     }
 
-    public abstract String getName();
+    public abstract Component getName();
 
     public abstract int getSlotCount();
 
@@ -32,7 +32,7 @@ public abstract class AbstractGUIWindow implements InventoryHolder {
             this.onCreate(player);
             this.isFirst = false;
         }
-        inventory = Bukkit.createInventory(this, getSlotCount(), Translate.color(getName()));
+        inventory = Bukkit.createInventory(this, getSlotCount(), getName());
         this.populateInventory(player);
         player.openInventory(this.inventory);
     }

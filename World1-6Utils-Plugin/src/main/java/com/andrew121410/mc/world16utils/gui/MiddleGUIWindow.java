@@ -1,6 +1,7 @@
 package com.andrew121410.mc.world16utils.gui;
 
 import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
+import net.kyori.adventure.text.Component;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public abstract class MiddleGUIWindow extends GUIWindow {
     }
 
     @Override
-    public void update(List<AbstractGUIButton> guiButtons, String name, Integer slots) {
+    public void update(List<AbstractGUIButton> guiButtons, Component name, Integer slots) {
         // Before we start, we need to know how many buttons we have.
         update(guiButtons.size());
 

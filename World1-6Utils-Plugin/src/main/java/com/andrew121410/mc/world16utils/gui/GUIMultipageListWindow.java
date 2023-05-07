@@ -10,6 +10,7 @@ import com.andrew121410.mc.world16utils.gui.buttons.events.pages.PageEventType;
 import com.andrew121410.mc.world16utils.utils.InventoryUtils;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import com.google.common.collect.Lists;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -21,7 +22,7 @@ import java.util.function.Consumer;
 
 public class GUIMultipageListWindow extends GUIWindow {
 
-    private String name;
+    private Component name;
     private int slots = 54;
 
     private int page = 0;
@@ -30,13 +31,13 @@ public class GUIMultipageListWindow extends GUIWindow {
 
     private Consumer<GUINextPageEvent> pageEvent = null;
 
-    public GUIMultipageListWindow(String name, List<CloneableGUIButton> buttons, Integer itemsPerPage) {
+    public GUIMultipageListWindow(Component name, List<CloneableGUIButton> buttons, Integer itemsPerPage) {
         this.name = name;
         this.itemsPerPage = itemsPerPage != null ? itemsPerPage : 45;
         this.pages = setup(buttons);
     }
 
-    public GUIMultipageListWindow(String name, List<CloneableGUIButton> buttons) {
+    public GUIMultipageListWindow(Component name, List<CloneableGUIButton> buttons) {
         this(name, buttons, null);
     }
 
@@ -155,11 +156,11 @@ public class GUIMultipageListWindow extends GUIWindow {
         }
     }
 
-    public String getName() {
+    public Component getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Component name) {
         this.name = name;
     }
 

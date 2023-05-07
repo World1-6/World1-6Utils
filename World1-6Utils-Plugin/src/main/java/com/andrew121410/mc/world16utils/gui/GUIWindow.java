@@ -2,6 +2,7 @@ package com.andrew121410.mc.world16utils.gui;
 
 import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 public abstract class GUIWindow extends AbstractGUIWindow {
 
-    private String name;
+    private Component name;
     private int slots;
     private Map<Integer, AbstractGUIButton> guiButtonMap;
 
@@ -20,7 +21,7 @@ public abstract class GUIWindow extends AbstractGUIWindow {
     }
 
     @Override
-    public String getName() {
+    public Component getName() {
         return this.name;
     }
 
@@ -43,7 +44,7 @@ public abstract class GUIWindow extends AbstractGUIWindow {
         return false;
     }
 
-    public void update(List<AbstractGUIButton> guiButtons, String name, Integer slots) {
+    public void update(List<AbstractGUIButton> guiButtons, Component name, Integer slots) {
         if (guiButtons != null)
             this.guiButtonMap = guiButtons.stream().collect(Collectors.toMap(AbstractGUIButton::getSlot, k -> k));
         else this.guiButtonMap = new HashMap<>();
