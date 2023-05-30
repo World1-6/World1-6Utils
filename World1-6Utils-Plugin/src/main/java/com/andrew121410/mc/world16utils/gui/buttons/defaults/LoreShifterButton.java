@@ -4,7 +4,7 @@ import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.gui.AbstractGUIWindow;
 import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
-import com.andrew121410.mc.world16utils.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -12,37 +12,44 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class LoreShifterButton extends CloneableGUIButton {
 
-    private BiConsumer<GUIClickEvent, Integer> biConsumer;
+    private BiConsumer<GUIClickEvent, Integer> onClickBiConsumer;
 
+    private Component prefix = Translate.colorc("&b&l>&r ");
     private ItemStack itemStack;
-    private String prefix = "&b&l>&r ";
-    private List<String> loreList;
+    private List<Component> beforeLoreList; // This like extra stuff before the options.
+    private List<Component> loreList;
 
     private int lineNumber = 0;
-    private String untouchedLine;
-    private String modifiedLine;
+    private Component unModifiedLore;
+    private Component modifiedLore;
 
-    public LoreShifterButton(int slot, ItemStack itemStack, String[] lores, BiConsumer<GUIClickEvent, Integer> biConsumer) {
+    public LoreShifterButton(int slot, ItemStack itemStack, List<Component> options, BiConsumer<GUIClickEvent, Integer> onClickBiConsumer) {
         super(slot, itemStack);
         this.itemStack = itemStack;
-        this.loreList = Arrays.asList(lores);
-        this.biConsumer = biConsumer;
+        this.beforeLoreList = null;
+        this.loreList = options;
+        this.onClickBiConsumer = onClickBiConsumer;
 
-        String lore = Utils.getIndexFromStringList(this.loreList, 0);
-        this.untouchedLine = lore;
-        this.modifiedLine = prefix + lore;
-        this.loreList.set(0, modifiedLine);
+        Component firstLore = getLoreFromIndex(0);
+        if (firstLore != null) {
+            this.unModifiedLore = firstLore;
+            this.modifiedLore = this.prefix.append(firstLore);
+            this.loreList.set(0, this.modifiedLore);
+        }
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(this.loreList.stream().map(Translate::color).collect(Collectors.toList()));
-        itemStack.setItemMeta(itemMeta);
+        refreshTheItem();
+    }
+
+    public LoreShifterButton(int slot, ItemStack itemStack, List<Component> before, List<Component> options, BiConsumer<GUIClickEvent, Integer> onClickBiConsumer) {
+        this(slot, itemStack, options, onClickBiConsumer);
+        this.beforeLoreList = before;
+
+        refreshTheItem();
     }
 
     @Override
@@ -52,25 +59,50 @@ public class LoreShifterButton extends CloneableGUIButton {
         Player player = (Player) event.getWhoClicked();
 
         if (event.getClick() == ClickType.RIGHT) {
-            this.loreList.set(this.lineNumber, this.untouchedLine);
+            this.loreList.set(this.lineNumber, this.unModifiedLore);
             this.lineNumber++;
-            String lore = Utils.getIndexFromStringList(this.loreList, this.lineNumber);
+
+            // Get the lore from the index, if it's null then reset it back to 0.
+            Component lore = getLoreFromIndex(this.lineNumber);
             if (lore == null) {
-                this.lineNumber = 0; //Reset it back to 0;
-                lore = Utils.getIndexFromStringList(this.loreList, this.lineNumber);
+                this.lineNumber = 0;
+                lore = getLoreFromIndex(this.lineNumber);
             }
-            this.untouchedLine = lore;
-            this.modifiedLine = this.prefix + lore;
-            this.loreList.set(this.lineNumber, this.modifiedLine);
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setLore(this.loreList.stream().map(Translate::color).collect(Collectors.toList()));
-            itemStack.setItemMeta(itemMeta);
-            //Refresh?
+
+            // Save and set the new lore.
+            this.unModifiedLore = lore;
+            this.modifiedLore = this.prefix.append(lore);
+            this.loreList.set(this.lineNumber, this.modifiedLore);
+
+            // Refresh the item with the new lore list.
+            refreshTheItem();
+
+            // Refresh
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
             guiWindow.refresh(player);
         } else if (event.getClick() == ClickType.LEFT) {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
-            this.biConsumer.accept(guiClickEvent, this.lineNumber);
+            this.onClickBiConsumer.accept(guiClickEvent, this.lineNumber);
         }
+    }
+
+    private void refreshTheItem() {
+        List<Component> list = this.beforeLoreList == null ? this.loreList : this.beforeLoreList;
+
+        if (this.beforeLoreList != null) {
+            list.add(Component.newline());
+            list.addAll(this.loreList);
+        }
+
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        itemMeta.lore(list);
+        this.itemStack.setItemMeta(itemMeta);
+    }
+
+    private Component getLoreFromIndex(int index) {
+        if (index >= 0 && index < this.loreList.size()) {
+            return this.loreList.get(index);
+        }
+        return null;
     }
 }
