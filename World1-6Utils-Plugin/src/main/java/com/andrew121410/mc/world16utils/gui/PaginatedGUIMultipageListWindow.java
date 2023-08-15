@@ -115,6 +115,9 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
             }));
         }
 
+        int realPageNumber = this.currentPage + 1;
+        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
+
         List<AbstractGUIButton> guiButtonList = new ArrayList<>();
 
         // Add the items to the gui
@@ -125,16 +128,10 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         // Add the bottom buttons
         guiButtonList.addAll(bottomButtons);
 
-        int realPageNumber = this.currentPage + 1;
-        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
-
         this.update(guiButtonList, this.name, this.size);
         if (!super.isFirst()) {
             this.refresh(player);
         }
-
-        // Reset the paginated return
-        this.paginatedReturn = null;
     }
 
     private void handlePageChange(Player player, GUIClickEvent guiClickEvent, int newPage, PageEventType pageEventType) {
@@ -145,6 +142,9 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
 
         // Change page number
         this.currentPage = newPage;
+
+        // Reset the paginated return
+        this.paginatedReturn = null;
 
         // Handle the new page
         this.handle(player);
