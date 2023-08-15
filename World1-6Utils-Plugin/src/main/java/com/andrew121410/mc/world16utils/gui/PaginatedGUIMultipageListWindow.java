@@ -156,7 +156,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     }
 
     private void setupWaitingTimer(Player player) {
-        World16Utils.getInstance().getServer().getScheduler().runTaskTimer(World16Utils.getInstance(), new BukkitRunnable() {
+        new BukkitRunnable() {
             @Override
             public void run() {
                 player.sendActionBar(Translate.miniMessage("<red><bold>Waiting for data..."));
@@ -173,7 +173,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
                     this.cancel();
                 }
             }
-        }, 0L, 20L);
+        }.runTaskTimer(World16Utils.getInstance(), 0L, 20L);
     }
 
     @Override
