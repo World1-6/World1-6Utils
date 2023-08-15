@@ -71,17 +71,18 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
                     setupWaitingTimer(player);
 
                     World16Utils.getInstance().getServer().getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
-                        // If cache mode is enabled, cache the buttons
-                        if (this.cacheMode)
-                            this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
-
                         this.paginatedReturn = this.buttonProvider.apply(this.currentPage);
+
+                        // If cache mode is enabled, cache the buttons
+                        if (this.cacheMode && this.paginatedReturn != null)
+                            this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
                     });
+                    return; // No need to continue
                 } else { // If async mode is disabled, run the button provider in the main thread
                     paginatedReturn = this.buttonProvider.apply(this.currentPage);
 
                     // If cache mode is enabled, cache the buttons
-                    if (this.cacheMode)
+                    if (this.cacheMode && this.paginatedReturn != null)
                         this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
                 }
                 // If the page is cached, use the cached buttons
@@ -166,6 +167,10 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
 
                     // Handle the gui
                     handle(player);
+                }
+
+                if (!player.isOnline() || !player.isValid()) {
+                    this.cancel();
                 }
             }
         }, 0L, 20L);
