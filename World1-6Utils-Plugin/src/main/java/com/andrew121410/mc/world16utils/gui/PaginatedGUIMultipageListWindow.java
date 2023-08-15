@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.gui;
 
+import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.ClickEventButton;
@@ -26,10 +27,14 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     private int size = 54; // Default size of gui
 
     private Map<Integer, List<CloneableGUIButton>> pages = new HashMap<>();
+
     private int currentPage;
 
-    private Function<Integer, List<CloneableGUIButton>> buttonProvider = null;
+    private Function<Integer, PaginatedReturn> buttonProvider = null;
     private Consumer<GUINextPageEvent> pageEvent = null;
+
+    private boolean buttonProviderAsync = false;
+    private PaginatedReturn paginatedReturn;
 
     public PaginatedGUIMultipageListWindow(Component name, Integer currentPage) {
         this.name = name;
@@ -51,8 +56,21 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
 
         // Call button provider to populate the page
         if (this.buttonProvider != null) {
-            this.pages.putIfAbsent(this.currentPage, this.buttonProvider.apply(this.currentPage));
+            if (!this.pages.containsKey(this.currentPage)) {
+                if (this.buttonProviderAsync) {
+                    World16Utils.getInstance().getServer().getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
+                        this.paginatedReturn = this.buttonProvider.apply(this.currentPage);
+                        this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
+                        this.handle(player);
+                    });
+                } else {
+                    paginatedReturn = this.buttonProvider.apply(this.currentPage);
+                    this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
+                }
+            }
         }
+
+        boolean hasNextPage = paginatedReturn != null && paginatedReturn.hasNextPage();
 
         // Show previous page button if not on first page and previous page exists
         if (this.currentPage != 0 && this.pages.get(this.currentPage - 1) != null) {
@@ -62,7 +80,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         }
 
         // Show next page button if the next page exists
-        if (this.pages.get(this.currentPage + 1) != null) {
+        if (hasNextPage || this.pages.get(this.currentPage + 1) != null) {
             bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
                 handlePageChange(player, guiClickEvent, this.currentPage + 1, PageEventType.NEXT_PAGE);
             }));
@@ -103,6 +121,10 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         if (this.pageEvent != null) {
             this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.currentPage, null, pageEventType, true));
         }
+    }
+
+    private void showWaitingActionBar(Player player) {
+
     }
 
     @Override
