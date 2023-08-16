@@ -39,6 +39,8 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     private boolean asyncMode = false;
     private PaginatedReturn paginatedReturn;
 
+    private boolean isWaiting = false;
+
     public PaginatedGUIMultipageListWindow(Component name, Integer currentPage, boolean cacheMode, boolean asyncMode) {
         this.name = name;
         this.currentPage = currentPage != null ? currentPage : 0;
@@ -58,6 +60,16 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     @Override
     public void onClose(InventoryCloseEvent inventoryCloseEvent) {
 
+    }
+
+    @Override
+    public void open(Player player) {
+        if (this.paginatedReturn == null && super.isFirst() && this.asyncMode) {
+            handle(player);
+            return; // Do not open the GUI
+        }
+
+        super.open(player);
     }
 
     private void handle(Player player) {
@@ -101,6 +113,15 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         boolean hasPreviousPage = paginatedReturn != null ? paginatedReturn.hasPreviousPage() : this.currentPage != 0 && this.pages.get(this.currentPage - 1) != null;
         boolean hasNextPage = paginatedReturn != null ? paginatedReturn.hasNextPage() : this.pages.get(this.currentPage + 1) != null;
 
+        // If the buttons are null, return
+        if (buttons == null) {
+            World16Utils.getInstance().getLogger().log(java.util.logging.Level.WARNING, "Buttons are null, returning...");
+            return;
+        }
+
+        // Determine and set the slot numbers for the buttons
+        GUIMultipageListWindow.determineSlotNumbers(buttons, 45);
+
         // Show previous page button if not on first page and previous page exists
         if (hasPreviousPage) {
             bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
@@ -121,9 +142,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         List<AbstractGUIButton> guiButtonList = new ArrayList<>();
 
         // Add the items to the gui
-        if (buttons != null) {
-            guiButtonList.addAll(buttons);
-        }
+        guiButtonList.addAll(buttons);
 
         // Add the bottom buttons
         guiButtonList.addAll(bottomButtons);
@@ -159,14 +178,26 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         new BukkitRunnable() {
             @Override
             public void run() {
+                isWaiting = true;
+
                 player.sendActionBar(Translate.miniMessage("<red><bold>Waiting for data..."));
 
                 if (paginatedReturn != null) {
                     // Cancel the task
                     this.cancel();
 
-                    // Handle the gui
+                    // Reset the waiting variable
+                    isWaiting = false;
+
+                    // If first time open the GUI
+                    if (isFirst()) {
+                        open(player);
+                        return;
+                    }
+
+                    // If not first time, refresh the GUI
                     handle(player);
+                    return;
                 }
 
                 if (!player.isOnline() || !player.isValid()) {
