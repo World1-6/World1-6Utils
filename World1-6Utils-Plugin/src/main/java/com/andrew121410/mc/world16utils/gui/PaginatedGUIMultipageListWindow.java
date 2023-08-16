@@ -88,15 +88,10 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
                         // This wait pause this thread until the paginated is returned
                         PaginatedReturn theReturnPage = this.buttonProvider.apply(thePageNumber);
 
-                        // If cache mode is enabled, cache the buttons
-                        if (this.cacheMode && theReturnPage != null)
-                            this.pages.putIfAbsent(thePageNumber, theReturnPage);
-
-                        // Set the current page number
-                        this.currentPage = thePageNumber;
-
-                        // Set the paginated return
-                        this.paginatedReturn = theReturnPage;
+                        // theReturnPage can be null that means the button provider will return when it's ready on its own.
+                        if (theReturnPage != null) {
+                            setPageDone(thePageNumber, theReturnPage);
+                        }
                     });
                     return; // No need to continue
                 } else { // If async mode is disabled, run the button provider in the main thread
@@ -176,6 +171,19 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         if (this.pageEvent != null) {
             this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.currentPage, null, pageEventType, true));
         }
+    }
+
+    public void setPageDone(int pageNumber, PaginatedReturn paginatedReturn) {
+        // Cache the buttons if cache mode is enabled
+        if (cacheMode) {
+            this.pages.putIfAbsent(pageNumber, paginatedReturn);
+        }
+
+        // Set the current page number
+        this.currentPage = pageNumber;
+
+        // Set the paginated return
+        this.paginatedReturn = paginatedReturn;
     }
 
     private void setupWaitingTimer(Player player) {
