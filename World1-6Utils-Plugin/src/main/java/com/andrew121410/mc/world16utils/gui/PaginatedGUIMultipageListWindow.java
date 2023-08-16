@@ -28,7 +28,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     private Component name;
     private int size = 54; // Default size of gui
 
-    private Map<Integer, List<CloneableGUIButton>> pages = new HashMap<>();
+    private Map<Integer, PaginatedReturn> pages = new HashMap<>();
 
     private int currentPage;
 
@@ -83,33 +83,37 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
                     setupWaitingTimer(player);
 
                     World16Utils.getInstance().getServer().getScheduler().runTaskAsynchronously(World16Utils.getInstance(), () -> {
-                        this.paginatedReturn = this.buttonProvider.apply(this.currentPage);
+                        int thePageNumber = this.currentPage;
+
+                        // This wait pause this thread until the paginated is returned
+                        PaginatedReturn theReturnPage = this.buttonProvider.apply(thePageNumber);
 
                         // If cache mode is enabled, cache the buttons
-                        if (this.cacheMode && this.paginatedReturn != null)
-                            this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
+                        if (this.cacheMode && theReturnPage != null)
+                            this.pages.putIfAbsent(thePageNumber, theReturnPage);
+
+                        // Set the current page number
+                        this.currentPage = thePageNumber;
+
+                        // Set the paginated return
+                        this.paginatedReturn = theReturnPage;
                     });
                     return; // No need to continue
                 } else { // If async mode is disabled, run the button provider in the main thread
-                    paginatedReturn = this.buttonProvider.apply(this.currentPage);
+                    this.paginatedReturn = this.buttonProvider.apply(this.currentPage);
 
                     // If cache mode is enabled, cache the buttons
                     if (this.cacheMode && this.paginatedReturn != null)
-                        this.pages.putIfAbsent(this.currentPage, paginatedReturn.getButtons());
+                        this.pages.putIfAbsent(this.currentPage, paginatedReturn);
                 }
                 // If the page is cached, use the cached buttons
             } else if (this.cacheMode && this.pages.containsKey(this.currentPage)) {
-                // Determine if the page has a next page
-                boolean hasNextPage = this.pages.get(this.currentPage + 1) != null;
-                boolean hasPreviousPage = this.pages.get(this.currentPage - 1) != null && this.currentPage != 0;
-
-                // Create a new paginated return from the cached buttons
-                this.paginatedReturn = new PaginatedReturn(hasNextPage, hasPreviousPage, this.pages.get(this.currentPage));
+                this.paginatedReturn = this.pages.get(this.currentPage);
             }
         }
 
         // From the paginated return
-        List<CloneableGUIButton> buttons = this.paginatedReturn != null ? this.paginatedReturn.getButtons() : this.pages.get(this.currentPage);
+        List<CloneableGUIButton> buttons = this.paginatedReturn != null ? this.paginatedReturn.getButtons() : this.pages.get(this.currentPage).getButtons();
         boolean hasPreviousPage = paginatedReturn != null ? paginatedReturn.hasPreviousPage() : this.currentPage != 0 && this.pages.get(this.currentPage - 1) != null;
         boolean hasNextPage = paginatedReturn != null ? paginatedReturn.hasNextPage() : this.pages.get(this.currentPage + 1) != null;
 
@@ -175,6 +179,11 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     }
 
     private void setupWaitingTimer(Player player) {
+        // Close the GUI if the player is in the GUI
+        if (player.getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow) {
+            player.closeInventory();
+        }
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -224,11 +233,11 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         this.size = size;
     }
 
-    public Map<Integer, List<CloneableGUIButton>> getPages() {
+    public Map<Integer, PaginatedReturn> getPages() {
         return pages;
     }
 
-    public void setPages(Map<Integer, List<CloneableGUIButton>> pages) {
+    public void setPages(Map<Integer, PaginatedReturn> pages) {
         this.pages = pages;
     }
 
