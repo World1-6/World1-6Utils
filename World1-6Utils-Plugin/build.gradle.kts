@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
     `maven-publish`
 }
 
@@ -11,7 +11,7 @@ dependencies {
     api(project(":World1-6Utils_WE_7210"))
 
     // Other
-    api("com.github.andrew121410:CCUtilsJava:f2694a6b")
+    api("com.github.andrew121410:CCUtilsJava:f5fea429")
     compileOnly("org.geysermc.floodgate:api:2.0-SNAPSHOT")
     api("org.spongepowered:configurate-yaml:4.1.2")
 }
