@@ -1,4 +1,4 @@
-rootProject.name = "world1-6utils"
+rootProject.name = "World1-6Utils"
 include(":World1-6Utils_CMI_API")
 include(":World1-6Utils-COMMON")
 include(":World1-6Utils-API")
