@@ -29,7 +29,7 @@ subprojects {
             url = uri("https://maven.enginehub.org/repo/")
         }
         maven {
-            url = uri("https://repo.opencollab.dev/maven-snapshots/")
+            url = uri("https://repo.opencollab.dev/main/")
         }
     }
 
