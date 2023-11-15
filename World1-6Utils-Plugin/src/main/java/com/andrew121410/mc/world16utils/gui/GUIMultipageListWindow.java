@@ -87,7 +87,7 @@ public class GUIMultipageListWindow extends GUIWindow {
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
 
         if (searchResults == null) {
-            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "&6Search", "Use this to search for things"), null, null, (player1, string) -> {
+            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "&6Search", "Use this to search for things"), (Component) null, null, (player1, string) -> {
                 List<CloneableGUIButton> sortByContainsList = new ArrayList<>();
 
                 List<CloneableGUIButton> toSort = new ArrayList<>();
