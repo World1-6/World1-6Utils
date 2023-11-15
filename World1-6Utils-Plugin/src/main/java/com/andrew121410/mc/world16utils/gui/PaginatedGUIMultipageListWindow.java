@@ -29,7 +29,7 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
     private int size = 54; // Default size of gui
 
     private Map<Integer, PaginatedReturn> pages = new HashMap<>();
-    private Map<Integer, CloneableGUIButton> customBottomButtons = new HashMap<>();
+    private List<CloneableGUIButton> customBottomButtons = new ArrayList<>();
 
     private int currentPage;
 
@@ -158,14 +158,14 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
 
         // Add custom bottom buttons
-        for (Map.Entry<Integer, CloneableGUIButton> entry : this.customBottomButtons.entrySet()) {
+        for (CloneableGUIButton customBottomButton : this.customBottomButtons) {
             // Check if the slot is already taken
-            if (bottomButtons.stream().anyMatch(cloneableGUIButton -> cloneableGUIButton.getSlot() == entry.getKey())) {
-                World16Utils.getInstance().getLogger().log(java.util.logging.Level.WARNING, "Bottom button at slot " + entry.getKey() + " already exists, skipping...");
+            if (bottomButtons.stream().anyMatch(cloneableGUIButton -> cloneableGUIButton.getSlot() == customBottomButton.getSlot())) {
+                World16Utils.getInstance().getLogger().log(java.util.logging.Level.WARNING, "Bottom button at slot " + customBottomButton.getSlot() + " already exists, skipping...");
                 continue;
             }
 
-            bottomButtons.add(entry.getValue());
+            bottomButtons.add(customBottomButton);
         }
 
         return bottomButtons;
@@ -268,11 +268,11 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
         this.pages = pages;
     }
 
-    public Map<Integer, CloneableGUIButton> getCustomBottomButtons() {
+    public List<CloneableGUIButton> getCustomBottomButtons() {
         return customBottomButtons;
     }
 
-    public void setCustomBottomButtons(Map<Integer, CloneableGUIButton> customBottomButtons) {
+    public void setCustomBottomButtons(List<CloneableGUIButton> customBottomButtons) {
         this.customBottomButtons = customBottomButtons;
     }
 
