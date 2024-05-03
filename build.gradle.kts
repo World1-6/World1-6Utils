@@ -14,10 +14,6 @@ subprojects {
         mavenCentral()
 
         maven {
-            url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-        }
-
-        maven {
             url = uri("https://repo.papermc.io/repository/maven-public/")
         }
 
@@ -31,15 +27,20 @@ subprojects {
         maven {
             url = uri("https://repo.opencollab.dev/main/")
         }
-    }
-
-    dependencies {
-        compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        }
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        // Do I need all of these? I have no idea lol.
+        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    dependencies {
+        compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
     }
 
     tasks.withType<JavaCompile> {

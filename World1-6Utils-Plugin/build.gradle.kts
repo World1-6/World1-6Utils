@@ -1,5 +1,6 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
+//    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
+    id("io.github.goooler.shadow") version "8.1.7" // https://github.com/johnrengelman/shadow/pull/876 https://github.com/Goooler/shadow https://plugins.gradle.org/plugin/io.github.goooler.shadow
     `maven-publish`
 }
 
@@ -11,7 +12,7 @@ dependencies {
     api(project(":World1-6Utils_WE_7210"))
 
     // Other
-    api("com.github.andrew121410:CCUtilsJava:15c97c7a")
+    api("com.github.andrew121410:CCUtilsJava:d55f4434a1")
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
     api("org.spongepowered:configurate-yaml:4.2.0-SNAPSHOT")
 }
