@@ -10,4 +10,11 @@ public class KitsManager {
 
     public void addKit(Kit paramKit) {
     }
+
+    public void safeSave() {
+    }
+
+    public void save() {
+
+    }
 }

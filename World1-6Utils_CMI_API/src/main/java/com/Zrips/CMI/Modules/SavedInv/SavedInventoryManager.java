@@ -21,4 +21,8 @@ public class SavedInventoryManager {
     public SavedInventories getInventories(CMIUser paramCMIUser) {
         return null;
     }
+
+    public boolean saveAllInventories(UUID paramUUID) {
+        return false;
+    }
 }
