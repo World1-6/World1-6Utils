@@ -74,6 +74,13 @@ public class InventoryUtils {
         return null;
     }
 
+    public static ItemStack getItemInItemStackArrayIfExist(List<ItemStack> itemStacks, int index) {
+        if (index >= 0 && index < itemStacks.size()) {
+            return itemStacks.get(index);
+        }
+        return null;
+    }
+
     public static boolean repairItem(ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 

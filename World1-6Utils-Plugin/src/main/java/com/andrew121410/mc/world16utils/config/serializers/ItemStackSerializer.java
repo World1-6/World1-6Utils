@@ -21,7 +21,7 @@ public class ItemStackSerializer implements TypeSerializer<ItemStack> {
 
         ItemStack itemStack = null;
         try {
-            itemStack = BukkitSerialization.base64ToItemStack(base64);
+            itemStack = BukkitSerialization.deserializeItemStack(base64);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,6 +36,6 @@ public class ItemStackSerializer implements TypeSerializer<ItemStack> {
             return;
         }
 
-        node.set(BukkitSerialization.itemStackToBase64(obj));
+        node.set(BukkitSerialization.serializeItemStack(obj));
     }
 }
