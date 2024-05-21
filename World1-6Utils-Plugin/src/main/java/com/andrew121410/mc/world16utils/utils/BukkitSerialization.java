@@ -15,7 +15,7 @@ public class BukkitSerialization {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             DataOutput output = new DataOutputStream(outputStream);
 
-            if (itemStack == null) {
+            if (itemStack == null || itemStack.getType().isAir()) {
                 output.writeInt(0);
                 return Base64Coder.encodeLines(outputStream.toByteArray());
             }
@@ -57,7 +57,7 @@ public class BukkitSerialization {
             output.writeInt(items.length);
 
             for (ItemStack item : items) {
-                if (item == null) {
+                if (item == null || item.getType().isAir()) {
                     output.writeInt(0);
                     continue;
                 }
