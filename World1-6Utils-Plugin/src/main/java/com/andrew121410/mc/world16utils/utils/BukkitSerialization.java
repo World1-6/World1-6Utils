@@ -73,7 +73,19 @@ public class BukkitSerialization {
     }
 
     public static List<ItemStack> deserializeToList(String encodedItems) {
-        return List.of(deserialize(encodedItems));
+        ItemStack[] items = deserialize(encodedItems);
+
+        // Do not clean up the code, it's needed to keep the null entries
+        List<ItemStack> itemStacks = new ArrayList<>();
+        for (ItemStack item : items) {
+            if (item == null) {
+                itemStacks.add(null);
+            } else {
+                itemStacks.add(item);
+            }
+        }
+
+        return itemStacks;
     }
 
     public static ItemStack[] deserialize(String encodedItems) {
