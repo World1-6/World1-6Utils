@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A normal Location when deserialized will not work if the world is not loaded.
@@ -18,19 +19,19 @@ import java.util.Map;
 @SerializableAs("UnlinkedWorldLocation")
 public class UnlinkedWorldLocation extends Location implements ConfigurationSerializable {
 
-    private final String world;
+    private final UUID world;
 
-    public UnlinkedWorldLocation(String world, double x, double y, double z, float yaw, float pitch) {
+    public UnlinkedWorldLocation(UUID world, double x, double y, double z, float yaw, float pitch) {
         super(null, x, y, z, yaw, pitch); // World is null, because it might not be loaded.
         this.world = world;
     }
 
-    public UnlinkedWorldLocation(String world, double x, double y, double z) {
+    public UnlinkedWorldLocation(UUID world, double x, double y, double z) {
         this(world, x, y, z, 0, 0);
     }
 
     public UnlinkedWorldLocation(Location location) {
-        this(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this(location.getWorld().getUID(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     @Override
@@ -43,19 +44,14 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
         return org.bukkit.Bukkit.getWorld(world);
     }
 
-    public String getWorldName() {
-        return world;
-    }
-
-    @Deprecated(forRemoval = true)
-    public Location toLocation() {
-        return new Location(getWorld(), getX(), getY(), getZ(), getYaw(), getPitch());
+    public UUID getWorldUUID() {
+        return this.world;
     }
 
     @Override
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("world", world);
+        map.put("world", this.world);
         map.put("x", this.getX());
         map.put("y", this.getY());
         map.put("z", this.getZ());
@@ -65,7 +61,7 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
     }
 
     public static UnlinkedWorldLocation deserialize(Map<String, Object> map) {
-        String world = (String) map.get("world");
+        UUID world = (UUID) map.get("world");
         double x = (Double) map.getOrDefault("x", 0);
         double y = (Double) map.getOrDefault("y", 0);
         double z = (Double) map.getOrDefault("z", 0);

@@ -7,6 +7,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
+import java.util.UUID;
 
 public class UnlinkedWorldLocationSerializer implements TypeSerializer<UnlinkedWorldLocation> {
 
@@ -15,13 +16,13 @@ public class UnlinkedWorldLocationSerializer implements TypeSerializer<UnlinkedW
         if (node.raw() == null) {
             return null;
         }
-        String worldName = SerializerUtils.nonVirtualNode(node, "world").getString();
+        UUID worldUUID = SerializerUtils.nonVirtualNode(node, "world").get(UUID.class);
         double x = SerializerUtils.nonVirtualNode(node, "x").getDouble();
         double y = SerializerUtils.nonVirtualNode(node, "y").getDouble();
         double z = SerializerUtils.nonVirtualNode(node, "z").getDouble();
         float yaw = (float) SerializerUtils.nonVirtualNode(node, "yaw").getDouble();
         float pitch = (float) SerializerUtils.nonVirtualNode(node, "pitch").getDouble();
-        return new UnlinkedWorldLocation(worldName, x, y, z, yaw, pitch);
+        return new UnlinkedWorldLocation(worldUUID, x, y, z, yaw, pitch);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class UnlinkedWorldLocationSerializer implements TypeSerializer<UnlinkedW
             node.raw(null);
             return;
         }
-        node.node("world").set(obj.getWorldName());
+        node.node("world").set(obj.getWorldUUID());
         node.node("x").set(obj.getX());
         node.node("y").set(obj.getY());
         node.node("z").set(obj.getZ());
