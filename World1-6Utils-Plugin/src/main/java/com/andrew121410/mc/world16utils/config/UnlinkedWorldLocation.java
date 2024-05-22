@@ -53,7 +53,7 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
     @Override
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("world", this.world);
+        map.put("world", String.valueOf(this.world)); // Why can't I just save it as a UUID and not a string?
         map.put("x", this.getX());
         map.put("y", this.getY());
         map.put("z", this.getZ());
