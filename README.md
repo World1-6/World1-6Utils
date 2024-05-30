@@ -10,7 +10,7 @@ As of 7/26/2022, this library now requires Paper, instead of Spigot
 2. World1-6Utils-API: *Interfaces used for abstraction*
 3. World1-6Utils-Plugin: *Classes that can be used in any MC versions via regular Bukkit API or our ClassWrappers API*
 4. World1-6Utils_WE_7210: *Used to access the 7.2.10 WorldEdit API used for a class that implements World1-6Utils-API*
-5. World1-6Utils_CMI_API: *Used to access CMI (Yes I know there is https://github.com/Zrips/CMI-API BUT it isn't a maven or gradle project...)*
+5. World1-6Utils_CMI_API: *Used to access CMI API not needed anymore, but will keep*
 
 ## Compiling:
 `maven clean package`
