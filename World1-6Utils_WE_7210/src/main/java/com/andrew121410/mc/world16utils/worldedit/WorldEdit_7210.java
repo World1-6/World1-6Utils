@@ -17,9 +17,12 @@ import org.bukkit.util.BoundingBox;
 public class WorldEdit_7210 implements WorldEdit {
 
     private WorldEditPlugin worldEditPlugin;
+    private boolean useOldMethods = true;
 
     public WorldEdit_7210() {
         this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+
+        this.useOldMethods = canUseOldMethods();
     }
 
     @Override
@@ -44,6 +47,66 @@ public class WorldEdit_7210 implements WorldEdit {
         } catch (IncompleteRegionException e) {
             return null;
         }
-        return new BoundingBox(region.getMinimumPoint().getX(), region.getMinimumPoint().getY(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getY(), region.getMaximumPoint().getZ());
+
+        int minX;
+        int minY;
+        int minZ;
+        int maxX;
+        int maxY;
+        int maxZ;
+        if (this.useOldMethods) {
+            // If the old methods still exist, use them
+            minX = region.getMinimumPoint().getX();
+            minY = region.getMinimumPoint().getY();
+            minZ = region.getMinimumPoint().getZ();
+            maxX = region.getMaximumPoint().getX();
+            maxY = region.getMaximumPoint().getY();
+            maxZ = region.getMaximumPoint().getZ();
+        } else {
+            // If the old methods do not exist, use the new methods
+            minX = region.getMinimumPoint().x();
+            minY = region.getMinimumPoint().y();
+            minZ = region.getMinimumPoint().z();
+            maxX = region.getMaximumPoint().x();
+            maxY = region.getMaximumPoint().y();
+            maxZ = region.getMaximumPoint().z();
+        }
+
+        return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    private boolean canUseOldMethods() {
+        try {
+            Class<?> blockVector3Class = Class.forName("com.sk89q.worldedit.math.BlockVector3");
+
+            // Check if getX method exists
+            try {
+                blockVector3Class.getMethod("getX");
+            } catch (NoSuchMethodException e) {
+                System.out.println("getX() method does not exist");
+                return false;
+            }
+
+            // Check if getY method exists
+            try {
+                blockVector3Class.getMethod("getY");
+            } catch (NoSuchMethodException e) {
+                System.out.println("getY() method does not exist");
+                return false;
+            }
+
+            // Check if getZ method exists
+            try {
+                blockVector3Class.getMethod("getZ");
+            } catch (NoSuchMethodException e) {
+                System.out.println("getZ() method does not exist");
+                return false;
+            }
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("BlockVector3 class not found");
+            return false;
+        }
+        return true;
     }
 }
