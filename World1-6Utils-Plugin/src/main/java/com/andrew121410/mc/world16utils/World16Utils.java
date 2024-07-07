@@ -113,6 +113,15 @@ public final class World16Utils extends JavaPlugin {
         });
     }
 
+    public static boolean isOnPaper() {
+        try {
+            Class.forName("com.destroystokyo.paper.PaperConfig");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public static World16Utils getInstance() {
         return instance;
     }
