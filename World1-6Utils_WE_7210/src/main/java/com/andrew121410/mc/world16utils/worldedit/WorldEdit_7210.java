@@ -21,7 +21,6 @@ public class WorldEdit_7210 implements WorldEdit {
 
     public WorldEdit_7210() {
         this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-
         this.useOldMethods = canUseOldMethods();
     }
 
@@ -48,63 +47,56 @@ public class WorldEdit_7210 implements WorldEdit {
             return null;
         }
 
-        int minX;
-        int minY;
-        int minZ;
-        int maxX;
-        int maxY;
-        int maxZ;
-        if (this.useOldMethods) {
-            // If the old methods still exist, use them
-            minX = region.getMinimumPoint().getX();
-            minY = region.getMinimumPoint().getY();
-            minZ = region.getMinimumPoint().getZ();
-            maxX = region.getMaximumPoint().getX();
-            maxY = region.getMaximumPoint().getY();
-            maxZ = region.getMaximumPoint().getZ();
-        } else {
-            // If the old methods do not exist, use the new methods
-            minX = region.getMinimumPoint().x();
-            minY = region.getMinimumPoint().y();
-            minZ = region.getMinimumPoint().z();
-            maxX = region.getMaximumPoint().x();
-            maxY = region.getMaximumPoint().y();
-            maxZ = region.getMaximumPoint().z();
-        }
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+
+        int minX = getCoordinate(min, "x");
+        int minY = getCoordinate(min, "y");
+        int minZ = getCoordinate(min, "z");
+        int maxX = getCoordinate(max, "x");
+        int maxY = getCoordinate(max, "y");
+        int maxZ = getCoordinate(max, "z");
 
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    private int getCoordinate(BlockVector3 vector, String coordinate) {
+        try {
+            if (this.useOldMethods) {
+                switch (coordinate) {
+                    case "x":
+                        return (int) vector.getClass().getMethod("getX").invoke(vector);
+                    case "y":
+                        return (int) vector.getClass().getMethod("getY").invoke(vector);
+                    case "z":
+                        return (int) vector.getClass().getMethod("getZ").invoke(vector);
+                }
+            } else {
+                switch (coordinate) {
+                    case "x":
+                        return vector.x();
+                    case "y":
+                        return vector.y();
+                    case "z":
+                        return vector.z();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     private boolean canUseOldMethods() {
         try {
             Class<?> blockVector3Class = Class.forName("com.sk89q.worldedit.math.BlockVector3");
 
-            // Check if getX method exists
-            try {
-                blockVector3Class.getMethod("getX");
-            } catch (NoSuchMethodException e) {
-                System.out.println("getX() method does not exist");
-                return false;
-            }
+            // Check if getX, getY, getZ methods exist
+            blockVector3Class.getMethod("getX");
+            blockVector3Class.getMethod("getY");
+            blockVector3Class.getMethod("getZ");
 
-            // Check if getY method exists
-            try {
-                blockVector3Class.getMethod("getY");
-            } catch (NoSuchMethodException e) {
-                System.out.println("getY() method does not exist");
-                return false;
-            }
-
-            // Check if getZ method exists
-            try {
-                blockVector3Class.getMethod("getZ");
-            } catch (NoSuchMethodException e) {
-                System.out.println("getZ() method does not exist");
-                return false;
-            }
-
-        } catch (ClassNotFoundException e) {
-            System.out.println("BlockVector3 class not found");
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             return false;
         }
         return true;
