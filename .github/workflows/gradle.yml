@@ -31,14 +31,14 @@ jobs:
         run: ./gradlew build
 
       - name: Generate sha256sum
-        run: sha256sum ${{ MY_JAR }} >> hash.txt
+        run: sha256sum "$MY_JAR" >> hash.txt
 
       - name: Deploy Release With Artifact
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
           prerelease: false
           files: |
-            ${{ MY_JAR }}
+            ${{ env.MY_JAR }}
             hash.txt
