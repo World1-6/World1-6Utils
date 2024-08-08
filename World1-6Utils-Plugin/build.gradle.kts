@@ -1,6 +1,5 @@
 plugins {
-//    id("com.github.johnrengelman.shadow") version "8.1.1" // https://github.com/johnrengelman/shadow
-    id("io.github.goooler.shadow") version "8.1.7" // https://github.com/johnrengelman/shadow/pull/876 https://github.com/Goooler/shadow https://plugins.gradle.org/plugin/io.github.goooler.shadow
+    id("com.gradleup.shadow") version "8.3.0" // https://github.com/GradleUp/shadow
     `maven-publish`
 }
 
@@ -12,8 +11,8 @@ dependencies {
     api(project(":World1-6Utils_WE_7210"))
 
     // Other
-    api("com.github.andrew121410:CCUtilsJava:619a533498")
-    compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
+    api("com.github.andrew121410:CCUtilsJava:ba20482ccb")
+    compileOnly("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") // https://github.com/GeyserMC/Floodgate/blob/master/gradle.properties
     api("org.spongepowered:configurate-yaml:4.2.0-SNAPSHOT")
 }
 
@@ -27,6 +26,7 @@ tasks {
     }
 
     shadowJar {
+        // Yes all three of these are needed for JitPack to work.
         archiveBaseName.set("World1-6Utils")
         archiveClassifier.set("")
         archiveVersion.set("")
