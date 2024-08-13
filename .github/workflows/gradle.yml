@@ -9,12 +9,12 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      MY_JAR: World1-6Utils-Plugin/build/libs/World1-6Utils.jar
+      MY_JAR: "World1-6Utils-Plugin/build/libs/World1-6Utils.jar"
 
     steps:
       - uses: actions/checkout@v4 # https://github.com/actions/checkout
 
-      - name: Setup Gradle
+      - name: Setup Gradle # https://github.com/gradle/actions
         uses: gradle/actions/setup-gradle@v4
 
       - name: Chmod Gradlew
@@ -36,7 +36,7 @@ jobs:
       - name: Deploy Release With Artifact
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: false
           files: |
