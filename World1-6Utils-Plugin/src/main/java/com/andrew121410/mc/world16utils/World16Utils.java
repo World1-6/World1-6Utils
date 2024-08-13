@@ -65,14 +65,19 @@ public final class World16Utils extends JavaPlugin {
 
     private void registerCommand() {
         getCommand("world1-6utils").setExecutor((sender, command, s, args) -> {
-            if (!sender.hasPermission("world16.world1-6utils")) {
-                sender.sendMessage("You do not have permission to use this command.");
-                return true;
-            }
-
             if (args.length == 0) {
+                if (!sender.hasPermission("world16.world1-6utils")) {
+                    sender.sendMessage("You do not have permission to use this command.");
+                    return true;
+                }
+
                 sender.sendMessage("/world1-6utils update");
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
+                if (!sender.hasPermission("world16.world1-6utils")) {
+                    sender.sendMessage("You do not have permission to use this command.");
+                    return true;
+                }
+
                 String pluginName = args[1];
 
                 if (pluginName.equalsIgnoreCase("all")) {
@@ -81,7 +86,7 @@ public final class World16Utils extends JavaPlugin {
                 }
 
                 UpdateManager.update(sender, pluginName);
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) {
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) { // Don't need permission for this
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage("You must be a player to use this command.");
                     return true;
@@ -93,7 +98,7 @@ public final class World16Utils extends JavaPlugin {
                 String key = args[1];
                 Consumer<Player> consumer = map.get(key);
                 if (consumer == null) return true;
-                consumer.accept((Player) sender);
+                consumer.accept(player);
                 map.remove(key);
             }
             return true;
