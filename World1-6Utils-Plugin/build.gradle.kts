@@ -11,7 +11,7 @@ dependencies {
     api(project(":World1-6Utils_WE_7210"))
 
     // Other
-    api("com.github.andrew121410:CCUtilsJava:ba20482ccb")
+    api("com.github.andrew121410:CCUtilsJava:a0c6f17b96") // https://jitpack.io/#andrew121410/CCUtilsJava
     compileOnly("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") // https://github.com/GeyserMC/Floodgate/blob/master/gradle.properties
     api("org.spongepowered:configurate-yaml:4.2.0-SNAPSHOT")
 }
