@@ -14,4 +14,4 @@ I might support Spigot once again in the future though
 5. World1-6Utils_CMI_API: *Used to access CMI API (Yes I'm aware of https://github.com/Zrips/CMI-API)*
 
 ## Compiling:
-`maven clean package`
+`./gradlew build`
