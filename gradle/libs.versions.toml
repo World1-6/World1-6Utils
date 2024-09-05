@@ -1,0 +1,17 @@
+[versions]
+paper-api = "1.20.4-R0.1-SNAPSHOT"
+ccutils = "a0c6f17b96"
+floodgate = "2.2.3-SNAPSHOT"
+configurate-yaml = "4.2.0-SNAPSHOT"
+worldedit = "7.3.6"
+
+[libraries]
+paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
+ccutils = { group = "com.github.andrew121410", name = "CCUtilsJava", version.ref = "ccutils" }
+floodgate = { group = "org.geysermc.floodgate", name = "api", version.ref = "floodgate" } # https://github.com/GeyserMC/Floodgate/blob/master/gradle.properties
+configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml", version.ref = "configurate-yaml" }
+worldedit-core = { group = "com.sk89q.worldedit", name = "worldedit-core", version.ref = "worldedit" }
+worldedit-bukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldedit" }
+
+[plugins]
+shadow-plugin = { id = "com.gradleup.shadow", version = "8.3.0" } # https://github.com/GradleUp/shadow

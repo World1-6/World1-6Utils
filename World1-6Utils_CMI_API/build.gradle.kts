@@ -1,4 +1,5 @@
 plugins {
+    id("world16utils.java-conventions")
     `maven-publish`
 }
 
