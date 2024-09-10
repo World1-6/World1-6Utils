@@ -2,11 +2,15 @@ package com.andrew121410.mc.world16utils.sign;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SignCache {
+
+    private final Side side;
 
     private Component line0 = Component.empty();
     private Component line1 = Component.empty();
@@ -14,27 +18,37 @@ public class SignCache {
     private Component line3 = Component.empty();
 
     public SignCache() {
+        this.side = Side.FRONT;
     }
 
-    public SignCache(Sign sign) {
-        this.line0 = sign.line(0);
-        this.line1 = sign.line(1);
-        this.line2 = sign.line(2);
-        this.line3 = sign.line(3);
+    public SignCache(Side side) {
+        this.side = side;
+    }
+
+    public SignCache(Sign sign, Side side) {
+        this.side = side;
+
+        SignSide signSide = sign.getSide(this.side);
+        this.line0 = signSide.line(0);
+        this.line1 = signSide.line(1);
+        this.line2 = signSide.line(2);
+        this.line3 = signSide.line(3);
     }
 
     public void fromSign(Sign sign) {
-        this.line0 = sign.line(0);
-        this.line1 = sign.line(1);
-        this.line2 = sign.line(2);
-        this.line3 = sign.line(3);
+        SignSide signSide = sign.getSide(this.side);
+        this.line0 = signSide.line(0);
+        this.line1 = signSide.line(1);
+        this.line2 = signSide.line(2);
+        this.line3 = signSide.line(3);
     }
 
     public boolean update(Sign sign) {
-        sign.line(0, this.line0);
-        sign.line(1, this.line1);
-        sign.line(2, this.line2);
-        sign.line(3, this.line3);
+        SignSide signSide = sign.getSide(this.side);
+        signSide.line(0, this.line0);
+        signSide.line(1, this.line1);
+        signSide.line(2, this.line2);
+        signSide.line(3, this.line3);
         return sign.update();
     }
 
@@ -61,27 +75,21 @@ public class SignCache {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SignCache signCache)) return false;
-
-        if (!Objects.equals(line0, signCache.line0)) return false;
-        if (!Objects.equals(line1, signCache.line1)) return false;
-        if (!Objects.equals(line2, signCache.line2)) return false;
-        return Objects.equals(line3, signCache.line3);
+        if (o == null || getClass() != o.getClass()) return false;
+        SignCache signCache = (SignCache) o;
+        return side == signCache.side && Objects.equals(line0, signCache.line0) && Objects.equals(line1, signCache.line1) && Objects.equals(line2, signCache.line2) && Objects.equals(line3, signCache.line3);
     }
 
     @Override
     public int hashCode() {
-        int result = line0 != null ? line0.hashCode() : 0;
-        result = 31 * result + (line1 != null ? line1.hashCode() : 0);
-        result = 31 * result + (line2 != null ? line2.hashCode() : 0);
-        result = 31 * result + (line3 != null ? line3.hashCode() : 0);
-        return result;
+        return Objects.hash(side, line0, line1, line2, line3);
     }
 
     @Override
     public String toString() {
         return "SignCache{" +
-                "line0=" + line0 +
+                "side=" + side +
+                ", line0=" + line0 +
                 ", line1=" + line1 +
                 ", line2=" + line2 +
                 ", line3=" + line3 +
