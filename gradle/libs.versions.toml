@@ -1,6 +1,6 @@
 [versions]
 paper-api = "1.20.4-R0.1-SNAPSHOT"
-ccutils = "4f8208c6ed"
+ccutils = "c25dfde2c0"
 floodgate = "2.2.3-SNAPSHOT"
 configurate-yaml = "4.2.0-SNAPSHOT"
 worldedit = "7.3.7"
