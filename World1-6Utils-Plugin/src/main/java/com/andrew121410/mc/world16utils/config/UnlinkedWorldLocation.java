@@ -19,8 +19,8 @@ import java.util.UUID;
 @SerializableAs("UnlinkedWorldLocation")
 public class UnlinkedWorldLocation extends Location implements ConfigurationSerializable {
 
-    private final UUID worldUUID;
-    private final String worldName;
+    private UUID worldUUID;
+    private String worldName;
 
     public UnlinkedWorldLocation(UUID worldUUID, String worldName, double x, double y, double z, float yaw, float pitch) {
         super(null, x, y, z, yaw, pitch); // World is null, because it might not be loaded.
@@ -58,6 +58,29 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
         return this.worldUUID;
     }
 
+    // This is so dumb.
+    public void ensure() {
+        if (this.worldUUID == null && this.worldName != null) {
+            World world = org.bukkit.Bukkit.getWorld(this.worldName);
+            if (world != null) {
+                this.worldUUID = world.getUID();
+            }
+        } else if (this.worldUUID != null && this.worldName == null) {
+            World world = org.bukkit.Bukkit.getWorld(this.worldUUID);
+            if (world != null) {
+                this.worldName = world.getName();
+            }
+        } else if (this.worldUUID != null && this.worldName != null) {
+            // World name could be different now?
+            World world = org.bukkit.Bukkit.getWorld(this.worldUUID);
+            if (world != null && !world.getName().equals(this.worldName)) {
+                this.worldName = world.getName();
+            }
+        } else {
+            throw new IllegalArgumentException("WorldUUID and WorldName are null.");
+        }
+    }
+
     @Override
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
@@ -84,7 +107,7 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
         // Old format
         UUID worldUUID;
         try {
-            worldUUID = UUID.fromString(worldString);
+            worldUUID = UUID.fromString(worldUUIDString);
         } catch (Exception e) {
             // What was provided was "probably" a world name, instead of a UUID.
             World world = org.bukkit.Bukkit.getWorld(worldUUIDString);
