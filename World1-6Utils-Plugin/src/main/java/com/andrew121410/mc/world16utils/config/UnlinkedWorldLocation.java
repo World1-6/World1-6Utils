@@ -1,6 +1,5 @@
 package com.andrew121410.mc.world16utils.config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -10,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * A normal Location when deserialized will not work if the world is not loaded.
@@ -21,39 +19,50 @@ import java.util.logging.Level;
 @SerializableAs("UnlinkedWorldLocation")
 public class UnlinkedWorldLocation extends Location implements ConfigurationSerializable {
 
-    private final UUID world;
+    private final UUID worldUUID;
+    private final String worldName;
 
-    public UnlinkedWorldLocation(UUID world, double x, double y, double z, float yaw, float pitch) {
+    public UnlinkedWorldLocation(UUID worldUUID, String worldName, double x, double y, double z, float yaw, float pitch) {
         super(null, x, y, z, yaw, pitch); // World is null, because it might not be loaded.
-        this.world = world;
+        this.worldUUID = worldUUID;
+        this.worldName = worldName;
     }
 
-    public UnlinkedWorldLocation(UUID world, double x, double y, double z) {
-        this(world, x, y, z, 0, 0);
+    public UnlinkedWorldLocation(UUID worldUUID, double x, double y, double z, float yaw, float pitch) {
+        this(worldUUID, null, x, y, z, yaw, pitch);
+    }
+
+    public UnlinkedWorldLocation(UUID worldUUID, double x, double y, double z) {
+        this(worldUUID, null, x, y, z, 0, 0);
+    }
+
+    public UnlinkedWorldLocation(UUID worldUUID, String worldName, double x, double y, double z) {
+        this(worldUUID, worldName, x, y, z, 0, 0);
     }
 
     public UnlinkedWorldLocation(Location location) {
-        this(location.getWorld().getUID(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this(location.getWorld().getUID(), location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     @Override
     public boolean isWorldLoaded() {
-        return org.bukkit.Bukkit.getWorld(world) != null;
+        return org.bukkit.Bukkit.getWorld(this.worldUUID) != null;
     }
 
     @Override
     public World getWorld() {
-        return org.bukkit.Bukkit.getWorld(world);
+        return org.bukkit.Bukkit.getWorld(this.worldUUID);
     }
 
     public UUID getWorldUUID() {
-        return this.world;
+        return this.worldUUID;
     }
 
     @Override
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("world", String.valueOf(this.world)); // Why can't I just save it as a UUID and not a string?
+        map.put("worldUUID", String.valueOf(this.worldUUID));
+        map.put("worldName", this.worldName);
         map.put("x", this.getX());
         map.put("y", this.getY());
         map.put("z", this.getZ());
@@ -63,22 +72,28 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
     }
 
     public static UnlinkedWorldLocation deserialize(Map<String, Object> map) {
-        String worldString = (String) map.get("world");
+        String worldUUIDString = (String) map.get("worldUUID");
+        if (worldUUIDString == null) {
+            // Old format could be an uuid or could be a world name.
+            worldUUIDString = (String) map.get("world");
+        }
 
-        // Temporary
+        // Could be null.
+        String worldString = (String) map.get("worldName");
+
+        // Old format
         UUID worldUUID;
         try {
             worldUUID = UUID.fromString(worldString);
         } catch (Exception e) {
-            Bukkit.getLogger().log(Level.SEVERE, "UnlinkedWorldLocation - You need to convert the world name to a UUID. Using the world name is deprecated.");
-
-            World world = org.bukkit.Bukkit.getWorld(worldString);
-
+            // What was provided was "probably" a world name, instead of a UUID.
+            World world = org.bukkit.Bukkit.getWorld(worldUUIDString);
             if (world == null) {
-                throw new IllegalArgumentException("Invalid world: " + worldString);
+                throw new IllegalArgumentException("Invalid world: " + worldUUIDString);
             }
 
             worldUUID = world.getUID();
+            worldString = world.getName();
         }
 
         double x = (Double) map.getOrDefault("x", 0);
@@ -89,6 +104,6 @@ public class UnlinkedWorldLocation extends Location implements ConfigurationSeri
         double fakeYaw = (Double) map.getOrDefault("yaw", 0);
         double fakePitch = (Double) map.getOrDefault("pitch", 0);
 
-        return new UnlinkedWorldLocation(worldUUID, x, y, z, (float) fakeYaw, (float) fakePitch);
+        return new UnlinkedWorldLocation(worldUUID, worldString, x, y, z, (float) fakeYaw, (float) fakePitch);
     }
 }
