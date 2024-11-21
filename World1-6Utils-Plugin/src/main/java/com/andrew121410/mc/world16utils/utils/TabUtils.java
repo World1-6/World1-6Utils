@@ -5,8 +5,6 @@ import org.bukkit.OfflinePlayer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class TabUtils {
     public static List<String> getContainsString(String args, List<String> list) {
@@ -20,13 +18,16 @@ public class TabUtils {
     }
 
     public static List<String> getOfflinePlayerNames(List<OfflinePlayer> offlinePlayers) {
-        return offlinePlayers.stream()
-                .filter(Objects::nonNull) // Filter out null OfflinePlayers
-                .filter(offlinePlayer -> offlinePlayer.getName() != null) // Filter out players with null names
-                .filter(offlinePlayer -> !offlinePlayer.getName().isEmpty()) // Filter out players with empty names
-                .filter(offlinePlayer -> !offlinePlayer.getName().equals("null")) // Filter out players with "null" as their name
-                .map(OfflinePlayer::getName) // Map to player names
-                .collect(Collectors.toList());
+        List<String> playerNames = new ArrayList<>();
+        for (OfflinePlayer player : offlinePlayers) {
+            if (player != null) {
+                String name = player.getName();
+                if (name != null && !name.isEmpty() && !"null".equals(name)) {
+                    playerNames.add(name);
+                }
+            }
+        }
+        return playerNames;
     }
 
     public static List<String> getOfflinePlayerNames(OfflinePlayer[] offlinePlayers) {
