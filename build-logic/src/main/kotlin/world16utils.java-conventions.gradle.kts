@@ -11,11 +11,6 @@ repositories {
     maven {
         url = uri("https://repo.papermc.io/repository/maven-public/")
     }
-
-    maven {
-        url = uri("https://jitpack.io")
-    }
-
     maven {
         url = uri("https://maven.enginehub.org/repo/")
     }
@@ -24,6 +19,9 @@ repositories {
     }
     maven {
         url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+    maven {
+        url = uri("https://jitpack.io")
     }
 }
 
