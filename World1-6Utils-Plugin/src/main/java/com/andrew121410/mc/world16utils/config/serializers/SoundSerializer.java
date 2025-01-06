@@ -17,7 +17,10 @@ public class SoundSerializer implements TypeSerializer<Sound> {
         if (node.raw() == null) {
             return null;
         }
-        final String sound = SerializerUtils.nonVirtualNode(node, "sound").getString();
+        final String sound = node.getString();
+        if (sound == null) {
+            return null;
+        }
         return Registry.SOUNDS.get(NamespacedKey.minecraft(sound));
     }
 
@@ -27,6 +30,6 @@ public class SoundSerializer implements TypeSerializer<Sound> {
             node.raw(null);
             return;
         }
-        node.node("sound").set(obj.getKey().getKey());
+        node.set(obj.getKey().getKey());
     }
 }
