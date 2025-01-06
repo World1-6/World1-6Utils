@@ -28,14 +28,14 @@ public class World16ConfigurateManager {
     public YamlConfigurationLoader getYamlConfigurationLoader(String fileName) {
         final String path = plugin.getDataFolder() + File.separator + fileName;
 
-        CusstomConfigurateSerializers cusstomConfigurateSerializers = new CusstomConfigurateSerializers();
+        CustomConfigurateSerializers customConfigurateSerializers = new CustomConfigurateSerializers();
 
         YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(Paths.get(path))
                 .defaultOptions(options -> options.serializers(builder -> {
                     builder
-                            .registerAll(cusstomConfigurateSerializers.getBukkitSerializers())
-                            .registerAll(cusstomConfigurateSerializers.getWorld16UtilsSerializers());
+                            .registerAll(customConfigurateSerializers.getBukkitSerializers())
+                            .registerAll(customConfigurateSerializers.getWorld16UtilsSerializers());
                     this.typeSerializerCollectionList.forEach(builder::registerAll);
                 }))
                 .nodeStyle(NodeStyle.BLOCK)

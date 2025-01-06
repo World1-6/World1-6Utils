@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
-public class CusstomConfigurateSerializers {
+public class CustomConfigurateSerializers {
 
     public TypeSerializerCollection getBukkitSerializers() {
         TypeSerializerCollection.Builder serializers = TypeSerializerCollection.builder();
