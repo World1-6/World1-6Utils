@@ -32,8 +32,8 @@ tasks {
         archiveClassifier.set("")
         archiveVersion.set("")
 
-        relocate("com.andrew121410.ccutils.", "com.andrew121410.mc.world16utils.utils.ccutils.")
-        relocate("org.spongepowered.", "com.andrew121410.mc.world16utils.utils.spongepowered.")
+        relocate("com.andrew121410.ccutils.", "com.andrew121410.mc.world16utils.dependencies.ccutils.")
+        relocate("org.spongepowered.", "com.andrew121410.mc.world16utils.dependencies.spongepowered.")
         exclude("META-INF/*.MF", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
     }
 }
