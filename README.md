@@ -4,7 +4,9 @@
 A library shared between all my plugins.
 
 As of 7/26/2022, this library now requires Paper, instead of Spigot.
-I might support Spigot once again in the future though
+
+## Supported Versions:
+- 1.21.4
 
 ## Modules:
 1. World1-6Utils-COMMON: *Classes that are shared between modules*

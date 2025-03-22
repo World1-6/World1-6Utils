@@ -33,8 +33,7 @@ public class PlayerUtils {
     public static boolean smoothTeleport(Player player, Location location) {
         return player.teleport(location,
                 TeleportFlag.EntityState.RETAIN_PASSENGERS,
-                TeleportFlag.Relative.YAW,
-                TeleportFlag.Relative.PITCH);
+                TeleportFlag.Relative.VELOCITY_ROTATION);
     }
 
     public static Block getBlockPlayerIsLookingAt(Player player) {
