@@ -2,10 +2,8 @@ package com.andrew121410.mc.world16utils.player;
 
 import com.andrew121410.mc.world16utils.World16Utils;
 import com.destroystokyo.paper.profile.PlayerProfile;
-import io.papermc.paper.entity.TeleportFlag;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -29,12 +27,6 @@ public class PlayerUtils {
 
     public static final ConcurrentHashMap<UUID, PlayerTextures> PLAYER_TEXTURES_CONCURRENT_HASH_MAP = new ConcurrentHashMap<>();
     public static final ExecutorService PROFILE_EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
-
-    public static boolean smoothTeleport(Player player, Location location) {
-        return player.teleport(location,
-                TeleportFlag.EntityState.RETAIN_PASSENGERS,
-                TeleportFlag.Relative.VELOCITY_ROTATION);
-    }
 
     public static Block getBlockPlayerIsLookingAt(Player player) {
         return player.getTargetBlock(null, 5);
