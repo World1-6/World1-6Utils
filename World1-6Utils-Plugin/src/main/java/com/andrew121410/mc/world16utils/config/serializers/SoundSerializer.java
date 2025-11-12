@@ -21,7 +21,12 @@ public class SoundSerializer implements TypeSerializer<Sound> {
         if (sound == null) {
             return null;
         }
-        return Registry.SOUNDS.get(NamespacedKey.minecraft(sound));
+
+        NamespacedKey key = NamespacedKey.fromString(sound);
+        if (key == null) {
+            throw new SerializationException("Invalid sound key: " + sound);
+        }
+        return Registry.SOUND_EVENT.get(key);
     }
 
     @Override
@@ -30,6 +35,12 @@ public class SoundSerializer implements TypeSerializer<Sound> {
             node.raw(null);
             return;
         }
-        node.set(obj.getKey().getKey());
+
+        NamespacedKey key = Registry.SOUND_EVENT.getKey(obj);
+        if (key == null) {
+            throw new SerializationException("Could not find key for sound: " + obj);
+        }
+
+        node.set(key.toString());
     }
 }
