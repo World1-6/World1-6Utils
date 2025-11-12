@@ -1,6 +1,10 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     id("world16utils.java-conventions")
     alias(libs.plugins.shadow.plugin)
+    alias(libs.plugins.blossom)
     `maven-publish`
 }
 
@@ -42,6 +46,17 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             artifact(tasks["shadowJar"])
+        }
+    }
+}
+
+var formattedDate: String = SimpleDateFormat("M/d/yyyy").format(Date())
+sourceSets {
+    main {
+        blossom {
+            javaSources {
+                property("date_of_build", formattedDate)
+            }
         }
     }
 }

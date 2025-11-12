@@ -7,10 +7,12 @@ import org.bukkit.ChatColor;
 
 public class Translate {
 
+    @Deprecated
     public static String color(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+    @Deprecated
     public static String chat(String s) {
         return color(s);
     }

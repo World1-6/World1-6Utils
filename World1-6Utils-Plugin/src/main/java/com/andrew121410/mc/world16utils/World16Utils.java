@@ -2,6 +2,7 @@ package com.andrew121410.mc.world16utils;
 
 import com.andrew121410.mc.world16utils.chat.ChatClickCallbackManager;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
+import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.config.UnlinkedWorldLocation;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
@@ -25,7 +26,7 @@ public final class World16Utils extends JavaPlugin {
         ConfigurationSerialization.registerClass(UnlinkedWorldLocation.class, "UnlinkedWorldLocation");
     }
 
-    public static final String DATE_OF_VERSION = "7/26/2022";
+    public static final String DATE_OF_VERSION = BlossomOutput.DATE_OF_BUILD;
     public static final String PREFIX = "[&9World1-6Utils&r]";
     private static World16Utils instance;
 
@@ -71,7 +72,11 @@ public final class World16Utils extends JavaPlugin {
                     return true;
                 }
 
-                sender.sendMessage("/world1-6utils update");
+                sender.sendMessage(Translate.miniMessage("<gold>World1-6Utils</gold> <gray>(Built on " + DATE_OF_VERSION + ")</gray>"));
+                sender.sendMessage(Translate.miniMessage("<yellow>Available Commands:</yellow>"));
+                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils update <pluginName></gold> <gray>- Update the specified plugin.</gray>"));
+                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils update all</gold> <gray>- Update all plugins with registered updaters.</gray>"));
+                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils list-updaters</gold> <gray>- Show plugins that have updaters available.</gray>"));
             } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
                 if (!sender.hasPermission("world16.world1-6utils")) {
                     sender.sendMessage("You do not have permission to use this command.");
@@ -86,6 +91,16 @@ public final class World16Utils extends JavaPlugin {
                 }
 
                 UpdateManager.update(sender, pluginName);
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("list-updaters")) {
+                if (!sender.hasPermission("world16.world1-6utils")) {
+                    sender.sendMessage("You do not have permission to use this command.");
+                    return true;
+                }
+
+                sender.sendMessage(Translate.miniMessage("List of plugins with updaters:"));
+                for (String pluginName : UpdateManager.getPluginNamesFromUpdaters()) {
+                    sender.sendMessage(Translate.miniMessage("- <yellow>" + pluginName));
+                }
             } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) { // Don't need permission for this
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage("You must be a player to use this command.");
@@ -118,6 +133,7 @@ public final class World16Utils extends JavaPlugin {
         });
     }
 
+    @Deprecated
     public static boolean isOnPaper() {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
