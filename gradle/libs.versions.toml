@@ -3,7 +3,7 @@ paper-api = "1.21.10-R0.1-SNAPSHOT"
 ccutils = "08b1571b50"
 floodgate = "2.2.5-SNAPSHOT"
 configurate-yaml = "4.2.0"
-worldedit = "7.3.17"
+worldedit = "7.3.18"
 
 [libraries]
 paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
