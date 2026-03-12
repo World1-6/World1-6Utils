@@ -125,6 +125,8 @@ The interface your sign OS implements. All callbacks receive the `SignScreenEngi
 | `onScroll(manager, player, up)` | *(default)* After a successful scroll. Override to react to navigation. |
 | `onFocusEnter(manager, player)` | *(default)* When a player enters focus mode on this sign screen. |
 | `onFocusExit(manager, player)` | *(default)* When a player exits focus mode. Also fires on disconnect, so the player may no longer be online. |
+| `getTools()` | *(default)* Returns the list of `SignScreenTool`s to give the player. Override to customize or add tools. |
+| `onToolUse(engine, player, toolType)` | *(default)* When the player uses a custom tool (not scroll_up/scroll_down/exit). |
 
 ### `SignScreenEngine`
 
@@ -159,12 +161,29 @@ The central control API. Handles all the boilerplate that every plugin would oth
 
 Items are identified using **PersistentDataContainer** (not display names), so they can't be spoofed by renaming.
 
+### `SignScreenTool`
+
+A record that defines a single tool item given to the player during focus mode.
+
+```java
+public record SignScreenTool(String toolType, int slot, Material material, Component displayName)
+```
+
+- `toolType` — unique string identifier stored in PDC (e.g. `"scroll_up"`, `"my_custom_action"`)
+- `slot` — inventory slot (0–8)
+- `material` — item material
+- `displayName` — display name Component
+
+Built-in constants: `SignScreenTool.SCROLL_DOWN`, `SignScreenTool.SCROLL_UP`, `SignScreenTool.EXIT`
+
+Call `SignScreenTool.defaults()` for the standard 3-tool set.
+
 ### `SignScreenFocus`
 
 Manages a single player's focus session:
 - Saves and restores inventory contents and potion effects
 - Applies blindness during focus
-- Gives control tools: SCROLL DOWN (slot 0), SCROLL UP (slot 2), EXIT (slot 8)
+- Gives tools defined by `ISignScreen.getTools()` (defaults: SCROLL DOWN slot 0, SCROLL UP slot 2, EXIT slot 8)
 
 ### `SignLayout`
 
@@ -258,6 +277,32 @@ public boolean onTick(SignScreenEngine manager) {
         return true;
     }
     return false;
+}
+```
+
+## Custom Tools
+
+Override `getTools()` in your `ISignScreen` to customize tool materials, names, slots, or add entirely new tools:
+
+```java
+@Override
+public List<SignScreenTool> getTools() {
+    return List.of(
+        // Customize the built-in tools
+        new SignScreenTool(SignScreenTool.SCROLL_DOWN, 0, Material.ARROW, Component.text("DOWN", NamedTextColor.GREEN)),
+        new SignScreenTool(SignScreenTool.SCROLL_UP, 2, Material.ARROW, Component.text("UP", NamedTextColor.GREEN)),
+        new SignScreenTool(SignScreenTool.EXIT, 8, Material.BARRIER, Component.text("QUIT", NamedTextColor.RED)),
+        // Add a custom tool
+        new SignScreenTool("reset", 4, Material.TNT, Component.text("RESET", NamedTextColor.YELLOW, TextDecoration.BOLD))
+    );
+}
+
+@Override
+public void onToolUse(SignScreenEngine engine, Player player, String toolType) {
+    // Handle custom tool types (built-in types are handled automatically)
+    if (toolType.equals("reset")) {
+        player.sendMessage("Reset triggered!");
+    }
 }
 ```
 

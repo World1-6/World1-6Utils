@@ -31,8 +31,8 @@ import java.util.UUID;
  * Example usage:
  * <pre>
  * SignScreenController controller = World16Utils.getInstance().getSignScreenController();
- * SignScreenEngine manager = new SignScreenEngine(plugin, "myScreen", signLocation, null, mySignScreen);
- * controller.registerScreen(signLocation, manager);
+ * SignScreenEngine engine = new SignScreenEngine(plugin, "myScreen", signLocation, null, mySignScreen);
+ * controller.registerScreen(signLocation, engine);
  * </pre>
  */
 public class SignScreenController implements Listener {
@@ -53,8 +53,8 @@ public class SignScreenController implements Listener {
      * When a player right-clicks this location, the controller will automatically
      * handle focus mode and controls.
      */
-    public void registerScreen(Location location, SignScreenEngine SignScreenEngine) {
-        this.screenMap.put(location, SignScreenEngine);
+    public void registerScreen(Location location, SignScreenEngine signScreenEngine) {
+        this.screenMap.put(location, signScreenEngine);
     }
 
     /**
@@ -65,7 +65,7 @@ public class SignScreenController implements Listener {
     }
 
     /**
-     * Gets the sign screen manager registered at the given location, or null if none.
+     * Gets the sign screen engine registered at the given location, or null if none.
      */
     public SignScreenEngine getScreen(Location location) {
         return this.screenMap.get(location);
@@ -88,11 +88,13 @@ public class SignScreenController implements Listener {
     /**
      * Puts a player into focus mode for a specific sign screen.
      * Starts the tick loop, saves inventory, applies blindness, and gives control tools.
+     * Tools are provided by {@link ISignScreen#getTools()}.
      */
-    public void enterFocus(Player player, SignScreenEngine SignScreenEngine) {
-        SignScreenEngine.tick(player);
-        this.focusMap.put(player.getUniqueId(), new SignScreenFocus(player, SignScreenEngine, this.toolKey));
-        SignScreenEngine.getSignScreen().onFocusEnter(SignScreenEngine, player);
+    public void enterFocus(Player player, SignScreenEngine signScreenEngine) {
+        signScreenEngine.tick(player);
+        var tools = signScreenEngine.getSignScreen().getTools();
+        this.focusMap.put(player.getUniqueId(), new SignScreenFocus(player, signScreenEngine, this.toolKey, tools));
+        signScreenEngine.getSignScreen().onFocusEnter(signScreenEngine, player);
     }
 
     /**
@@ -126,21 +128,21 @@ public class SignScreenController implements Listener {
             return;
         }
 
-        SignScreenEngine SignScreenEngine = this.screenMap.get(block.getLocation());
-        if (SignScreenEngine == null) return;
+        SignScreenEngine signScreenEngine = this.screenMap.get(block.getLocation());
+        if (signScreenEngine == null) return;
 
         event.setCancelled(true);
 
         // Not focused yet -> enter focus mode
         if (focus == null) {
-            enterFocus(player, SignScreenEngine);
+            enterFocus(player, signScreenEngine);
             return;
         }
 
         // Focused on a different screen -> switch
-        if (focus.getSignScreenEngine() != SignScreenEngine) {
+        if (focus.getSignScreenEngine() != signScreenEngine) {
             exitFocus(player);
-            enterFocus(player, SignScreenEngine);
+            enterFocus(player, signScreenEngine);
             return;
         }
 
@@ -151,12 +153,13 @@ public class SignScreenController implements Listener {
 
         if (toolType != null) {
             switch (toolType) {
-                case SignScreenFocus.TOOL_EXIT -> exitFocus(player);
-                case SignScreenFocus.TOOL_SCROLL_UP -> SignScreenEngine.onScroll(player, true);
-                case SignScreenFocus.TOOL_SCROLL_DOWN -> SignScreenEngine.onScroll(player, false);
+                case SignScreenTool.EXIT -> exitFocus(player);
+                case SignScreenTool.SCROLL_UP -> signScreenEngine.onScroll(player, true);
+                case SignScreenTool.SCROLL_DOWN -> signScreenEngine.onScroll(player, false);
+                default -> signScreenEngine.getSignScreen().onToolUse(signScreenEngine, player, toolType);
             }
         } else {
-            SignScreenEngine.onClick(player);
+            signScreenEngine.onClick(player);
         }
     }
 
@@ -188,4 +191,3 @@ public class SignScreenController implements Listener {
         return focusMap;
     }
 }
-
