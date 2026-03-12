@@ -7,15 +7,15 @@ import java.util.Objects;
 public class SignLayout {
 
     private String name;
-    private String reverseLayout;
+    private String parentLayout;
 
     private int numberOfPages = 0;
 
     private List<SignPage> signPages;
 
-    public SignLayout(String name, String reverseLayout) {
+    public SignLayout(String name, String parentLayout) {
         this.name = name;
-        this.reverseLayout = reverseLayout;
+        this.parentLayout = parentLayout;
         this.signPages = new ArrayList<>();
     }
 
@@ -32,7 +32,7 @@ public class SignLayout {
         }
     }
 
-    public SignPage getReversePage(int currentPage) {
+    public SignPage getPreviousPage(int currentPage) {
         int newInt = currentPage - 1;
         if (newInt == -1) return null;
         return this.signPages.get(currentPage - 1);
@@ -48,8 +48,8 @@ public class SignLayout {
         return name;
     }
 
-    public String getReverseLayout() {
-        return reverseLayout;
+    public String getParentLayout() {
+        return parentLayout;
     }
 
     public int getNumberOfPages() {
@@ -63,20 +63,20 @@ public class SignLayout {
         SignLayout that = (SignLayout) o;
         return numberOfPages == that.numberOfPages &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(reverseLayout, that.reverseLayout) &&
+                Objects.equals(parentLayout, that.parentLayout) &&
                 Objects.equals(signPages, that.signPages);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, reverseLayout, numberOfPages, signPages);
+        return Objects.hash(name, parentLayout, numberOfPages, signPages);
     }
 
     @Override
     public String toString() {
         return "SignLayout{" +
                 "name='" + name + '\'' +
-                ", reverseLayout='" + reverseLayout + '\'' +
+                ", parentLayout='" + parentLayout + '\'' +
                 ", numberOfPages=" + numberOfPages +
                 ", signPages=" + signPages +
                 '}';

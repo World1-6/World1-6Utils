@@ -11,10 +11,11 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Objects;
 
-public class SignScreenManager {
+public class SignScreenEngine {
 
     private JavaPlugin plugin;
 
@@ -37,11 +38,12 @@ public class SignScreenManager {
 
     private boolean isTickerRunning = false;
     private boolean stop = false;
+    private BukkitTask tickTask = null;
 
     public static final long DEFAULT_TICK_SPEED = 10L;
     private long tickSpeed;
 
-    public SignScreenManager(JavaPlugin plugin, String name, Location location, Long tickSpeed, ISignScreen signScreen) {
+    public SignScreenEngine(JavaPlugin plugin, String name, Location location, Long tickSpeed, ISignScreen signScreen) {
         this.plugin = plugin;
         this.name = name;
         this.location = location;
@@ -83,9 +85,9 @@ public class SignScreenManager {
                 stageLine(this.pointerLine - 1, true);
                 this.needsLineChanged = true;
             } else {
-                SignPage newPage = this.currentLayout.getReversePage(this.currentPage.getPageNumber());
+                SignPage newPage = this.currentLayout.getPreviousPage(this.currentPage.getPageNumber());
                 if (newPage == null) {
-                    if (!this.signScreen.nullPage(this, player, true))
+                    if (!this.signScreen.onPageBoundary(this, player, true))
                         player.sendMessage(Translate.colorc("&4No new page was found going [UP]"));
                     return;
                 }
@@ -110,7 +112,7 @@ public class SignScreenManager {
             } else {
                 SignPage newPage = this.currentLayout.getNextPage(this.currentPage.getPageNumber());
                 if (newPage == null) {
-                    if (!this.signScreen.nullPage(this, player, false))
+                    if (!this.signScreen.onPageBoundary(this, player, false))
                         player.sendMessage(Translate.colorc("&4No new page was found going [DOWN]"));
                     return;
                 }
@@ -119,6 +121,9 @@ public class SignScreenManager {
                 this.needsTextChanged = true;
             }
         }
+
+        // Notify the ISignScreen that a scroll happened
+        this.signScreen.onScroll(this, player, up);
     }
 
     public void tick(Player player) {
@@ -135,10 +140,7 @@ public class SignScreenManager {
         }
         this.isTickerRunning = true;
 
-        Sign sign = UniversalBlockUtils.isSign(location.getBlock());
-        if (sign == null) throw new NullPointerException("SignScreenManager : tick() : sign == null : NULL");
-
-        new BukkitRunnable() {
+        this.tickTask = new BukkitRunnable() {
             private boolean hold = false;
             private int pointerAT = 5;
             private int oldPointerLine = pointerLine;
@@ -151,11 +153,28 @@ public class SignScreenManager {
                 if (stop && pointerAT == 0) {
                     isTickerRunning = false;
                     stop = false;
+                    tickTask = null;
                     this.cancel();
                     return;
                 }
                 //Holding
                 if (hold || signCache == null) return;
+
+                // Re-fetch the sign each tick to avoid stale BlockState references
+                Sign sign = UniversalBlockUtils.isSign(location.getBlock());
+                if (sign == null) {
+                    // Sign was destroyed or chunk unloaded — stop the ticker
+                    isTickerRunning = false;
+                    stop = false;
+                    tickTask = null;
+                    this.cancel();
+                    return;
+                }
+
+                // Let the ISignScreen push fresh data if it wants to.
+                // If it calls updateLayoutAndPage(), needsTextChanged will be set to true
+                // and the existing logic below will apply it to the sign.
+                signScreen.onTick(SignScreenEngine.this);
 
                 if (!needsTextChanged && !needsLineChanged && this.pointerAT != 5) {
                     if (pointerAT == 0) {
@@ -194,11 +213,11 @@ public class SignScreenManager {
 
     public void updateLayoutAndPage(SignLayout signLayout, int beginningPage) {
         if (signLayout == null) {
-            throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signLayout == null : NULL");
+            throw new NullPointerException("SignScreenEngine : goToLayoutAndPage(String, Int) : signLayout == null : NULL");
         }
         SignPage signPage = signLayout.getSignPage(beginningPage);
         if (signPage == null) {
-            throw new NullPointerException("SignScreenManager : goToLayoutAndPage(String, Int) : signPage == null : NULL");
+            throw new NullPointerException("SignScreenEngine : goToLayoutAndPage(String, Int) : signPage == null : NULL");
         }
         this.currentLayout = signLayout;
         this.currentPage = signPage;
@@ -341,6 +360,20 @@ public class SignScreenManager {
         this.stop = stop;
     }
 
+    /**
+     * Immediately cancels the tick loop without waiting for the next cycle.
+     * Use this for plugin disable, sign destruction, or other cases where
+     * the graceful {@link #setStop(boolean)} is too slow.
+     */
+    public void forceStop() {
+        if (this.tickTask != null && !this.tickTask.isCancelled()) {
+            this.tickTask.cancel();
+        }
+        this.isTickerRunning = false;
+        this.stop = false;
+        this.tickTask = null;
+    }
+
     public long getTickSpeed() {
         return tickSpeed;
     }
@@ -353,7 +386,7 @@ public class SignScreenManager {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SignScreenManager that = (SignScreenManager) o;
+        SignScreenEngine that = (SignScreenEngine) o;
         return currentSide == that.currentSide &&
                 pointerLine == that.pointerLine &&
                 pointerLineOffset == that.pointerLineOffset &&
@@ -378,7 +411,7 @@ public class SignScreenManager {
 
     @Override
     public String toString() {
-        return "SignScreenManager{" +
+        return "SignScreenEngine{" +
                 "plugin=" + plugin +
                 ", name='" + name + '\'' +
                 ", location=" + location +

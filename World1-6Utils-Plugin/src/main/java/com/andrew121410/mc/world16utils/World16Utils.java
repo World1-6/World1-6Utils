@@ -3,6 +3,7 @@ package com.andrew121410.mc.world16utils;
 import com.andrew121410.mc.world16utils.chat.ChatClickCallbackManager;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
 import com.andrew121410.mc.world16utils.chat.Translate;
+import com.andrew121410.mc.world16utils.sign.screen.SignScreenController;
 import com.andrew121410.mc.world16utils.config.UnlinkedWorldLocation;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
 import com.andrew121410.mc.world16utils.listeners.OnInventoryClickEvent;
@@ -34,6 +35,7 @@ public final class World16Utils extends JavaPlugin {
 
     private ChatResponseManager chatResponseManager;
     private ChatClickCallbackManager chatClickCallbackManager;
+    private SignScreenController signScreenController;
 
     @Override
     public void onLoad() {
@@ -46,6 +48,7 @@ public final class World16Utils extends JavaPlugin {
         this.classWrappers = new ClassWrappers(this);
         this.chatResponseManager = new ChatResponseManager(this);
         this.chatClickCallbackManager = new ChatClickCallbackManager(this);
+        this.signScreenController = new SignScreenController(this);
         registerListeners();
         registerCommand();
 
@@ -157,5 +160,9 @@ public final class World16Utils extends JavaPlugin {
 
     public ChatClickCallbackManager getChatClickCallbackManager() {
         return chatClickCallbackManager;
+    }
+
+    public SignScreenController getSignScreenController() {
+        return signScreenController;
     }
 }
