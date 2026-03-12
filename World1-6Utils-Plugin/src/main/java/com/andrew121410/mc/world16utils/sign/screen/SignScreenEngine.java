@@ -204,7 +204,13 @@ public class SignScreenEngine {
 
             private void clearStringBufferAndUpdate() {
                 this.stringBuffer = new StringBuffer();
-                this.stringBuffer.append(this.signCacheSave.getLine(this.oldPointerLine));
+                net.kyori.adventure.text.Component line = this.signCacheSave.getLine(this.oldPointerLine);
+                // Serialize Component back to legacy (&-coded) string so the pointer ">"
+                // insertion works correctly — StringBuffer.append(Component) would call
+                // toString() producing "TextComponentImpl{...}" garbage.
+                String legacyText = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+                        .legacyAmpersand().serialize(line);
+                this.stringBuffer.append(legacyText);
             }
         }.runTaskTimer(plugin, this.tickSpeed, this.tickSpeed);
     }
