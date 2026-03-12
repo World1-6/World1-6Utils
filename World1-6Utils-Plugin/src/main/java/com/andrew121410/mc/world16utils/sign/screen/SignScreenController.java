@@ -1,6 +1,8 @@
 package com.andrew121410.mc.world16utils.sign.screen;
 
 import com.andrew121410.mc.world16utils.blocks.UniversalBlockUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -9,8 +11,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -91,6 +95,14 @@ public class SignScreenController implements Listener {
      * Tools are provided by {@link ISignScreen#getTools()}.
      */
     public void enterFocus(Player player, SignScreenEngine signScreenEngine) {
+        // Prevent two players from sharing the same engine (single cursor state would conflict)
+        for (SignScreenFocus existingFocus : this.focusMap.values()) {
+            if (existingFocus.getSignScreenEngine() == signScreenEngine) {
+                player.sendMessage(Component.text("This terminal is already in use!", NamedTextColor.RED));
+                return;
+            }
+        }
+
         signScreenEngine.tick(player);
         var tools = signScreenEngine.getSignScreen().getTools();
         this.focusMap.put(player.getUniqueId(), new SignScreenFocus(player, signScreenEngine, this.toolKey, tools));
@@ -169,6 +181,20 @@ public class SignScreenController implements Listener {
             if (this.focusMap.containsKey(player.getUniqueId())) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event) {
+        if (this.focusMap.containsKey(event.getPlayer().getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSwapHand(PlayerSwapHandItemsEvent event) {
+        if (this.focusMap.containsKey(event.getPlayer().getUniqueId())) {
+            event.setCancelled(true);
         }
     }
 

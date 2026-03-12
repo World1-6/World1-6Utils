@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Manages the "focus mode" state for a player interacting with a sign screen.
@@ -31,8 +32,8 @@ public class SignScreenFocus {
         this.signScreenEngine = signScreenEngine;
         this.toolKey = toolKey;
 
-        // Save player state
-        this.savedInventory = player.getInventory().getContents();
+        // Save player state (clone the array — getContents() may return the live backing array)
+        this.savedInventory = player.getInventory().getContents().clone();
         this.savedPotionEffects = player.getActivePotionEffects();
 
         // Clear and apply focus effects
@@ -60,6 +61,11 @@ public class SignScreenFocus {
      * Restores the player's inventory and potion effects to their pre-focus state.
      */
     public void revert() {
+        if (!this.player.isOnline()) {
+            Logger.getLogger("SignScreen").warning("Cannot restore inventory for " + this.player.getName() + " — player is offline.");
+            return;
+        }
+
         this.player.getInventory().clear();
 
         for (PotionEffect effect : this.player.getActivePotionEffects()) {

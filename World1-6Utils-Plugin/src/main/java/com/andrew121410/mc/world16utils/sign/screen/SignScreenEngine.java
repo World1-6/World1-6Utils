@@ -128,9 +128,7 @@ public class SignScreenEngine {
 
     public void tick(Player player) {
         if (!this.isTickerRunning) {
-            player.sendMessage(Translate.colorc("&bStarting tick() please wait..."));
             tick();
-            player.sendMessage(Translate.colorc("&6Running!!!"));
         }
     }
 
@@ -225,6 +223,17 @@ public class SignScreenEngine {
         this.pointerLineOffset = signPage.getSignLinePatternMap().get(this.pointerLine).getIndexOfSide(1);
         this.currentSide = signPage.getSignLinePatternMap().get(this.pointerLine).getMinSide();
         this.signCache = signPage.toSignCache();
+        this.needsTextChanged = true;
+    }
+
+    /**
+     * Re-reads content from the current SignPage and flags the sign for re-render,
+     * WITHOUT changing the cursor position or current layout/page.
+     * Use this to push live-updating data after modifying the current page's lines.
+     */
+    public void refreshCurrentPage() {
+        if (this.currentPage == null) return;
+        this.signCache = this.currentPage.toSignCache();
         this.needsTextChanged = true;
     }
 
@@ -366,6 +375,14 @@ public class SignScreenEngine {
      * the graceful {@link #setStop(boolean)} is too slow.
      */
     public void forceStop() {
+        // Restore clean sign text (remove any baked-in cursor character)
+        if (this.signCache != null && this.location != null) {
+            Sign sign = UniversalBlockUtils.isSign(this.location.getBlock());
+            if (sign != null) {
+                this.signCache.update(sign);
+            }
+        }
+
         if (this.tickTask != null && !this.tickTask.isCancelled()) {
             this.tickTask.cancel();
         }
