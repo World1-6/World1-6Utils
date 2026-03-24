@@ -10,4 +10,4 @@ dependencies {
     compileOnly(libs.worldedit.bukkit)
 }
 
-description = "World1-6Utils_WE_7210"
+description = "World1-6Utils-WorldEdit"

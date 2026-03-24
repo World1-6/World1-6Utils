@@ -13,7 +13,7 @@ description = "World1-6Utils-Plugin"
 dependencies {
     api(project(":World1-6Utils-COMMON"))
     api(project(":World1-6Utils-API"))
-    api(project(":World1-6Utils_WE_7210"))
+    api(project(":World1-6Utils-WorldEdit"))
 
     // Other
     api(libs.ccutils)

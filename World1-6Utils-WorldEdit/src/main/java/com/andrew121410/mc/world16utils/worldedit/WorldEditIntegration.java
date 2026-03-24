@@ -14,12 +14,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 
-public class WorldEdit_7210 implements WorldEdit {
+public class WorldEditIntegration implements WorldEdit {
 
     private WorldEditPlugin worldEditPlugin;
     private boolean useOldMethods = true;
 
-    public WorldEdit_7210() {
+    public WorldEditIntegration() {
         this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         this.useOldMethods = canUseOldMethods();
     }

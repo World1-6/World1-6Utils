@@ -7,8 +7,7 @@ pluginManagement {
 
 rootProject.name = "world16utils-parent"
 
-include(":World1-6Utils_CMI_API")
 include(":World1-6Utils-COMMON")
 include(":World1-6Utils-API")
-include(":World1-6Utils_WE_7210")
+include(":World1-6Utils-WorldEdit")
 include(":World1-6Utils-Plugin")
