@@ -1,10 +1,11 @@
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 plugins {
     id("world16utils.java-conventions")
     alias(libs.plugins.shadow.plugin)
     alias(libs.plugins.blossom)
+    alias(libs.plugins.run.paper)
     `maven-publish`
 }
 
@@ -39,6 +40,10 @@ tasks {
         relocate("com.andrew121410.ccutils.", "com.andrew121410.mc.world16utils.dependencies.ccutils.")
         relocate("org.spongepowered.", "com.andrew121410.mc.world16utils.dependencies.spongepowered.")
         exclude("META-INF/*.MF", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+    }
+
+    runServer {
+        minecraftVersion("1.21.11")
     }
 }
 

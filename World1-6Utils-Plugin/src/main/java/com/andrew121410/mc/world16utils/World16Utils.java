@@ -2,7 +2,7 @@ package com.andrew121410.mc.world16utils;
 
 import com.andrew121410.mc.world16utils.chat.ChatClickCallbackManager;
 import com.andrew121410.mc.world16utils.chat.ChatResponseManager;
-import com.andrew121410.mc.world16utils.chat.Translate;
+import com.andrew121410.mc.world16utils.commands.World16UtilsCommand;
 import com.andrew121410.mc.world16utils.sign.screen.SignScreenController;
 import com.andrew121410.mc.world16utils.config.UnlinkedWorldLocation;
 import com.andrew121410.mc.world16utils.listeners.OnAsyncPlayerChatEvent;
@@ -11,15 +11,9 @@ import com.andrew121410.mc.world16utils.listeners.OnInventoryCloseEvent;
 import com.andrew121410.mc.world16utils.listeners.OnPlayerQuitEvent;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
 import com.andrew121410.mc.world16utils.utils.ClassWrappers;
-import com.andrew121410.mc.world16utils.utils.TabUtils;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public final class World16Utils extends JavaPlugin {
 
@@ -50,7 +44,7 @@ public final class World16Utils extends JavaPlugin {
         this.chatClickCallbackManager = new ChatClickCallbackManager(this);
         this.signScreenController = new SignScreenController(this);
         registerListeners();
-        registerCommand();
+        registerCommands();
 
         // Register updater for this plugin, checks for updates, and registers it so that you can use "/world1-6utils update" to update this plugin
         UpdateManager.registerUpdater(this, new Updater(this));
@@ -67,73 +61,8 @@ public final class World16Utils extends JavaPlugin {
         new OnPlayerQuitEvent(this);
     }
 
-    private void registerCommand() {
-        getCommand("world1-6utils").setExecutor((sender, command, s, args) -> {
-            if (args.length == 0) {
-                if (!sender.hasPermission("world16.world1-6utils")) {
-                    sender.sendMessage("You do not have permission to use this command.");
-                    return true;
-                }
-
-                sender.sendMessage(Translate.miniMessage("<gold>World1-6Utils</gold> <gray>(Built on " + DATE_OF_VERSION + ")</gray>"));
-                sender.sendMessage(Translate.miniMessage("<yellow>Available Commands:</yellow>"));
-                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils update <pluginName></gold> <gray>- Update the specified plugin.</gray>"));
-                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils update all</gold> <gray>- Update all plugins with registered updaters.</gray>"));
-                sender.sendMessage(Translate.miniMessage("<gold>/world1-6utils list-updaters</gold> <gray>- Show plugins that have updaters available.</gray>"));
-            } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
-                if (!sender.hasPermission("world16.world1-6utils")) {
-                    sender.sendMessage("You do not have permission to use this command.");
-                    return true;
-                }
-
-                String pluginName = args[1];
-
-                if (pluginName.equalsIgnoreCase("all")) {
-                    UpdateManager.updateAll(sender);
-                    return true;
-                }
-
-                UpdateManager.update(sender, pluginName);
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("list-updaters")) {
-                if (!sender.hasPermission("world16.world1-6utils")) {
-                    sender.sendMessage("You do not have permission to use this command.");
-                    return true;
-                }
-
-                sender.sendMessage(Translate.miniMessage("List of plugins with updaters:"));
-                for (String pluginName : UpdateManager.getPluginNamesFromUpdaters()) {
-                    sender.sendMessage(Translate.miniMessage("- <yellow>" + pluginName));
-                }
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) { // Don't need permission for this
-                if (!(sender instanceof Player player)) {
-                    sender.sendMessage("You must be a player to use this command.");
-                    return true;
-                }
-
-                Map<String, Consumer<Player>> map = this.chatClickCallbackManager.getMap().get(player.getUniqueId());
-                if (map == null) return true;
-
-                String key = args[1];
-                Consumer<Player> consumer = map.get(key);
-                if (consumer == null) return true;
-                consumer.accept(player);
-                map.remove(key);
-            }
-            return true;
-        });
-
-        getCommand("world1-6utils").setTabCompleter((sender, command, s, args) -> {
-            if (!sender.hasPermission("world16.world1-6utils")) return null;
-
-            if (args.length == 1) {
-                return Arrays.asList("update");
-            } else if (args[0].equalsIgnoreCase("update") && args.length == 2) {
-                List<String> strings = UpdateManager.getPluginNamesFromUpdaters();
-                strings.add("all");
-                return TabUtils.getContainsString(args[1], strings);
-            }
-            return null;
-        });
+    private void registerCommands() {
+        new World16UtilsCommand(this);
     }
 
     @Deprecated

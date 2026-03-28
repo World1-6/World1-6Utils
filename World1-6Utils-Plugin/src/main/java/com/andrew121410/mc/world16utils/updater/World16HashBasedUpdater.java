@@ -21,6 +21,8 @@ public class World16HashBasedUpdater extends HashBasedUpdater {
      * On Paper 1.20.6 and above plugins get remapped before starting the server, and
      * The plugin will get loaded in plugins/.paper-remapped/ instead of plugins/
      * So we need to convert the path to the correct path. If needed
+     *
+     * In 26.1 there won't be any NMS mappings In Spigot anymore they're going to switch to Minecraft Mappings
      */
     private static File convert(File file) {
         String path = file.getPath();
