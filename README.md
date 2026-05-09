@@ -8,6 +8,7 @@ As of 7/26/2022, this library now requires Paper, instead of Spigot.
 ## Supported Versions:
 - 1.21.10
 - 1.21.11
+- 26.1.2
 
 ## Modules:
 1. World1-6Utils-COMMON: *Classes that are shared between modules*
