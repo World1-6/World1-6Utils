@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.gui;
 
+import com.andrew121410.mc.world16utils.World16Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -7,11 +8,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class AbstractGUIWindow implements InventoryHolder {
 
     private boolean isFirst;
     private Inventory inventory;
+    private BukkitTask animationTask;
 
     public AbstractGUIWindow() {
         this.isFirst = true;
@@ -35,7 +38,23 @@ public abstract class AbstractGUIWindow implements InventoryHolder {
         inventory = Bukkit.createInventory(this, getSlotCount(), getName());
         this.populateInventory(player);
         player.openInventory(this.inventory);
+        startAnimationLoop();
     }
+
+    private void startAnimationLoop() {
+        stopAnimationLoop();
+        animationTask = Bukkit.getScheduler().runTaskTimer(
+                World16Utils.getInstance(), this::animationTick, 2L, 2L);
+    }
+
+    public void stopAnimationLoop() {
+        if (animationTask != null && !animationTask.isCancelled()) {
+            animationTask.cancel();
+        }
+        animationTask = null;
+    }
+
+    protected void animationTick() {}
 
     public void refresh(Player player) {
         // Try to open the Inventory again if the GUI refreshed and the player isn't in the GUI.

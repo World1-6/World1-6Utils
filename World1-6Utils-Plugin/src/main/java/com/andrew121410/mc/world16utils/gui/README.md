@@ -205,6 +205,50 @@ class MyButton extends ClickEventButton {
 
 ---
 
+## Animation
+
+`Animation` provides time-based animated text for item names and lore. Frames are pre-computed and cached — the clock is used to pick the current frame, so calling it repeatedly is cheap.
+
+```java
+import com.andrew121410.mc.world16utils.gui.animation.Animation;
+import net.kyori.adventure.text.format.TextColor;
+```
+
+### `Animation.wave(String text, TextColor... colors)`
+Color sweeps across each character of the text. Pass two or more colors to define the gradient.
+
+```java
+Animation.wave("Your Balance", TextColor.color(0xFFD700), TextColor.color(0xFF6600))
+```
+
+### `Animation.fading(String text, TextColor... colors)`
+The entire text fades between the provided colors in a smooth ping-pong loop.
+
+```java
+Animation.fading("Economy", TextColor.color(0x00FF00), TextColor.color(0x00AAFF))
+```
+
+### Using animation on a button
+
+Any button can be animated by calling `.animate(Supplier<ItemStack>)` on it. The supplier is called every 2 ticks while the GUI is open — call `Animation.wave/fading` inside it so a fresh frame is returned each tick.
+
+```java
+new ClickEventButton(10, initialItem, event -> { ... })
+    .animate(() -> InventoryUtils.createItem(Material.GOLD_INGOT, 1,
+        Animation.wave("Balance", TextColor.color(0xFFD700), TextColor.color(0xFF6600)),
+        someStaticLore));
+
+new NoEventButton(4, initialItem)
+    .animate(() -> InventoryUtils.createItem(Material.PAPER, 1,
+        Animation.fading("Economy", TextColor.color(0x00FF00), TextColor.color(0x00AAFF))));
+```
+
+`.animate()` works on every button type — `ClickEventButton`, `NoEventButton`, `ChatResponseButton`, `LoreShifterButton`, etc. The initial `ItemStack` passed to the constructor is used for the first render; the supplier takes over from the first tick onward.
+
+No changes are needed to GUI classes — the animation loop runs automatically for any GUI that extends `GUIWindow`.
+
+---
+
 ## Events
 
 ### `GUIClickEvent`

@@ -25,6 +25,7 @@ public class OnInventoryCloseEvent implements Listener {
                 if (event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof AbstractGUIWindow)
                     return;
                 AbstractGUIWindow guiWindow = (AbstractGUIWindow) inventoryHolder;
+                guiWindow.stopAnimationLoop();
                 guiWindow.onClose(event);
             }, 2L);
         }

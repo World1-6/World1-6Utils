@@ -44,6 +44,16 @@ public abstract class GUIWindow extends AbstractGUIWindow {
         return false;
     }
 
+    @Override
+    protected void animationTick() {
+        if (guiButtonMap == null || getInventory() == null) return;
+        guiButtonMap.forEach((slot, button) -> {
+            if (button.isAnimated()) {
+                getInventory().setItem(slot, button.getItemStack());
+            }
+        });
+    }
+
     public void update(List<AbstractGUIButton> guiButtons, Component name, Integer slots) {
         if (guiButtons != null)
             this.guiButtonMap = guiButtons.stream().collect(Collectors.toMap(AbstractGUIButton::getSlot, k -> k));

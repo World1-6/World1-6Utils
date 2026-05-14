@@ -3,10 +3,13 @@ package com.andrew121410.mc.world16utils.gui.buttons;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.function.Supplier;
+
 public abstract class AbstractGUIButton {
 
     private int slot;
     private ItemStack itemStack;
+    private Supplier<ItemStack> itemSupplier;
 
     public AbstractGUIButton(int slot, ItemStack itemStack) {
         this.slot = slot;
@@ -18,7 +21,21 @@ public abstract class AbstractGUIButton {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return itemSupplier != null ? itemSupplier.get() : itemStack;
+    }
+
+    public boolean isAnimated() {
+        return itemSupplier != null;
+    }
+
+    /**
+     * Makes this button animated. The supplier is called every 2 ticks to get the current frame.
+     * Returns itself for fluent chaining.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends AbstractGUIButton> T animate(Supplier<ItemStack> supplier) {
+        this.itemSupplier = supplier;
+        return (T) this;
     }
 
     public void setSlot(int slot) {
