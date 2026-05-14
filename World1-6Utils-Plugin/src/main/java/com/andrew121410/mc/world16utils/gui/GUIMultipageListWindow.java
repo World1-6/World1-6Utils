@@ -84,7 +84,7 @@ public class GUIMultipageListWindow extends GUIWindow {
             }));
         }
 
-        List<AbstractGUIButton> guiButtonList = new ArrayList<>(pages.get(page));
+        List<AbstractGUIButton> guiButtonList = pages.isEmpty() ? new ArrayList<>() : new ArrayList<>(pages.get(page));
 
         int realPageNumber = this.page + 1;
         bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
