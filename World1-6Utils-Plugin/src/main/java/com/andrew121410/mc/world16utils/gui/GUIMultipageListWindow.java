@@ -8,10 +8,12 @@ import com.andrew121410.mc.world16utils.gui.buttons.defaults.ClickEventButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.NoEventButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.pages.GUINextPageEvent;
 import com.andrew121410.mc.world16utils.gui.buttons.events.pages.PageEventType;
+import com.andrew121410.mc.world16utils.gui.animation.Animation;
 import com.andrew121410.mc.world16utils.utils.InventoryUtils;
 import com.andrew121410.mc.world16utils.utils.Utils;
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -31,6 +33,15 @@ public class GUIMultipageListWindow extends GUIWindow {
     private List<List<CloneableGUIButton>> pages;
 
     private Consumer<GUINextPageEvent> pageEvent = null;
+
+    private static final TextColor GOLD   = TextColor.color(0xFFAA00);
+    private static final TextColor ORANGE = TextColor.color(0xFF6600);
+    private static final TextColor PURPLE = TextColor.color(0xAA00AA);
+    private static final TextColor PINK   = TextColor.color(0xFF55FF);
+    private static final TextColor AQUA   = TextColor.color(0x00AAAA);
+    private static final TextColor CYAN   = TextColor.color(0x55FFFF);
+    private static final TextColor RED    = TextColor.color(0xFF5555);
+    private static final TextColor YELLOW = TextColor.color(0xFFFF55);
 
     private List<CloneableGUIButton> customBottomButtons = new ArrayList<>();
 
@@ -63,34 +74,38 @@ public class GUIMultipageListWindow extends GUIWindow {
         }
 
         if (page != 0 && Utils.indexExists(pages, page - 1)) {
-            bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
+            bottomButtons.add(((ClickEventButton) new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, this.page - 1, PageEventType.PREV_PAGE, false));
                 this.page--;
                 this.handle(player, searchResults);
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, null, PageEventType.PREV_PAGE, true));
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.ARROW, 1,
+                    Animation.wave("◀ Previous Page", GOLD, ORANGE))));
         }
 
         if (pages.size() >= 2 && Utils.indexExists(pages, page + 1)) {
-            bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
+            bottomButtons.add(((ClickEventButton) new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, this.page + 1, PageEventType.NEXT_PAGE, false));
                 this.page++;
                 this.handle(player, searchResults);
                 if (this.pageEvent != null)
                     this.pageEvent.accept(new GUINextPageEvent(guiClickEvent, this.page, null, PageEventType.NEXT_PAGE, true));
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.ARROW, 1,
+                    Animation.wave("Next Page ▶", GOLD, ORANGE))));
         }
 
         List<AbstractGUIButton> guiButtonList = pages.isEmpty() ? new ArrayList<>() : new ArrayList<>(pages.get(page));
 
         int realPageNumber = this.page + 1;
-        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
+        bottomButtons.add(((NoEventButton) new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)))
+                .animate(() -> InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1,
+                        Animation.wave("Page " + realPageNumber, PURPLE, PINK))));
 
         if (searchResults == null) {
-            bottomButtons.add(new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "&6Search", "Use this to search for things"), (Component) null, null, (player1, string) -> {
+            bottomButtons.add(((ChatResponseButton) new ChatResponseButton(48, InventoryUtils.createItem(Material.COMPASS, 1, "&6Search", "Use this to search for things"), (Component) null, null, (player1, string) -> {
                 List<CloneableGUIButton> sortByContainsList = new ArrayList<>();
 
                 List<CloneableGUIButton> toSort = new ArrayList<>();
@@ -117,12 +132,14 @@ public class GUIMultipageListWindow extends GUIWindow {
 
                 this.page = 0;
                 this.handle(player1, setup(sortByContainsList));
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.COMPASS, 1,
+                    Animation.wave("Search", AQUA, CYAN))));
         } else {
-            bottomButtons.add(new ClickEventButton(48, InventoryUtils.createItem(Material.BARRIER, 1, "&eReturn", "Click me to exit search mode", "You're currently in search mode"), (guiClickEvent) -> {
+            bottomButtons.add(((ClickEventButton) new ClickEventButton(48, InventoryUtils.createItem(Material.BARRIER, 1, "&eReturn", "Click me to exit search mode", "You're currently in search mode"), (guiClickEvent) -> {
                 this.page = 0;
                 this.handle(player, null);
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.BARRIER, 1,
+                    Animation.wave("✖ Exit Search", RED, YELLOW))));
         }
 
         // Add the built-in bottom buttons.

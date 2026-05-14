@@ -9,8 +9,10 @@ import com.andrew121410.mc.world16utils.gui.buttons.defaults.NoEventButton;
 import com.andrew121410.mc.world16utils.gui.buttons.events.GUIClickEvent;
 import com.andrew121410.mc.world16utils.gui.buttons.events.pages.GUINextPageEvent;
 import com.andrew121410.mc.world16utils.gui.buttons.events.pages.PageEventType;
+import com.andrew121410.mc.world16utils.gui.animation.Animation;
 import com.andrew121410.mc.world16utils.utils.InventoryUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -35,6 +37,11 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
 
     private Function<Integer, PaginatedReturn> buttonProvider = null;
     private Consumer<GUINextPageEvent> pageEvent = null;
+
+    private static final TextColor GOLD   = TextColor.color(0xFFAA00);
+    private static final TextColor ORANGE = TextColor.color(0xFF6600);
+    private static final TextColor PURPLE = TextColor.color(0xAA00AA);
+    private static final TextColor PINK   = TextColor.color(0xFF55FF);
 
     private boolean cacheMode = true;
     private boolean asyncMode = false;
@@ -141,21 +148,25 @@ public class PaginatedGUIMultipageListWindow extends GUIWindow {
 
         // Show previous page button if not on first page and previous page exists
         if (hasPreviousPage) {
-            bottomButtons.add(new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
+            bottomButtons.add(((ClickEventButton) new ClickEventButton(45, InventoryUtils.createItem(Material.ARROW, 1, "&6Previous Page"), (guiClickEvent) -> {
                 handlePageChange(player, guiClickEvent, this.currentPage - 1, PageEventType.PREV_PAGE);
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.ARROW, 1,
+                    Animation.wave("◀ Previous Page", GOLD, ORANGE))));
         }
 
         // Show next page button if the next page exists
         if (hasNextPage) {
-            bottomButtons.add(new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
+            bottomButtons.add(((ClickEventButton) new ClickEventButton(53, InventoryUtils.createItem(Material.ARROW, 1, "&6Go to next page"), (guiClickEvent) -> {
                 handlePageChange(player, guiClickEvent, this.currentPage + 1, PageEventType.NEXT_PAGE);
-            }));
+            })).animate(() -> InventoryUtils.createItem(Material.ARROW, 1,
+                    Animation.wave("Next Page ▶", GOLD, ORANGE))));
         }
 
         // Show current page button
         int realPageNumber = this.currentPage + 1;
-        bottomButtons.add(new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)));
+        bottomButtons.add(((NoEventButton) new NoEventButton(49, InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1, "&5Current Page", "&aCurrent Page: &6" + realPageNumber)))
+                .animate(() -> InventoryUtils.createItem(Material.PAPER, realPageNumber <= 64 ? realPageNumber : 1,
+                        Animation.wave("Page " + realPageNumber, PURPLE, PINK))));
 
         // Add custom bottom buttons
         for (CloneableGUIButton customBottomButton : this.customBottomButtons) {
