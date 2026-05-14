@@ -4,7 +4,6 @@ import com.andrew121410.ccutils.utils.HashBasedUpdater;
 import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.chat.Translate;
 import com.andrew121410.mc.world16utils.updater.UpdateManager;
-import com.andrew121410.mc.world16utils.utils.InventoryUtils;
 import com.andrew121410.mc.world16utils.utils.TabUtils;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.registry.data.dialog.ActionButton;
@@ -15,12 +14,12 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -42,7 +41,7 @@ public final class World16UtilsCommand {
                 }
 
                 if (sender instanceof Player player) {
-                    openMainCommandDialog(player);
+                    openMainDialog(player);
                 } else {
                     sendCommandHelp(sender);
                 }
@@ -54,13 +53,11 @@ public final class World16UtilsCommand {
                 }
 
                 String pluginName = args[1];
-
                 if (pluginName.equalsIgnoreCase("all")) {
                     UpdateManager.updateAll(sender);
-                    return true;
+                } else {
+                    UpdateManager.update(sender, pluginName);
                 }
-
-                UpdateManager.update(sender, pluginName);
             } else if (args.length == 1 && args[0].equalsIgnoreCase("list-updaters")) {
                 if (!sender.hasPermission("world16.world1-6utils")) {
                     sender.sendMessage("You do not have permission to use this command.");
@@ -68,7 +65,7 @@ public final class World16UtilsCommand {
                 }
 
                 sendUpdaterList(sender);
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) { // Don't need permission for this
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("callclickevent")) {
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage("You must be a player to use this command.");
                     return true;
@@ -100,29 +97,27 @@ public final class World16UtilsCommand {
         });
     }
 
-    private void openMainCommandDialog(Player player) {
-        ActionButton updaterButton = ActionButton.builder(Component.text("Updates", NamedTextColor.GREEN))
-                .tooltip(Component.text("Manage plugin updates"))
+    // ---- Main dialog ----
+
+    private void openMainDialog(Player player) {
+        ActionButton updatesButton = ActionButton.builder(Component.text("Updates", NamedTextColor.GREEN))
+                .tooltip(Component.text("Check and manage plugin updates"))
                 .width(160)
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        openUpdaterDialog(p);
-                    }
+                    if (audience instanceof Player p) openUpdaterDialog(p);
                 }, callbackOptions()))
                 .build();
 
-        ActionButton usageButton = ActionButton.builder(Component.text("Show Commands", NamedTextColor.AQUA))
+        ActionButton commandsButton = ActionButton.builder(Component.text("Show Commands", NamedTextColor.AQUA))
                 .tooltip(Component.text("Show command usage in chat"))
                 .width(160)
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        sendCommandHelp(p);
-                    }
+                    if (audience instanceof Player p) sendCommandHelp(p);
                 }, callbackOptions()))
                 .build();
 
         ActionButton closeButton = ActionButton.builder(Component.text("Close", NamedTextColor.RED))
-                .tooltip(Component.text("Close dialog"))
+                .tooltip(Component.text("Close this dialog"))
                 .width(120)
                 .action(null)
                 .build();
@@ -132,11 +127,11 @@ public final class World16UtilsCommand {
                         .canCloseWithEscape(true)
                         .afterAction(DialogBase.DialogAfterAction.CLOSE)
                         .body(List.of(
-                                DialogBody.plainMessage(Component.text("Built on " + World16Utils.DATE_OF_VERSION, NamedTextColor.GRAY)),
-                                DialogBody.plainMessage(Component.text("Select an action:", NamedTextColor.YELLOW))
+                                DialogBody.plainMessage(Translate.miniMessage("<rainbow>World1-6Utils is a library plugin used by all World1-6 plugins.")),
+                                DialogBody.plainMessage(Component.text("Built on " + World16Utils.DATE_OF_VERSION, NamedTextColor.GRAY))
                         ))
                         .build())
-                .type(DialogType.multiAction(List.of(updaterButton, usageButton))
+                .type(DialogType.multiAction(List.of(updatesButton, commandsButton))
                         .columns(1)
                         .exitAction(closeButton)
                         .build()));
@@ -144,140 +139,166 @@ public final class World16UtilsCommand {
         player.showDialog(dialog);
     }
 
+    // ---- Updater dialog ----
+
+    private enum UpdateStatus { CHECKING, UP_TO_DATE, UPDATE_AVAILABLE, ERROR }
+
     private void openUpdaterDialog(Player player) {
-        Component description = Translate.miniMessage("<yellow>World1-6Utils can update plugins that implement the World1-6Utils API, if they register an updater.</yellow>");
-
-        ActionButton updateAllButton = ActionButton.builder(Component.text("Update All", NamedTextColor.GREEN))
-                .tooltip(Component.text("Update all plugins with registered updaters"))
-                .width(160)
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        UpdateManager.updateAll(p);
-                    }
-                }, callbackOptions()))
-                .build();
-
-        ActionButton listUpdatersButton = ActionButton.builder(Component.text("List Updaters", NamedTextColor.YELLOW))
-                .tooltip(Component.text("Show all plugins that have updaters"))
-                .width(160)
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        sendUpdaterList(p);
-                    }
-                }, callbackOptions()))
-                .build();
-
-        ActionButton backButton = ActionButton.builder(Component.text("Back", NamedTextColor.YELLOW))
-                .tooltip(Component.text("Return to main menu"))
-                .width(120)
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        openMainCommandDialog(p);
-                    }
-                }, callbackOptions()))
-                .build();
-
-        ActionButton closeButton = ActionButton.builder(Component.text("Close", NamedTextColor.RED))
-                .tooltip(Component.text("Close dialog"))
-                .width(120)
-                .action(null)
-                .build();
-
-        // Show initial dialog with "checking" states
         List<String> pluginNames = UpdateManager.getPluginNamesFromUpdaters();
-        List<DialogBody> initialBodies = new ArrayList<>();
-        initialBodies.add(DialogBody.plainMessage(Component.text("Manage plugin updates", NamedTextColor.GRAY)));
-        for (String pluginName : pluginNames) {
-            initialBodies.add(DialogBody.item(InventoryUtils.createItem(Material.YELLOW_WOOL, 1, pluginName))
-                    .description(DialogBody.plainMessage(Component.text("Checking for updates...", NamedTextColor.GRAY)))
-                    .build());
+
+        if (pluginNames.isEmpty()) {
+            openNoUpdatersDialog(player);
+            return;
         }
 
-        Dialog initialDialog = Dialog.create(factory -> factory.empty()
-                .base(DialogBase.builder(Component.text("Updates", NamedTextColor.GREEN))
-                        .canCloseWithEscape(true)
-                        .afterAction(DialogBase.DialogAfterAction.CLOSE)
-                        .body(initialBodies)
-                        .build())
-                .type(DialogType.multiAction(List.of(updateAllButton, listUpdatersButton, backButton))
-                        .columns(1)
-                        .exitAction(closeButton)
-                        .build()));
+        // Show initial dialog with all plugins in "checking" state
+        showUpdaterDialog(player, pluginNames, buildPluginButtons(player, pluginNames, null), true);
 
-        player.showDialog(initialDialog);
-
-        // Now, check all updaters asynchronously and update dialog once all are done
-        Map<String, DialogBody> resultBodies = new LinkedHashMap<>();
+        // Async status checks
+        Map<String, UpdateStatus> statuses = new ConcurrentHashMap<>();
         AtomicInteger completed = new AtomicInteger(0);
 
         for (String pluginName : pluginNames) {
             HashBasedUpdater updater = UpdateManager.getUpdater(pluginName);
             if (updater == null) {
-                resultBodies.put(pluginName, DialogBody.item(InventoryUtils.createItem(Material.RED_WOOL, 1, pluginName + " (error)"))
-                        .description(DialogBody.plainMessage(Component.text("Updater not found.", NamedTextColor.RED)))
-                        .build());
+                statuses.put(pluginName, UpdateStatus.ERROR);
                 if (completed.incrementAndGet() == pluginNames.size()) {
-                    // All done, update dialog
-                    updateUpdaterDialog(player, resultBodies, updateAllButton, listUpdatersButton, backButton, closeButton);
+                    plugin.getServer().getScheduler().runTask(plugin, () ->
+                            showUpdaterDialog(player, pluginNames, buildPluginButtons(player, pluginNames, statuses), false));
                 }
                 continue;
             }
 
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                boolean needsUpdate = false;
-                String error = null;
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                UpdateStatus status;
                 try {
-                    needsUpdate = updater.shouldUpdate();
-                } catch (Exception ex) {
-                    error = ex.getMessage();
+                    status = updater.shouldUpdate() ? UpdateStatus.UPDATE_AVAILABLE : UpdateStatus.UP_TO_DATE;
+                } catch (Exception e) {
+                    status = UpdateStatus.ERROR;
                 }
-                DialogBody body;
-                if (error != null) {
-                    body = DialogBody.item(InventoryUtils.createItem(Material.RED_WOOL, 1, pluginName + " (error)"))
-                            .description(DialogBody.plainMessage(Component.text("Error: " + error, NamedTextColor.RED)))
-                            .build();
-                } else if (needsUpdate) {
-                    body = DialogBody.item(InventoryUtils.createItem(Material.GREEN_WOOL, 1, pluginName + " has an update available!"))
-                            .description(DialogBody.plainMessage(Component.text("Update available!", NamedTextColor.GREEN)))
-                            .build();
-                } else {
-                    body = DialogBody.item(InventoryUtils.createItem(Material.GRAY_WOOL, 1, pluginName + " is up to date."))
-                            .description(DialogBody.plainMessage(Component.text("Up to date.", NamedTextColor.GRAY)))
-                            .build();
-                }
-                synchronized (resultBodies) {
-                    resultBodies.put(pluginName, body);
-                }
+                statuses.put(pluginName, status);
+
                 if (completed.incrementAndGet() == pluginNames.size()) {
-                    // All done, update dialog
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                        updateUpdaterDialog(player, resultBodies, updateAllButton, listUpdatersButton, backButton, closeButton);
-                    });
+                    plugin.getServer().getScheduler().runTask(plugin, () ->
+                            showUpdaterDialog(player, pluginNames, buildPluginButtons(player, pluginNames, statuses), false));
                 }
             });
         }
     }
 
-    private void updateUpdaterDialog(Player player, Map<String, DialogBody> resultBodies,
-                                     ActionButton updateAllButton, ActionButton listUpdatersButton,
-                                     ActionButton backButton, ActionButton closeButton) {
-        List<DialogBody> bodies = new ArrayList<>();
-        bodies.add(DialogBody.plainMessage(Component.text("Manage plugin updates", NamedTextColor.GRAY)));
-        bodies.addAll(resultBodies.values());
+    private List<ActionButton> buildPluginButtons(Player player, List<String> pluginNames, Map<String, UpdateStatus> statuses) {
+        List<ActionButton> buttons = new ArrayList<>();
+        for (String pluginName : pluginNames) {
+            UpdateStatus status = statuses == null ? UpdateStatus.CHECKING : statuses.getOrDefault(pluginName, UpdateStatus.CHECKING);
+
+            NamedTextColor color;
+            Component tooltip;
+            boolean clickable;
+
+            switch (status) {
+                case UPDATE_AVAILABLE -> {
+                    color = NamedTextColor.GREEN;
+                    tooltip = Component.text("Update available! Click to update.", NamedTextColor.GREEN);
+                    clickable = true;
+                }
+                case UP_TO_DATE -> {
+                    color = NamedTextColor.GRAY;
+                    tooltip = Component.text("Up to date.", NamedTextColor.GRAY);
+                    clickable = false;
+                }
+                case ERROR -> {
+                    color = NamedTextColor.RED;
+                    tooltip = Component.text("Failed to check for updates.", NamedTextColor.RED);
+                    clickable = false;
+                }
+                default -> { // CHECKING
+                    color = NamedTextColor.YELLOW;
+                    tooltip = Component.text("Checking for updates...", NamedTextColor.YELLOW);
+                    clickable = false;
+                }
+            }
+
+            ActionButton.Builder builder = ActionButton.builder(Component.text(pluginName, color))
+                    .tooltip(tooltip)
+                    .width(150);
+
+            if (clickable) {
+                builder.action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        UpdateManager.update(p, pluginName);
+                    }
+                }, callbackOptions()));
+            } else {
+                builder.action(null);
+            }
+
+            buttons.add(builder.build());
+        }
+        return buttons;
+    }
+
+    private void showUpdaterDialog(Player player, List<String> pluginNames, List<ActionButton> pluginButtons, boolean checking) {
+        ActionButton updateAllButton = ActionButton.builder(Component.text("Update All", NamedTextColor.GREEN))
+                .tooltip(Component.text("Update all plugins that have updaters registered"))
+                .width(160)
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) UpdateManager.updateAll(p);
+                }, callbackOptions()))
+                .build();
+
+        ActionButton backButton = ActionButton.builder(Component.text("← Back", NamedTextColor.YELLOW))
+                .tooltip(Component.text("Return to main menu"))
+                .width(120)
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) openMainDialog(p);
+                }, callbackOptions()))
+                .build();
+
+        List<ActionButton> allButtons = new ArrayList<>(pluginButtons);
+        allButtons.add(updateAllButton);
+
+        Component subtitle = checking
+                ? Component.text("Checking for updates...", NamedTextColor.YELLOW)
+                : Component.text(pluginNames.size() + " plugin(s) registered", NamedTextColor.GRAY);
 
         Dialog dialog = Dialog.create(factory -> factory.empty()
                 .base(DialogBase.builder(Component.text("Updates", NamedTextColor.GREEN))
                         .canCloseWithEscape(true)
                         .afterAction(DialogBase.DialogAfterAction.CLOSE)
-                        .body(bodies)
+                        .body(List.of(DialogBody.plainMessage(subtitle)))
                         .build())
-                .type(DialogType.multiAction(List.of(updateAllButton, listUpdatersButton, backButton))
+                .type(DialogType.multiAction(allButtons)
                         .columns(1)
-                        .exitAction(closeButton)
+                        .exitAction(backButton)
                         .build()));
 
         player.showDialog(dialog);
     }
+
+    private void openNoUpdatersDialog(Player player) {
+        ActionButton backButton = ActionButton.builder(Component.text("← Back", NamedTextColor.YELLOW))
+                .tooltip(Component.text("Return to main menu"))
+                .width(120)
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) openMainDialog(p);
+                }, callbackOptions()))
+                .build();
+
+        Dialog dialog = Dialog.create(factory -> factory.empty()
+                .base(DialogBase.builder(Component.text("Updates", NamedTextColor.GREEN))
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.CLOSE)
+                        .body(List.of(
+                                DialogBody.plainMessage(Component.text("No updaters are registered.", NamedTextColor.RED)),
+                                DialogBody.plainMessage(Component.text("Plugins must register an updater with World1-6Utils to appear here.", NamedTextColor.GRAY))
+                        ))
+                        .build())
+                .type(DialogType.notice(backButton)));
+
+        player.showDialog(dialog);
+    }
+
+    // ---- Chat helpers ----
 
     private void sendCommandHelp(CommandSender sender) {
         sender.sendMessage(Translate.miniMessage("<gold>World1-6Utils</gold> <gray>(Built on " + World16Utils.DATE_OF_VERSION + ")</gray>"));
@@ -301,4 +322,3 @@ public final class World16UtilsCommand {
                 .build();
     }
 }
-
