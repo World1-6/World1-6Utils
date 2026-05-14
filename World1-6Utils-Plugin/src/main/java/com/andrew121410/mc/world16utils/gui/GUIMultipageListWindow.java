@@ -1,5 +1,6 @@
 package com.andrew121410.mc.world16utils.gui;
 
+import com.andrew121410.mc.world16utils.World16Utils;
 import com.andrew121410.mc.world16utils.gui.buttons.AbstractGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.CloneableGUIButton;
 import com.andrew121410.mc.world16utils.gui.buttons.defaults.ChatResponseButton;
@@ -30,6 +31,8 @@ public class GUIMultipageListWindow extends GUIWindow {
     private List<List<CloneableGUIButton>> pages;
 
     private Consumer<GUINextPageEvent> pageEvent = null;
+
+    private List<CloneableGUIButton> customBottomButtons = new ArrayList<>();
 
     public GUIMultipageListWindow(Component name, List<CloneableGUIButton> buttons, Integer itemsPerPage) {
         this.name = name;
@@ -122,8 +125,17 @@ public class GUIMultipageListWindow extends GUIWindow {
             }));
         }
 
-        // Add the bottom buttons to the GUIButtonList.
+        // Add the built-in bottom buttons.
         guiButtonList.addAll(bottomButtons);
+
+        // Add custom bottom buttons, warning on slot conflicts with reserved slots.
+        List<Integer> reservedSlots = List.of(45, 48, 49, 53);
+        for (CloneableGUIButton customButton : this.customBottomButtons) {
+            if (reservedSlots.contains(customButton.getSlot())) {
+                World16Utils.getInstance().getLogger().warning("[GUIMultipageListWindow] Custom bottom button is using a reserved slot: " + customButton.getSlot());
+            }
+            guiButtonList.add(customButton);
+        }
 
         this.update(guiButtonList, this.name, this.slots);
         if (!super.isFirst()) {
@@ -202,5 +214,13 @@ public class GUIMultipageListWindow extends GUIWindow {
 
     public void setPageEvent(Consumer<GUINextPageEvent> pageEvent) {
         this.pageEvent = pageEvent;
+    }
+
+    public List<CloneableGUIButton> getCustomBottomButtons() {
+        return customBottomButtons;
+    }
+
+    public void setCustomBottomButtons(List<CloneableGUIButton> customBottomButtons) {
+        this.customBottomButtons = customBottomButtons;
     }
 }
