@@ -14,6 +14,6 @@ worldedit-core = { group = "com.sk89q.worldedit", name = "worldedit-core", versi
 worldedit-bukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldedit" }
 
 [plugins]
-shadow-plugin = { id = "com.gradleup.shadow", version = "9.4.1" } # https://github.com/GradleUp/shadow
+shadow-plugin = { id = "com.gradleup.shadow", version = "9.5.1" } # https://github.com/GradleUp/shadow
 blossom = { id = "net.kyori.blossom", version = "2.2.0" } # https://github.com/KyoriPowered/blossom
 run-paper = { id = "xyz.jpenilla.run-paper", version = "3.0.2" } # https://plugins.gradle.org/plugin/xyz.jpenilla.run-paper
