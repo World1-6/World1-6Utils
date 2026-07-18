@@ -1,5 +1,5 @@
 [versions]
-paper-api = "26.1.2.build.61-stable"
+paper-api = "26.1.2.build.74-stable"
 ccutils = "0a59de73a6"
 floodgate = "2.2.5-SNAPSHOT"
 configurate-yaml = "4.2.0"
